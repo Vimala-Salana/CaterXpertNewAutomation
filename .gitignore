@@ -8,7 +8,7 @@ logs/
 # TestNG reports
 test-output/
 
-# Archives / binaries
+# Archives / binaries 	
 *.zip
 
 # Eclipse IDE files

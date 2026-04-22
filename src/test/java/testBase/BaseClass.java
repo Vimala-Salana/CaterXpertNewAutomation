@@ -24,9 +24,10 @@ public class BaseClass {
 
 	public void setUpTest()
 	{
-		ChromeOptions options = new ChromeOptions();
-		options.addArguments( "user-data-dir=C:\\AutomationProfile");
-		driver = new ChromeDriver(options);
+		//ChromeOptions options = new ChromeOptions();
+		//options.addArguments( "user-data-dir=C:\\AutomationProfile");
+		//driver = new ChromeDriver(options);
+		driver = new ChromeDriver();
 
 		driver.manage().window().maximize();
 		//driver.manage().deleteAllCookies();

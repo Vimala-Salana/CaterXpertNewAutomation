@@ -50,6 +50,7 @@ public class CreateEventPage {
 	
 	public String getCreateEventhdr()
 	{
+		waitutil.waitForOverlay();
 		return hdrCreateEvent.getText();
 	}
 	
