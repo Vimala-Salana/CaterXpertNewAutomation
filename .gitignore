@@ -1,0 +1,16 @@
+# Maven build output
+/target/
+
+# Logs
+/logs/
+*.log
+
+# TestNG reports
+/test-output/
+
+# Zip or binaries
+*.zip
+
+# Eclipse system files (optional)
+.metadata/
+.settings/
