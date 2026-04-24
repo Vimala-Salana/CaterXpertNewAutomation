@@ -6,6 +6,13 @@
 	<artifactId>CaterXpertSales</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 
+	<properties>
+		<maven.compiler.source>17</maven.compiler.source>
+		<maven.compiler.target>17</maven.compiler.target>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<extent-reports.version>5.1.1</extent-reports.version>
+	</properties>
+
 	<dependencies>
 		<dependency>
 			<groupId>org.seleniumhq.selenium</groupId>
@@ -38,20 +45,27 @@
 			<version>1.8.1</version> <!-- Java 11 compatible -->
 		</dependency>
 
+		<!-- ExtentReports 5 -->
+		<dependency>
+			<groupId>com.aventstack</groupId>
+			<artifactId>extentreports</artifactId>
+			<version>${extent-reports.version}</version>
+		</dependency>
 
-		<!-- SLF4J API -->
-		<!--   <dependency>
-        <groupId>org.slf4j</groupId>
-        <artifactId>slf4j-api</artifactId>
-        <version>2.0.9</version>
-    </dependency> -->
+		<!-- SLF4J API for logging -->
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>2.0.9</version>
+		</dependency>
 
 		<!-- Logback Classic (implementation of SLF4J) -->
-		<!-- <dependency>
-        <groupId>ch.qos.logback</groupId>
-        <artifactId>logback-classic</artifactId>
-        <version>1.4.11</version>
-    </dependency> -->
+		<dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-classic</artifactId>
+			<version>1.4.11</version>
+		</dependency>
+
 	</dependencies>
 
 
