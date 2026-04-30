@@ -68,4 +68,12 @@ public class CreateContactPage {
 		}
 		return names;
 	}
+	
+	@FindBy(xpath = "//span[text()=' event ']") WebElement eventiconInContacts;
+	public void eventNavFromContact()
+	{
+		wait.until(ExpectedConditions.elementToBeClickable(eventiconInContacts));
+		eventiconInContacts.click();
+		
+	}
 }

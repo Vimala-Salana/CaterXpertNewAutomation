@@ -17,7 +17,7 @@ public class ContactListPage {
 	@FindBy(xpath = "//span[normalize-space(text())='Contact List']") WebElement hdrContactList;
 	@FindBy(xpath = "//button[text()=' New Contact ']") WebElement btnNewContact;
 	
-	public String getCreateContacthdr()
+	public String getContactListHeader()
 	{
 		return hdrContactList.getText();
 	}

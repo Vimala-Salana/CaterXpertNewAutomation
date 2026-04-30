@@ -26,13 +26,13 @@ public class WaitUtils {
 						driver.findElements(By.cssSelector(
 								
 								
-								 "div.overlay, " +
+											"div.overlay, " +
 								            "div.spinner, " +
 								            "div.ngx-spinner-overlay, " +
 								            ".swal2-backdrop-show, " +
 								            ".swal2-popup, " +
-								            "swal2-container" +
-								            ".p-toast" +
+								            ".swal2-container," +
+								            ".p-toast," +
 								            ".p-component-overlay"));
 				
 				/*

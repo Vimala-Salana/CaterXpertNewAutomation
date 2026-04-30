@@ -12,6 +12,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -23,9 +24,23 @@ public class MandatoryLabelsUtil extends BaseClass{
 	public static WaitUtils waitutil;
 	public static void fillMandatoryFields(WebDriver driver,Map<String, String> fieldData) throws Exception 
 	{
+		By mandatoryLabelsLocator  = By.xpath(MandatoryFieldsXpaths.MANDATORY_LABEL);
 		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(20));
 		waitutil = new WaitUtils(driver);
 		waitutil.waitForOverlay();
+		
+		wait.until(new ExpectedCondition<Boolean>() {
+		    @Override
+		    public Boolean apply(WebDriver d) {
+		        List<WebElement> labels = d.findElements(mandatoryLabelsLocator);
+
+		        if (labels.isEmpty()) return false;
+
+		        String first = labels.get(0).getText().replace("*", "").trim();
+
+		        return first.equalsIgnoreCase("Business Unit");
+		    }
+		});
 
 		//Selecting first option from Business Unit
 		By businessUnitlocator = By.xpath(MandatoryFieldsXpaths.BUSINESS_UNIT);
@@ -74,7 +89,7 @@ public class MandatoryLabelsUtil extends BaseClass{
 		 */
 		waitutil.waitForOverlay();
 
-		By mandatoryLabelsLocator  = By.xpath(MandatoryFieldsXpaths.MANDATORY_LABEL);
+		
 
 
 		int labelsize = wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(mandatoryLabelsLocator)).size();
@@ -198,7 +213,8 @@ public class MandatoryLabelsUtil extends BaseClass{
 					}
 				}
 			}
-			driver.findElement(By.tagName("body")).click();
+			
 		}	
+		driver.findElement(By.tagName("body")).click();
 	}
 }

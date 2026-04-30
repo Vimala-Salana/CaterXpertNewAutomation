@@ -1,9 +1,7 @@
 package testCases.SalesModule;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.FindBy;
-import org.testng.Assert;
 import org.testng.annotations.Test;
+
+import factory.DriverFactory;
 import pageObjects.CreateContactPage;
 import testBase.BaseClass;
 import utilities.ExcelUtility;
@@ -16,7 +14,7 @@ public class CreateContactTest extends BaseClass{
 	public void createContcat() throws Exception
 	{
 		String sheetname = "Create Contact";
-		CreateContactPage contactPage = new CreateContactPage(driver,filepath,sheetname);
+		CreateContactPage contactPage = new CreateContactPage(DriverFactory.getDriver(),filepath,sheetname);
 		//Assert.assertEquals(contactPage.getContacthdr(), "Create Contact");
 		contactPage.fillContactMandatoryfileds();
 		contactPage.clickCreatebtn();
@@ -30,13 +28,14 @@ public class CreateContactTest extends BaseClass{
 		//Need to optimize
 		Thread.sleep(2000);
 		System.out.println(contactPage.getContactNamefromList()+" "+contactPage.getContactNamefromList().size());
-		driver.findElement(By.xpath("//span[text()=' event ']")).click();
+		//DriverFactory.getDriver().findElement(By.xpath("//span[text()=' event ']")).click();
 		for(String contactsName : contactPage.getContactNamefromList())
 		{
 			System.out.println(contactsName);
 			if(contactnamexl.equalsIgnoreCase(contactsName)) {
 				Thread.sleep(1000);
-				driver.findElement(By.xpath("//span[text()=' event ']")).click();
+				contactPage.clickNewEventIcon();
+				//DriverFactory.getDriver().findElement(By.xpath("//span[text()=' event ']")).click();
 				//contactPage.clickNewEventIcon();
 			}
 			else

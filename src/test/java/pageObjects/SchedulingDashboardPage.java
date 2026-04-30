@@ -28,7 +28,7 @@ public class SchedulingDashboardPage {
 	
 	@FindBy(xpath = "//span[text()=' Schedule Dashboard ']") WebElement hdrSchedulingDashboard;
 	
-	public String validateSchedulinghdr()
+	public String getSchedulingHeader()
 	{
 		return hdrSchedulingDashboard.getText();
 	}

@@ -16,7 +16,7 @@ import testBase.BaseClass;
 import utilities.WaitUtils;
 
 
-public class KitchenNavigationPage extends BaseClass{
+public class KitchenNavigationPage{
 
 
 	WebDriver driver;

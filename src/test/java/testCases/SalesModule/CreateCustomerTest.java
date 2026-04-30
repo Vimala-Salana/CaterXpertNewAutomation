@@ -2,6 +2,8 @@ package testCases.SalesModule;
 
 import org.testng.Assert;
 import org.testng.annotations.Test;
+
+import factory.DriverFactory;
 import pageObjects.CreateCustomerPage;
 import testBase.BaseClass;
 import utilities.ExcelUtility;
@@ -16,7 +18,7 @@ public class CreateCustomerTest extends BaseClass {
 
 		String sheetname = "Create Customer";
 
-		CreateCustomerPage cp = new CreateCustomerPage(driver, filepath, sheetname);
+		CreateCustomerPage cp = new CreateCustomerPage(DriverFactory.getDriver(), filepath, sheetname);
 
 		//Assert.assertEquals(cp.getCreateCustomerhdr(), "Create Customer");
 

@@ -6,8 +6,10 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.testng.ITestContext;
+import org.testng.SkipException;
 import org.testng.annotations.Test;
 
+import factory.DriverFactory;
 import pageObjects.EventListingPage;
 import pageObjects.KitchenNavigationPage;
 import pageObjects.MenuServicePage;
@@ -18,12 +20,16 @@ public class KitchenNavigationTest extends BaseClass{
 	@Test
 	public void menu(ITestContext context) throws InterruptedException
 	{
-		KitchenNavigationPage kitchenMenu = new KitchenNavigationPage(driver);
+		KitchenNavigationPage kitchenMenu = new KitchenNavigationPage(DriverFactory.getDriver());
 		kitchenMenu.navigateTokitchen();
 		kitchenMenu.handleChangeRequestPopUp();
-		EventListingPage eventlist = new EventListingPage(driver);
+		EventListingPage eventlist = new EventListingPage(DriverFactory.getDriver());
 		
-		  String eventNo = (String) context.getAttribute("eventNo");
+		String eventNo = (String) context.getAttribute("eventNo");
+		if(eventNo == null)
+		{
+			throw new SkipException("Event No not set - CreateEventTest may have failed");
+		}
 		  eventlist.enterEventNo(eventNo); 
 		 // eventlist.enterEventNo("2644");
 		  //eventlist.clickEventDashboardicon();

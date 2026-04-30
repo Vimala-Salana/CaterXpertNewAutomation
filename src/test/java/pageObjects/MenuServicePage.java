@@ -17,7 +17,7 @@ import testBase.BaseClass;
 import utilities.ServiceUtil;
 import utilities.WaitUtils;
 
-public class MenuServicePage extends BaseClass{
+public class MenuServicePage {
 
 	public WebDriver driver;
 	public WaitUtils waitutil;

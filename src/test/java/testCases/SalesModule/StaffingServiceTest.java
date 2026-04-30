@@ -5,6 +5,7 @@ import java.util.List;
 import org.testng.ITestContext;
 import org.testng.annotations.Test;
 
+import factory.DriverFactory;
 import pageObjects.AEDashboardPage;
 import pageObjects.CreateEventPage;
 import pageObjects.EventDashboardPage;
@@ -17,8 +18,8 @@ public class StaffingServiceTest extends BaseClass
 	@Test
 	public void staffingRequest(ITestContext context) throws InterruptedException
 	{
-		EventDashboardPage dashboard = new EventDashboardPage(driver);
-		StaffingServicePage staff = new StaffingServicePage(driver);
+		EventDashboardPage dashboard = new EventDashboardPage(DriverFactory.getDriver());
+		StaffingServicePage staff = new StaffingServicePage(DriverFactory.getDriver());
 
 		List<String> service = List.of("Personnel","Staffing","Scheduling");
 		List<String> status = List.of("New","Prog","Resent");
@@ -28,7 +29,7 @@ public class StaffingServiceTest extends BaseClass
 			Thread.sleep(1000);
 			String serviceName  = staff.getStaffingServiceHdr().trim();
 			System.out.println("service  "+service+"  serviceNameheader : "+serviceName);
-			if(service.contains(serviceName))
+			if(service.stream().anyMatch(serviceName::contains))
 			{
 				staff.giveStaffQty();
 				staff.clickSave();
@@ -39,7 +40,7 @@ public class StaffingServiceTest extends BaseClass
 				
 				if(constraintExists)
 				{
-					AEDashboardPage aepage = new AEDashboardPage(driver);
+					AEDashboardPage aepage = new AEDashboardPage(DriverFactory.getDriver());
 					aepage.clickhambergerMenu();
 					aepage.clickApprovals();
 					String eventNo = (String) context.getAttribute("eventNo");
