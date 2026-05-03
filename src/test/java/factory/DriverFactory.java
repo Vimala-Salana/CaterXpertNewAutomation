@@ -2,6 +2,7 @@ package factory;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 
 public class DriverFactory {
@@ -13,10 +14,10 @@ public class DriverFactory {
         WebDriver webDriver;
 
         if (browser.equalsIgnoreCase("chrome")) {
-        	  //ChromeOptions options = new ChromeOptions();
-    		//options.addArguments( "user-data-dir=C:\\AutomationProfile");
-    		//webDriver = new ChromeDriver(options);
-            webDriver = new ChromeDriver();
+        	  ChromeOptions options = new ChromeOptions();
+    		options.addArguments( "user-data-dir=C:\\AutomationProfile");
+    		webDriver = new ChromeDriver(options);
+            //webDriver = new ChromeDriver();
         
         } else if (browser.equalsIgnoreCase("firefox")) {
             webDriver = new FirefoxDriver();

@@ -25,7 +25,7 @@ public class BaseClass {
 	}
 
 	
-	@AfterSuite
+	//@AfterSuite
 	  public void tearDown() 
 	  { 
 		DriverFactory.quitDriver();

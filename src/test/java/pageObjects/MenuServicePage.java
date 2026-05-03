@@ -34,7 +34,7 @@ public class MenuServicePage {
 		js = (JavascriptExecutor) driver;
 		serviceUtil = new ServiceUtil(driver);
 	}
-	
+
 	@FindBy(xpath = "//span[normalize-space(text())='Event Services - Menu']") WebElement menuServicehdr;
 	public String getmenuServiceHdr()
 	{
@@ -48,26 +48,32 @@ public class MenuServicePage {
 	{
 		waitutil.waitForOverlay();
 		wait.until(ExpectedConditions.elementToBeClickable(btnsearchAndAdd)).click();
-		waitutil.waitForOverlay();
 	}
 
 	@FindBy(xpath = "//p-checkbox[@ptooltip='Select Item']") List <WebElement> itemsCheckBox;
-	//@FindBy(xpath = "//span[contains(normalize-space(),'Select')]") List <WebElement> menuName;
-	//@FindBy(xpath = "//li[@role='option']") List<WebElement> menuNamelst;
-	
+
+	By itemsCheckBoxLoc = By.xpath("//p-checkbox[@ptooltip='Select Item']");
 	By names = By.xpath("//span[contains(normalize-space(),'Select')]");
 	By list = By.xpath("//li[@role='option']");
 
 	public void selectMenuItems() throws InterruptedException
 	{	
-		Thread.sleep(100);
-		wait.until(ExpectedConditions.visibilityOfAllElements(itemsCheckBox));
-		 for(int i=0;i<itemsCheckBox.size();i++)
-		{
-			 //System.out.println("before checkbox click");
-			 waitutil.waitForOverlay();
-			 wait.until(ExpectedConditions.elementToBeClickable(itemsCheckBox.get(i)));
-			 itemsCheckBox.get(i).click();
+		By checkboxLoc = By.xpath("//p-checkbox[@ptooltip='Select Item']//div[contains(@class,'p-checkbox-box')]");
+		
+		wait .until(ExpectedConditions.visibilityOfAllElementsLocatedBy(checkboxLoc));
+		List<WebElement> elements = driver.findElements(checkboxLoc);
+
+		for (int i = 0; i < elements.size(); i++) {
+
+			try {
+				WebElement el = driver.findElements(checkboxLoc).get(i);
+
+				((JavascriptExecutor) driver).executeScript(
+						"arguments[0].click();", el);
+
+			} catch (StaleElementReferenceException e) {
+				i--; // retry same index
+			}
 		}
 
 		while (true) {
@@ -78,7 +84,7 @@ public class MenuServicePage {
 				break;
 			}
 
-			// Wait for and click the first dropdown using JS
+			// Wait and click the first dropdown using JS
 			WebElement dropdown = wait.until(ExpectedConditions.elementToBeClickable(names));
 			js.executeScript("arguments[0].click();", dropdown);
 
@@ -86,10 +92,10 @@ public class MenuServicePage {
 			wait.until(ExpectedConditions.elementToBeClickable(options.get(0)));
 			options.get(0).click(); // click the first option
 			Thread.sleep(100);
-			
+
 		}	
 		System.out.println("Added Menu Items");
-		
+
 	}
 
 	@FindBy(xpath = "(//app-search-add//button[text()=' Save '])[1]") WebElement SearchAndAddSave;
@@ -105,14 +111,10 @@ public class MenuServicePage {
 		 * )) .stream() .noneMatch(e -> e.isDisplayed()); } catch
 		 * (StaleElementReferenceException e) { return true; } });
 		 */
-		waitutil.waitForOverlay();
 
 		By closeLocator = By.xpath("(//app-search-add//button[text()=' Close '])[1]");
-		WebElement closebtn = driver.findElement(closeLocator);
 		waitutil.waitForOverlay();
-		wait.until(ExpectedConditions.elementToBeClickable(closebtn));
-		closebtn.click();
-		// SearchAndAddClose.click();
+		wait.until(ExpectedConditions.visibilityOfElementLocated(closeLocator)).click();
 	}
 
 	@FindBy(xpath = "//button[text()=' Finalize ']") WebElement finalizebtn;
@@ -127,11 +129,11 @@ public class MenuServicePage {
 	{
 		return serviceUtil.Constraints();
 	}
-	
-	public void menuInfo()
+
+	public void fillmenuInfo()
 	{
 		serviceUtil.Info();
-		
+
 	}
 
 	@FindBy(xpath = "(//button[text()=' Close '])[1]") WebElement menuClose;
@@ -140,7 +142,7 @@ public class MenuServicePage {
 		waitutil.waitForOverlay();
 		menuClose.click();
 	}
-	
+
 	public void approveMenuserviceConstraints(boolean constraintsExists, String eventNo) throws InterruptedException
 	{
 		serviceUtil.approveConstraints(constraintsExists, eventNo);

@@ -29,8 +29,8 @@ public class ServiceUtil {
 
 
 	String dropdowns = "following-sibling::p-dropdown//span[contains(text(),'Select')]";
-	String inputOrTextarea = "following-sibling::div//*[self::input or self::textarea] | following-sibling::input[not(@placeholder) and not(@type='hidden')]";
-	String radiobuttons = "following-sibling::div//p-radiobutton[@name='defaultValue']";
+	String inputOrTextarea = "following-sibling::div//*[self::input or self::textarea] | following-sibling::input[not(@placeholder) and not(@type='hidden') and not(@type='radio')]";
+	String radiobuttons = "following-sibling::div//div[contains(@class,'p-radiobutton-box')]";
 	String date = "following-sibling::input[contains(@placeholder,'MM/DD/YYYY')]";
 	String time = "following-sibling::div//span";
 	String timeOptions = "//div[contains(@class,'AvenirLTStd-Medium')]";
@@ -73,21 +73,24 @@ public class ServiceUtil {
 					// wait.until(ExpectedConditions.refreshed(ExpectedConditions.elementToBeClickable(firstOption))).click();
 				}
 			}
-
-			else if(!label.findElements(By.xpath(inputOrTextarea)).isEmpty())
-			{
-				waitutil.waitForOverlay();
-				WebElement textbox = label.findElement(By.xpath(inputOrTextarea));
-				textbox.clear();
-				textbox.sendKeys("123");
-			}
-
+			
 			else if(!label.findElements(By.xpath(radiobuttons)).isEmpty())
 
 			{
 				List<WebElement> radioOptions = label.findElements(By.xpath(radiobuttons));
 				radioOptions.get(0).click(); //YES
 			}
+
+			else if(!label.findElements(By.xpath(inputOrTextarea)).isEmpty())
+			{
+				waitutil.waitForOverlay();
+				WebElement textbox = label.findElement(By.xpath(inputOrTextarea));
+				textbox.sendKeys(Keys.CONTROL + "a");
+				textbox.sendKeys(Keys.DELETE);
+				textbox.sendKeys("123");
+			}
+
+			
 			else if(!label.findElements(By.xpath(date)).isEmpty())
 			{
 				WebElement datepicker = label.findElement(By.xpath(date));
@@ -168,14 +171,22 @@ public class ServiceUtil {
 	//Approvals
 	
 	By pendingConstraints = By.xpath("//span[text()=' Pending ']");
+	By approvalSave = By.xpath("//button[text()=' Save ']");
+	By approvalClose = By.xpath("//button[text()=' Close ']");
 	public void approveConstraints(boolean constraintExists, String eventNo) throws InterruptedException
 	{ 
 		if(constraintExists) 		//constraintExists==true
 		{
 			waitutil.waitForOverlay();
+			
+			By noRecords = By.xpath("//p[contains(text(),'records found')]");
+			
+			wait.until(ExpectedConditions.or(ExpectedConditions.visibilityOfElementLocated(noRecords),
+					(ExpectedConditions.visibilityOfElementLocated(pendingConstraints))));	
+			
 			driver.findElement(By.xpath("//input[@type='search']")).sendKeys(eventNo,Keys.ENTER);
 			waitutil.waitForOverlay();
-			Thread.sleep(5000);
+			//Thread.sleep(5000);
 			int size = driver.findElements(pendingConstraints).size();
 			System.out.println("Number of Pending Constraints : "+size);
 			for(int i=0;i<size;i++)
@@ -185,16 +196,13 @@ public class ServiceUtil {
 
 				WebElement pending = wait.until(ExpectedConditions.elementToBeClickable(pendingConstraints));
 				pending.click();
-				waitutil.waitForOverlay();
-				WebElement approvalSave = driver.findElement(By.xpath("//button[text()=' Save ']"));
+				//waitutil.waitForOverlay();
 				
-				wait.until(ExpectedConditions.elementToBeClickable(approvalSave));
-				approvalSave.click();
+				wait.until(ExpectedConditions.elementToBeClickable(approvalSave)).click();
+
 				waitutil.waitForOverlay();
-				WebElement approvalClose = driver.findElement(By.xpath("//button[text()=' Close ']"));
-				waitutil.waitForOverlay();
-				wait.until(ExpectedConditions.elementToBeClickable(approvalClose));
-				approvalClose.click();
+				wait.until(ExpectedConditions.elementToBeClickable(approvalClose)).click();
+	
 
 			}
 

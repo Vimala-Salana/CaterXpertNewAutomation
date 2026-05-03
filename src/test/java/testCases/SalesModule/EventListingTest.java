@@ -22,7 +22,7 @@ public class EventListingTest extends BaseClass{
 		
 		EventListingPage eventlist = new EventListingPage(DriverFactory.getDriver());
 		Thread.sleep(2000);
-		eventlist.enterEventNo("2365");
+		eventlist.enterEventNo("868206");
 		Thread.sleep(2000);
 		eventlist.clickEventDashboardicon();
 	}

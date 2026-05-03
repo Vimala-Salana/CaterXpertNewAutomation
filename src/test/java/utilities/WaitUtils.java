@@ -4,6 +4,7 @@ import java.time.Duration;
 import java.util.List;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -29,37 +30,37 @@ public class WaitUtils {
 											"div.overlay, " +
 								            "div.spinner, " +
 								            "div.ngx-spinner-overlay, " +
-								            ".swal2-backdrop-show, " +
-								            ".swal2-popup, " +
-								            ".swal2-container," +
-								            ".p-toast," +
-								            ".p-component-overlay"));
+								          //".swal2-backdrop-show, " +
+								           // ".swal2-popup, " +
+								           ".swal2-container," +
+								           // ".p-toast," +
+								         // ".p-sidebar-mask,"   +
+								         	"mat-dialog-container,"+ // success messages
+								            ".p-component-overlay"	+
+								            ".cdk-overlay-backdrop"
+								          ));
 				
 				/*
 				 * .cdk-overlay-pane .mat-dialog-container .p-toast .swal2-popup
 				 * remove the above if you get timeoutexception
 				 */
-				for (WebElement e : overlays)   // looping through all the overlays and checking whether they are present or not
-				{
-					if (e.isDisplayed())
-					{
-						return false;  			// if overaly's are present return false i.e wait for overlay to disappear
-					}
-				}
+				  for (WebElement e : overlays)
+		            {
+		                if (e.isDisplayed())
+		                {
+		                    return false;
+		                }
+		            }
 
-				return true;  	 				//if overaly's are not present then return true
-			}
-			catch (Exception e)					//for StaleElement and other Exceptions
-			{
-				return true;
-			}
+		            return true;
+		        }
+		        catch (StaleElementReferenceException e)
+		        {
+		            return false;
+		        }
 		});
 
-		try {
-			Thread.sleep(200);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		wait.until(driver ->
+		driver.findElements(By.cssSelector(".ng-animating")).isEmpty());
 	}
 }
