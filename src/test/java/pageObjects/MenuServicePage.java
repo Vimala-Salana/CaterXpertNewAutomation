@@ -53,14 +53,14 @@ public class MenuServicePage {
 	@FindBy(xpath = "//p-checkbox[@ptooltip='Select Item']") List <WebElement> itemsCheckBox;
 
 	By itemsCheckBoxLoc = By.xpath("//p-checkbox[@ptooltip='Select Item']");
-	By names = By.xpath("//span[contains(normalize-space(),'Select')]");
+	By menuNames = By.xpath("//span[contains(normalize-space(),'Select')]");
 	By list = By.xpath("//li[@role='option']");
+	By checkboxLoc = By.xpath("//p-checkbox[@ptooltip='Select Item']//div[contains(@class,'p-checkbox-box')]");
 
 	public void selectMenuItems() throws InterruptedException
 	{	
-		By checkboxLoc = By.xpath("//p-checkbox[@ptooltip='Select Item']//div[contains(@class,'p-checkbox-box')]");
 		
-		wait .until(ExpectedConditions.visibilityOfAllElementsLocatedBy(checkboxLoc));
+		wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(checkboxLoc));
 		List<WebElement> elements = driver.findElements(checkboxLoc);
 
 		for (int i = 0; i < elements.size(); i++) {
@@ -78,16 +78,17 @@ public class MenuServicePage {
 
 		while (true) {
 
-			List<WebElement> menuName = driver.findElements(names);
+			List<WebElement> menuName = driver.findElements(menuNames);
 
 			if (menuName.size() == 0) {
 				break;
 			}
 
 			// Wait and click the first dropdown using JS
-			WebElement dropdown = wait.until(ExpectedConditions.elementToBeClickable(names));
-			js.executeScript("arguments[0].click();", dropdown);
-
+			WebElement dropdown = wait.until(ExpectedConditions.refreshed(ExpectedConditions.elementToBeClickable(menuNames)));
+			((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView({block:'center'});", dropdown);
+			wait.until(ExpectedConditions.elementToBeClickable(dropdown)).click();			
+			
 			List<WebElement> options = driver.findElements(list);
 			wait.until(ExpectedConditions.elementToBeClickable(options.get(0)));
 			options.get(0).click(); // click the first option
@@ -98,12 +99,12 @@ public class MenuServicePage {
 
 	}
 
-	@FindBy(xpath = "(//app-search-add//button[text()=' Save '])[1]") WebElement SearchAndAddSave;
-	@FindBy(xpath = "(//app-search-add//button[text()=' Close '])[1]") WebElement SearchAndAddClose;
+	@FindBy(xpath = "(//app-search-add//button[text()=' Save '])[1]") WebElement searchAndAddSave;
+	@FindBy(xpath = "(//app-search-add//button[text()=' Close '])[1]") WebElement searchAndAddClose;
 
-	public void clickListSaveandClose() throws InterruptedException
+	public void clickListSave()
 	{
-		wait.until(ExpectedConditions.elementToBeClickable(SearchAndAddSave)).click();
+		wait.until(ExpectedConditions.elementToBeClickable(searchAndAddSave)).click();
 
 		/*
 		 * wait.until(driver -> { try { return driver.findElements(By.cssSelector(
@@ -112,11 +113,20 @@ public class MenuServicePage {
 		 * (StaleElementReferenceException e) { return true; } });
 		 */
 
-		By closeLocator = By.xpath("(//app-search-add//button[text()=' Close '])[1]");
 		waitutil.waitForOverlay();
-		wait.until(ExpectedConditions.visibilityOfElementLocated(closeLocator)).click();
+		
 	}
+	
+	public void clickListClose()
+	{
+		waitutil.waitForOverlay();
 
+		By closeLocator = By.xpath("(//app-search-add//button[text()=' Close '])[1]");
+		wait.until(ExpectedConditions.visibilityOfElementLocated(closeLocator)).click();
+		waitutil.waitForOverlay();
+		
+	}
+	
 	@FindBy(xpath = "//button[text()=' Finalize ']") WebElement finalizebtn;
 	public void clickFinalize()
 	{

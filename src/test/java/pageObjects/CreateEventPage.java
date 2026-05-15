@@ -60,6 +60,7 @@ public class CreateEventPage {
 		ExcelUtility excelUtil = new ExcelUtility(filepath);
 		Map<String, String> data = excelUtil.getMandatoryFieldData(filepath, sheetname);
 		MandatoryLabelsUtil.fillMandatoryFields(driver, data);
+		waitutil.waitForOverlay();
 	}
 	
 	@FindBy(xpath ="//button[normalize-space()='Create']") WebElement btnCreate;

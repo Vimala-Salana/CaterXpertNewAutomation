@@ -34,9 +34,11 @@ public class ServiceUtil {
 	String date = "following-sibling::input[contains(@placeholder,'MM/DD/YYYY')]";
 	String time = "following-sibling::div//span";
 	String timeOptions = "//div[contains(@class,'AvenirLTStd-Medium')]";
+	String checkBoxes = "following-sibling::div//div[@class='p-checkbox-box']";
 
 	public void fillInfoMandatoryFields()
 	{
+		waitutil.waitForOverlay();
 		By mandatoryLabelsLocator  = By.xpath(MandatoryFieldsXpaths.MANDATORY_LABEL);
 		
 		List<WebElement> mandatoryLabels = driver.findElements(mandatoryLabelsLocator);
@@ -80,6 +82,12 @@ public class ServiceUtil {
 				List<WebElement> radioOptions = label.findElements(By.xpath(radiobuttons));
 				radioOptions.get(0).click(); //YES
 			}
+			
+			else if(!label.findElements(By.xpath(checkBoxes)).isEmpty())
+			{
+				WebElement checkbox = label.findElement(By.xpath(checkBoxes));
+				checkbox.click();
+			}
 
 			else if(!label.findElements(By.xpath(inputOrTextarea)).isEmpty())
 			{
@@ -116,7 +124,7 @@ public class ServiceUtil {
 				}
 
 			}
-
+			
 		}
 	}
 
@@ -196,7 +204,7 @@ public class ServiceUtil {
 
 				WebElement pending = wait.until(ExpectedConditions.elementToBeClickable(pendingConstraints));
 				pending.click();
-				//waitutil.waitForOverlay();
+				waitutil.waitForOverlay();
 				
 				wait.until(ExpectedConditions.elementToBeClickable(approvalSave)).click();
 

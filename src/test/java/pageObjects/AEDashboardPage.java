@@ -50,7 +50,6 @@ public class AEDashboardPage{
 	@FindBy(xpath = "//span[normalize-space(text())='menu']") WebElement hambergerMenu;
 	public void clickhambergerMenu() {
 	
-		waitutil.waitForOverlay();
 		WebElement menu =  wait.until(ExpectedConditions.elementToBeClickable(hambergerMenu));
 	    ((JavascriptExecutor) driver).executeScript("arguments[0].click();", menu);
 	    waitutil.waitForOverlay();

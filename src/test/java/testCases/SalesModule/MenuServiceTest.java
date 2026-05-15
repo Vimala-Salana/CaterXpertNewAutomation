@@ -33,7 +33,8 @@ public class MenuServiceTest extends BaseClass
 			{
 				mp.clickSearchAndAddbtn();
 				mp.selectMenuItems();
-				mp.clickListSaveandClose();
+				mp.clickListSave();
+				mp.clickListClose();
 				mp.clickFinalize();
 				boolean constraintExists = mp.menuServiceConstraints(); 
 				mp.fillmenuInfo();

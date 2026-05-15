@@ -20,7 +20,7 @@ public class WaitUtils {
 	}
 	public void waitForOverlay()
 	{
-		wait.until(driver -> {
+		wait.until(d -> {
 			try
 			{
 				List<WebElement> overlays =
@@ -60,7 +60,7 @@ public class WaitUtils {
 		        }
 		});
 
-		wait.until(driver ->
+		wait.until(d ->
 		driver.findElements(By.cssSelector(".ng-animating")).isEmpty());
 	}
 }

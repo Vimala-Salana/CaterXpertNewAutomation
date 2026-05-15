@@ -4,6 +4,7 @@ import java.time.Duration;
 import java.util.List;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -51,103 +52,109 @@ public class EstimatesPage {
 
 
 	//@FindBy(xpath = "//span[text()=' description ']//following-sibling::span[1]") List<WebElement> estimateSectionsList;
-	By estimateSectionList = By.xpath("//div[@class=\"d-flex mt-1 ng-star-inserted\"]/span[2]");
-	@FindBy(xpath = "(//input[@name='totalActCost'])[1]") WebElement suggestedPrice;
+	By estimateSectionList = By.xpath("//div[@class='d-flex mt-1 ng-star-inserted']//span[2]");
+	By suggestedPriceBy = By.xpath("(//input[@name='totalActCost'])[1]");
 	@FindBy(xpath = "(//label[text()=' Menu Number '])[1]") List<WebElement> menuNumber;
 	@FindBy(xpath = "(//input[@name='estimatedTotal'])[1]") WebElement subTotal;
-	@FindBy(xpath = "(//span[text()='Save'])[1]") WebElement estimatesSave;
+	@FindBy(xpath = "(//*[self::span or self::button][normalize-space()='Save'])[1]") WebElement estimatesSave;
+	@FindBy(xpath = "(//label[text()=' Total ' or text()=' Section Total ']//following::input)[1]") WebElement serviceTotaltxt;
 
 	@FindBy(xpath = "//th[text()=' Personnel ']") List<WebElement> personnelEstimate;
-	public void estimates() throws InterruptedException
+	
+	String serviceTotal;
+	double discount;
+	
+	public void estimates() 
 	{
 		int estimateSize = driver.findElements(estimateSectionList).size();
-
+		System.out.println("Estimates size - "+estimateSize);
 		//for(WebElement estimateSection : estimateSections)
 		for(int i=0;i<estimateSize;i++)
 		{
 			waitutil.waitForOverlay();
-			List<WebElement> estimates = driver.findElements(estimateSectionList);
-			WebElement estimate = estimates.get(i);
-			System.out.println(estimate.getText());
+
+			wait.until(ExpectedConditions.elementToBeClickable(driver.findElements(estimateSectionList).get(i)));
 			waitutil.waitForOverlay();
-			wait.until(ExpectedConditions.elementToBeClickable(estimate));
-			estimate.click();
+			String serviceName = driver.findElements(estimateSectionList).get(i).getText();
+			System.out.println(serviceName);
+			driver.findElements(estimateSectionList).get(i).click();
+			wait.until(ExpectedConditions.visibilityOfElementLocated(suggestedPriceBy));
+
 			waitutil.waitForOverlay();
-			wait.until(ExpectedConditions.visibilityOf(suggestedPrice));
-			String suggestedprice = suggestedPrice.getAttribute("value");
+
+	        String suggestedprice = driver.findElement(suggestedPriceBy).getAttribute("value");
 			double price = Double.parseDouble(suggestedprice);
+			String finalValue= null;
 			//System.out.println(price);
 			if(!menuNumber.isEmpty())
 			{
-				System.out.println("Found Menu Estimate");
-				if(price>0)
-				{
-					waitutil.waitForOverlay();
-					 subTotal.sendKeys(suggestedprice);
-					System.out.println(suggestedprice);
-					estimatesSave.click();
-					waitutil.waitForOverlay();
-				}
-				else
-				{
-					waitutil.waitForOverlay();
-					subTotal.sendKeys("100");
-					estimatesSave.click();
+				System.out.println("Menu Estimate Found");
+				finalValue = (price > 0) ? suggestedprice : "100";
 
-				}
 			}
 			else if(!personnelEstimate.isEmpty())
 			{
-				System.out.println("Found Personnel Estimates");
-				if(price>0)
-				{
-					waitutil.waitForOverlay();
-					subTotal.sendKeys(suggestedprice);
-					estimatesSave.click();
-				}
-				else
-				{
-					waitutil.waitForOverlay();
-					subTotal.sendKeys("100");
-					estimatesSave.click();
-				}
-			}
+				System.out.println("Personnel Estimate Found");
 
-		}
-	}
-	
-	public void validation()throws InterruptedException {
-		System.out.println("waitinh");
-		Thread.sleep(10000);
-		System.out.println("waitinh");
-		List<WebElement> header = driver.findElements(By.xpath("((//thead[@class=\"thead-dark\"])[4]//th)[position()>1]"));
-		int noOfItems = driver.findElements(By.xpath("(//div[contains(@id,'p-tabpanel')]//table//tbody//tr[3])")).size();
-		System.out.println("No of items size  -  "+noOfItems);
-		for(int i = 0 ; i < noOfItems ; i++) {
-			List<WebElement> itemDetails = driver.findElements(By.xpath("((//div[contains(@id,'p-tabpanel')]//table//tbody//tr[3])["+(i+1)+"]//td)[position()>1]"));
-			System.out.println("((//div[contains(@id,'p-tabpanel')]//table//tbody//tr[3])[\"+(i+1)+\"]//td)[position()>1]");
-			System.out.println("itemDetails size  -  "+itemDetails.size());
-			int j = 0;
-			for(WebElement element : itemDetails) {
-				
-				boolean childPresent = element.findElements(By.xpath("./*")).size() > 0;
-				if(childPresent) {
-					try {
-						String value = element.findElement(By.xpath("./input")).getAttribute("value");
-						System.out.println(header.get(j).getText()+" - "+value);
-					}
-					catch(Exception e) {
-						String value = element.findElement(By.xpath("./span")).getText();
-						System.out.println(header.get(j).getText()+" - "+value);
-					}
-				}
-				else {
-					System.out.println(header.get(j).getText()+" - "+element.getText());
-				}
-				j++;
+				finalValue = (price > 0) ? suggestedprice : "100";
+			}
+			else if(price>0)
+			{
+				finalValue = suggestedprice; 	//for warehouse estimates
+
+			}
+			
+			if(finalValue != null)  
+			{
+				//System.out.println(finalValue);
+			    subTotal.clear();
+			    subTotal.sendKeys(finalValue);
+			    serviceTotaltxt.click();
+			    serviceTotal = serviceTotaltxt.getAttribute("value");	
+			    System.out.println("Service Total of "+serviceName +" is "+serviceTotal);
+			   // System.out.println(Double.parseDouble(serviceTotal) +"----"+Double.parseDouble(finalValue) );
+			    discount = Double.parseDouble(finalValue) - Double.parseDouble(serviceTotal);
+			    System.out.println("Discount of "+serviceName +" is "+discount);
+			    estimatesSave.click();
+			    waitutil.waitForOverlay();
 			}
 		}
 	}
+	@FindBy (xpath = "//button[normalize-space(text())='Total Estimate']") WebElement totalEstimatesBtn;
+	public void clickTotalEstimates()
+	{
+		waitutil.waitForOverlay();
+		wait.until(ExpectedConditions.elementToBeClickable(totalEstimatesBtn));
+		totalEstimatesBtn.click();
+		waitutil.waitForOverlay();
+	}
+
+	By estimateServicesList = By.xpath("//tr[position()>1]/td[2]//span[contains(text(),'Select')]");
+	@FindBy (xpath = "//ul[contains(@role,'listbox')]//li[1]") WebElement options;
+
+	public void selectTotalEstimateOptions()
+	{
+		waitutil.waitForOverlay();
+		List<WebElement> estimateServices = wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(estimateServicesList));
+
+		for(WebElement service : estimateServices)
+		{
+			waitutil.waitForOverlay();
+			service.click();
+			((JavascriptExecutor) driver).executeScript("arguments[0].click();", options);
+		}
+	}
+
+	@FindBy(xpath = "//span[text()='Save']") WebElement totalEstimatesSaveBtn;
+
+	public void saveTotalEstimates()
+	{
+		waitutil.waitForOverlay();
+		wait.until(ExpectedConditions.elementToBeClickable(totalEstimatesSaveBtn));
+		totalEstimatesSaveBtn.click();
+		System.out.println("Saved Total Estimates");
+	}
+
 
 
 }

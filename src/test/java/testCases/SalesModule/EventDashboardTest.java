@@ -10,13 +10,12 @@ import testBase.BaseClass;
 public class EventDashboardTest extends BaseClass{
 
 	@Test
-	public void eventdashboard(ITestContext context) throws InterruptedException
+	public void eventdashboard(ITestContext context)
 	{
 		EventDashboardPage dashboard = new EventDashboardPage(DriverFactory.getDriver());
 	
 		String eventNo = dashboard.getEventNo();
 		context.setAttribute("eventNo", eventNo);
-		Thread.sleep(1000);
 		System.out.println(dashboard.readAllHeaders());
 		
 	}

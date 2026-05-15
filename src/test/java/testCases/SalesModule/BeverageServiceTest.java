@@ -10,6 +10,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.annotations.Test;
 
 import factory.DriverFactory;
+import pageObjects.BeverageservicePage;
 import pageObjects.EstimatesPage;
 import pageObjects.EventDashboardPage;
 import pageObjects.MenuServicePage;
@@ -31,10 +32,9 @@ public class BeverageServiceTest extends BaseClass{
 		if(dashboard.clickServiceLabelIcon(service, status, iconlabel))
 		{
 				//mp.clickSearchAndAddbtn();
-				EstimatesPage estimates = new EstimatesPage(DriverFactory.getDriver());
-				estimates.validation();
-				
-			
+			BeverageservicePage bevService = new BeverageservicePage(DriverFactory.getDriver());
+			bevService.validation();
+					
 
 		}
 	}

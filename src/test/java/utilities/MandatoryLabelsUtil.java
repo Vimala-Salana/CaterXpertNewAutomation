@@ -68,7 +68,7 @@ public class MandatoryLabelsUtil extends BaseClass{
 
 			else {
 				wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(singleSelect));
-				WebElement option = driver.findElement(By.xpath("(//ul[contains(@class,'p-dropdown-items')]//li)[2]"));
+				WebElement option = driver.findElement(By.xpath("(//ul[contains(@class,'p-dropdown-items')]//li)[1]"));
 
 				((JavascriptExecutor) driver).executeScript("arguments[0].click();", option);
 				//System.out.println("clicked single select BU");
@@ -188,7 +188,7 @@ public class MandatoryLabelsUtil extends BaseClass{
 						LocalDate localDate = LocalDate.now().plusDays(Long.parseLong(fieldData.get(text)));
 						String date = localDate.format(DateTimeFormatter.ofPattern("MM/dd/yyyy"));
 						System.out.println(date);
-						String dateParts[] = date.split("/");
+						String[] dateParts = date.split("/");
 						int monthNumber = Integer.parseInt(dateParts[0]);
 						String month = new DateFormatSymbols().getMonths()[monthNumber - 1];  // Converts month number to name
 						String day = dateParts[1];
