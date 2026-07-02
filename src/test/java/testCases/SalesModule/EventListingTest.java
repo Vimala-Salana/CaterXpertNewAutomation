@@ -10,20 +10,17 @@ import testBase.BaseClass;
 public class EventListingTest extends BaseClass{
 
 	@Test
-	public void eventListing() throws InterruptedException
+	public void eventListing()
 	{
 		AEDashboardPage aePage = new AEDashboardPage(DriverFactory.getDriver());
-		Thread.sleep(2000);
-		if(!aePage.hdrEventListing.isDisplayed())
+		if(!aePage.isEventListingPresent())
 		{
 		aePage.clickhambergerMenu();
 		aePage.clickEventListinglnk();
 		}
 		
 		EventListingPage eventlist = new EventListingPage(DriverFactory.getDriver());
-		Thread.sleep(2000);
-		eventlist.enterEventNo("2450");
-		Thread.sleep(2000);
+		eventlist.enterEventNo("DO-63322");
 		eventlist.clickEventDashboardicon();
 	}
 }

@@ -35,6 +35,7 @@ public class WaitUtils {
 								           ".swal2-container," +
 								           // ".p-toast," +
 								         // ".p-sidebar-mask,"   +
+								         	"swal2-title,"+
 								         	"mat-dialog-container,"+ // success messages
 								            ".p-component-overlay"	+
 								            ".cdk-overlay-backdrop"

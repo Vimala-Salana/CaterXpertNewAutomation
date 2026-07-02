@@ -8,7 +8,6 @@ import org.testng.annotations.Test;
 
 import factory.DriverFactory;
 import pageObjects.AEDashboardPage;
-import pageObjects.CreateEventPage;
 import pageObjects.EventDashboardPage;
 import pageObjects.MenuServicePage;
 import testBase.BaseClass;

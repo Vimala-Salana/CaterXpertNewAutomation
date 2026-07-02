@@ -42,7 +42,7 @@ public class CreateCustomerPage
 
 	public void fillCustomerMandatoryfields() throws Exception {
 		ExcelUtility excelUtil = new ExcelUtility(filepath);
-		Map<String, String> data = excelUtil.getMandatoryFieldData(filepath, sheetname);
+		Map<String, String> data = excelUtil.getMandatoryFieldData(sheetname);
 		MandatoryLabelsUtil.fillMandatoryFields(driver, data);
 	}
 

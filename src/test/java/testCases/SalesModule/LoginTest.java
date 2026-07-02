@@ -20,7 +20,7 @@ public class LoginTest extends BaseClass{
 		login.enterPassword();
 		login.clickLogin();
 		Thread.sleep(2000);
-		 WebDriver driver = DriverFactory.getDriver();
+		WebDriver driver = DriverFactory.getDriver();
 		WebElement frameHdr = driver.findElement(By.xpath("//frame[@name='header']"));
 		driver.switchTo().frame(frameHdr);
 		driver.findElement(By.xpath("//img[@title='Home']")).click();
@@ -29,6 +29,7 @@ public class LoginTest extends BaseClass{
 		driver.switchTo().frame(frameright);
 		driver.findElement(By.xpath("//a[normalize-space(text())='Sales New']")).click();
 		driver.switchTo().defaultContent();
+		
 	}
 	
 }

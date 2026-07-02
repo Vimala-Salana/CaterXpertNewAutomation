@@ -56,7 +56,7 @@ public class EventDashboardPage {
 				System.out.println("Service Status : "+name); //Matching header
 				WebElement labelname = header.findElement(By.xpath("../following-sibling::div//*[contains(@class,'service-label')]")); 
 				String labelText = labelname.getText();
-				if(iconLabel.stream().anyMatch(i -> labelText.equalsIgnoreCase(i)))
+				if(iconLabel.stream().anyMatch(labelText::equalsIgnoreCase))
 				{
 					//System.out.println(labelname.getText());
 					WebElement icon = labelname.findElement(By.xpath("..//i")); //icon

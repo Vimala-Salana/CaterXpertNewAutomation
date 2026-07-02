@@ -2,7 +2,6 @@ package utilities;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.HashMap;
@@ -14,7 +13,6 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 public class ExcelUtility {
 
@@ -33,7 +31,7 @@ public class ExcelUtility {
 		fis = new FileInputStream(new File(path));
 		workbook = WorkbookFactory.create(fis);
 	}
-	public Map<String, String> getMandatoryFieldData(String filePath, String sheetName) throws IOException {
+	public Map<String, String> getMandatoryFieldData(String sheetName) throws IOException {
 		Map<String, String> data = new HashMap<>();
 
 		/*

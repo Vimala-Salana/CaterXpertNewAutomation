@@ -1,5 +1,7 @@
 package pageObjects;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.Duration;
 import java.util.List;
 
@@ -60,14 +62,14 @@ public class EstimatesPage {
 	@FindBy(xpath = "(//label[text()=' Total ' or text()=' Section Total ']//following::input)[1]") WebElement serviceTotaltxt;
 
 	@FindBy(xpath = "//th[text()=' Personnel ']") List<WebElement> personnelEstimate;
-	
+
 	String serviceTotal;
-	double discount;
-	
+	BigDecimal discount;
+	BigDecimal totalServiceAmount = BigDecimal.ZERO;
 	public void estimates() 
 	{
 		int estimateSize = driver.findElements(estimateSectionList).size();
-		System.out.println("Estimates size - "+estimateSize);
+		//System.out.println("Estimates size - "+estimateSize);
 		//for(WebElement estimateSection : estimateSections)
 		for(int i=0;i<estimateSize;i++)
 		{
@@ -82,7 +84,7 @@ public class EstimatesPage {
 
 			waitutil.waitForOverlay();
 
-	        String suggestedprice = driver.findElement(suggestedPriceBy).getAttribute("value");
+			String suggestedprice = driver.findElement(suggestedPriceBy).getAttribute("value");
 			double price = Double.parseDouble(suggestedprice);
 			String finalValue= null;
 			//System.out.println(price);
@@ -103,22 +105,28 @@ public class EstimatesPage {
 				finalValue = suggestedprice; 	//for warehouse estimates
 
 			}
-			
+
 			if(finalValue != null)  
 			{
 				//System.out.println(finalValue);
-			    subTotal.clear();
-			    subTotal.sendKeys(finalValue);
-			    serviceTotaltxt.click();
-			    serviceTotal = serviceTotaltxt.getAttribute("value");	
-			    System.out.println("Service Total of "+serviceName +" is "+serviceTotal);
-			   // System.out.println(Double.parseDouble(serviceTotal) +"----"+Double.parseDouble(finalValue) );
-			    discount = Double.parseDouble(finalValue) - Double.parseDouble(serviceTotal);
-			    System.out.println("Discount of "+serviceName +" is "+discount);
-			    estimatesSave.click();
-			    waitutil.waitForOverlay();
+				subTotal.clear();
+				subTotal.sendKeys(finalValue);
+				serviceTotaltxt.click();
+				serviceTotal = serviceTotaltxt.getAttribute("value");	
+
+				BigDecimal finalAmount = new BigDecimal(finalValue);
+				BigDecimal serviceAmount = new BigDecimal(serviceTotal);
+
+				System.out.println("Service Total of "+serviceName +" is "+ serviceAmount.setScale(2, RoundingMode.HALF_UP));
+				discount = finalAmount.subtract(serviceAmount).setScale(2, RoundingMode.HALF_UP);   //discount=finalAmount-ServiceAmount
+
+				System.out.println("Discount of "+serviceName +" is "+discount);
+				totalServiceAmount = totalServiceAmount.add(serviceAmount);
+				estimatesSave.click();
+				waitutil.waitForOverlay();
 			}
 		}
+		System.out.println("All Services Total Amount - "+totalServiceAmount);
 	}
 	@FindBy (xpath = "//button[normalize-space(text())='Total Estimate']") WebElement totalEstimatesBtn;
 	public void clickTotalEstimates()
@@ -137,12 +145,42 @@ public class EstimatesPage {
 		waitutil.waitForOverlay();
 		List<WebElement> estimateServices = wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(estimateServicesList));
 
-		for(WebElement service : estimateServices)
+		if(!estimateServices.isEmpty())
 		{
-			waitutil.waitForOverlay();
-			service.click();
-			((JavascriptExecutor) driver).executeScript("arguments[0].click();", options);
+
+			for(WebElement service : estimateServices)
+			{
+				waitutil.waitForOverlay();
+				service.click();
+				((JavascriptExecutor) driver).executeScript("arguments[0].click();", options);
+				waitutil.waitForOverlay();
+			}
 		}
+	}
+	
+	@FindBy(xpath = "//label[text()=' Tax ']//following::input[@name ='tax'][1]") WebElement estimatesTax;
+
+	public double getEstimatesTotals()
+	{
+		String taxTotal = estimatesTax.getAttribute("value");
+		System.out.println("Total tax amount is - "+taxTotal);
+		
+		Double calcualtedTotal = Double.parseDouble(taxTotal) + totalServiceAmount.doubleValue();
+		
+		
+		System.out.println("Calculated Total is - "+calcualtedTotal);
+	
+		return calcualtedTotal;
+		
+		
+	}
+	
+	@FindBy(xpath = "//label[text()=' Total Price ']//following::input[@name ='total'][1]") WebElement estimatesTotal;
+	public double getActualTotal()
+	{
+		String actualTotal = estimatesTotal.getAttribute("value");
+		System.out.println("Actual Total is - "+actualTotal);
+		return Double.parseDouble(actualTotal);
 	}
 
 	@FindBy(xpath = "//span[text()='Save']") WebElement totalEstimatesSaveBtn;

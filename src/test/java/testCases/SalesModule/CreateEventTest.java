@@ -26,10 +26,8 @@ public class CreateEventTest extends BaseClass{
 		Assert.assertEquals(eventpage.getCreateEventhdr(), "Create Event");
 		
 		eventpage.fillEventMandatoryfields(); //filling all mandatory fields
-		System.out.println("before create");
 		eventpage.clickCreatebtn();
-		System.out.println("After create");
-		Thread.sleep(1000); 
+		
 		boolean constraintExists = eventpage.eventConstraints(); 
 		String eventNo = eventpage.getEventNo(); 
 		context.setAttribute("eventNo", eventNo); //To use Event Number in other classes

@@ -2,6 +2,7 @@ package testCases.SalesModule;
 
 import java.util.List;
 
+import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
@@ -31,20 +32,17 @@ public class EstimatesTest extends BaseClass{
 		if(estimates.getEstimateshdr().trim().equals("Estimate Sections"))
 		{
 			estimates.estimates();
+			estimates.clickTotalEstimates();
+			estimates.selectTotalEstimateOptions();
+			
+			Assert.assertEquals(estimates.getEstimatesTotals(), estimates.getActualTotal(),"Actual and Calculated Totals are not Same");
+			estimates.saveTotalEstimates();
 		}
 		else
 		{
 			estimates.clickEstimateLiteSave();
 			estimates.clickEstimateLiteClose();
 		}
-		System.out.println("Estimates Given");
 	}
 
-	@Test (priority = 2)
-	public void totalEstimates()
-	{
-		estimates.clickTotalEstimates();
-		estimates.selectTotalEstimateOptions();
-		estimates.saveTotalEstimates();
-	}
 }

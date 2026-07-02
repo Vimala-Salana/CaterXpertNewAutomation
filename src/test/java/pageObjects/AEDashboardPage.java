@@ -1,8 +1,8 @@
 package pageObjects;
 
 import java.time.Duration;
+import java.util.List;
 
-import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
@@ -47,9 +47,9 @@ public class AEDashboardPage{
 		return hdrAEDashboard.getText();
 	}
 	
-	@FindBy(xpath = "//span[normalize-space(text())='menu']") WebElement hambergerMenu;
+	@FindBy(xpath = "//div[contains(@class,'d-flex')]//span[contains(.,'menu')]") WebElement hambergerMenu;
 	public void clickhambergerMenu() {
-	
+			
 		WebElement menu =  wait.until(ExpectedConditions.elementToBeClickable(hambergerMenu));
 	    ((JavascriptExecutor) driver).executeScript("arguments[0].click();", menu);
 	    waitutil.waitForOverlay();
@@ -97,8 +97,16 @@ public class AEDashboardPage{
 	}
 	
 	
-	@FindBy(xpath = "//span[text()=' Event Listing ']") public WebElement hdrEventListing; // to validate event listing header
+	//@FindBy(xpath = "//span[text()=' Event Listing ']") WebElement hdrEventListing; // to validate event listing header
+	By eventListingHeader = By.xpath("//span[normalize-space()='Event Listing']");
 	@FindBy(xpath = "//span[text()='Event Listing']") WebElement lnkEventListing;
+	
+	public boolean isEventListingPresent() {
+
+	    waitutil.waitForOverlay();
+	   // wait.until(ExpectedConditions.visibilityOfElementLocated(eventListingHeader));
+	    return !driver.findElements(eventListingHeader).isEmpty();
+	}
 	
 	public void clickEventListinglnk()
 	{
@@ -106,6 +114,7 @@ public class AEDashboardPage{
 		wait.until(ExpectedConditions.elementToBeClickable(lnkEventListing));
 		waitutil.waitForOverlay();
 		lnkEventListing.click();
+		
 	}
 	
 	@FindBy(xpath = "//span[text()='Approvals']") WebElement lnkapprovals;

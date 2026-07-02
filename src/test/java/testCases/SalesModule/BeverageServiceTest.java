@@ -1,40 +1,48 @@
 package testCases.SalesModule;
 
-import java.time.Duration;
 import java.util.List;
 
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.support.PageFactory;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.annotations.Test;
 
 import factory.DriverFactory;
 import pageObjects.BeverageservicePage;
-import pageObjects.EstimatesPage;
 import pageObjects.EventDashboardPage;
 import pageObjects.MenuServicePage;
 import testBase.BaseClass;
-import utilities.ServiceUtil;
-import utilities.WaitUtils;
 
 public class BeverageServiceTest extends BaseClass{
 
 	@Test
-	public void beveageservice() throws InterruptedException
+	public void beveageservice()
 	{
 		EventDashboardPage dashboard = new EventDashboardPage(DriverFactory.getDriver());
 
 
 		List<String> service = List.of("Beverage");
-		List<String> status = List.of("New","Prog","Resent");
+		List<String> status = List.of("New","Prog","Resent","None");
 		List<String> iconlabel = List.of("Service Request");
 		if(dashboard.clickServiceLabelIcon(service, status, iconlabel))
 		{
-				//mp.clickSearchAndAddbtn();
+			MenuServicePage mp = new MenuServicePage(DriverFactory.getDriver());
 			BeverageservicePage bevService = new BeverageservicePage(DriverFactory.getDriver());
-			bevService.validation();
-					
+			bevService.uncheckIfOutsourcedOrNotRequired();
+			mp.clickSearchAndAddbtn();
+			bevService.showMappedItems();
+			
+			bevService.enterQuantity();
+			mp.clickListSave();
+			bevService.clickOkInInventoryPopup();
+			mp.clickListClose();
+			bevService.validateItems();
+
+			if(bevService.clickReserveIfPresent())
+			{
+				System.out.println("Reserved Qty");
+				bevService.clickOkInInventoryPopup();
+			}
+			
+			else
+				System.out.println("No Reserve Button Available");
 
 		}
 	}

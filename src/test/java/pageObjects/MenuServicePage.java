@@ -13,7 +13,6 @@ import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import testBase.BaseClass;
 import utilities.ServiceUtil;
 import utilities.WaitUtils;
 
@@ -47,8 +46,17 @@ public class MenuServicePage {
 	public void clickSearchAndAddbtn()
 	{
 		waitutil.waitForOverlay();
-		wait.until(ExpectedConditions.elementToBeClickable(btnsearchAndAdd)).click();
+		wait.until(ExpectedConditions.elementToBeClickable(btnsearchAndAdd));
+		((JavascriptExecutor) driver).executeScript("arguments[0].click();", btnsearchAndAdd);
 	}
+	
+	By noRecordsTxt = By.xpath("//p[normalize-space()='No records found']");
+	public boolean isNoRecordsFoundDisplayed() {
+	    return driver.findElements(noRecordsTxt)
+	            .stream()
+	            .anyMatch(WebElement::isDisplayed);
+	} 
+	
 
 	@FindBy(xpath = "//p-checkbox[@ptooltip='Select Item']") List <WebElement> itemsCheckBox;
 
@@ -68,8 +76,7 @@ public class MenuServicePage {
 			try {
 				WebElement el = driver.findElements(checkboxLoc).get(i);
 
-				((JavascriptExecutor) driver).executeScript(
-						"arguments[0].click();", el);
+				((JavascriptExecutor) driver).executeScript("arguments[0].click();", el);
 
 			} catch (StaleElementReferenceException e) {
 				i--; // retry same index
@@ -111,10 +118,7 @@ public class MenuServicePage {
 		 * "div.overlay, div.swal2-container, .swal2-popup, .swal2-backdrop-show, .p-toast"
 		 * )) .stream() .noneMatch(e -> e.isDisplayed()); } catch
 		 * (StaleElementReferenceException e) { return true; } });
-		 */
-
-		waitutil.waitForOverlay();
-		
+		 */		
 	}
 	
 	public void clickListClose()

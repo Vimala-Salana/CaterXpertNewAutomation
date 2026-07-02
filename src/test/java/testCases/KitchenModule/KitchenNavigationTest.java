@@ -2,9 +2,6 @@ package testCases.KitchenModule;
 
 import java.util.List;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.FindBy;
 import org.testng.ITestContext;
 import org.testng.SkipException;
 import org.testng.annotations.Test;
@@ -12,7 +9,6 @@ import org.testng.annotations.Test;
 import factory.DriverFactory;
 import pageObjects.EventListingPage;
 import pageObjects.KitchenNavigationPage;
-import pageObjects.MenuServicePage;
 import testBase.BaseClass;
 
 public class KitchenNavigationTest extends BaseClass{

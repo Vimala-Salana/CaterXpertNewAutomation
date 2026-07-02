@@ -30,26 +30,27 @@ public class EventListingPage {
 	
 	@FindBy(xpath = "//input[@placeholder='Event #']") WebElement searchEvent;
 	
-	public void enterEventNo(String EventNo)
+	public void enterEventNo(String eventNo)
 	{
 		waitutil.waitForOverlay();
 	    wait.until(ExpectedConditions.visibilityOf(searchEvent));
 	    //searchEvent.clear();
-		searchEvent.sendKeys(EventNo,Keys.ENTER);
+		searchEvent.sendKeys(eventNo, Keys.ENTER);
+		//wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("div.ngx-spinner-overlay")));
 		waitutil.waitForOverlay();
 	}
 	
 	//@FindBy(xpath = "//span[text()=' dashboard ']") WebElement iconEventDashboard;
 	By iconEventDashboard = By.xpath("//span[text()=' dashboard ']");
 	
-	public void clickEventDashboardicon() throws InterruptedException
+	public void clickEventDashboardicon()
 	{
 		waitutil.waitForOverlay();
 		WebElement dashboard = wait.until(ExpectedConditions.elementToBeClickable(iconEventDashboard));
 		dashboard.click();
 	}
 	
-	public void EventDashboardNavigation(String eventNo) throws InterruptedException
+	public void EventDashboardNavigation(String eventNo)
 	{
 		AEDashboardPage aepage = new AEDashboardPage(driver);
 		aepage.clickhambergerMenu();

@@ -12,7 +12,6 @@ import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import testBase.BaseClass;
 import utilities.WaitUtils;
 
 
@@ -33,7 +32,7 @@ public class KitchenNavigationPage{
 	@FindBy(xpath = "//p[normalize-space(text()='Unacknowledged Change Requests')]") List<WebElement> changeRequestPopUp;
 	@FindBy(xpath = "//button[normalize-space(text())='Close']") WebElement changeRequestPopUpClose;
 
-	public void handleChangeRequestPopUp() throws InterruptedException
+	public void handleChangeRequestPopUp()
 	{
 		waitutil.waitForOverlay();
 		if(!changeRequestPopUp.isEmpty())
@@ -130,7 +129,7 @@ public class KitchenNavigationPage{
 		}
 		
 		@FindBy(xpath = "//button[contains(.,'Bill')]") WebElement menuBillbtn;
-		@FindBy(xpath = "//button[contains(@class,'swal2-confirm')]") WebElement BillPopupYes;
+		@FindBy(xpath = "//button[contains(@class,'swal2-confirm')]") WebElement billPopupYes;
 		public void clickMenuServiceBillbtn()
 		{
 			waitutil.waitForOverlay();
@@ -138,8 +137,8 @@ public class KitchenNavigationPage{
 			menuBillbtn.click();
 			
 			waitutil.waitForOverlay();
-			wait.until(ExpectedConditions.elementToBeClickable(BillPopupYes));
-			BillPopupYes.click();
+			wait.until(ExpectedConditions.elementToBeClickable(billPopupYes));
+			billPopupYes.click();
 		}
 		@FindBy(xpath = "//button[contains(.,'Close')]") WebElement menuServiceClose;
 		public void clickmenuServiceClose()

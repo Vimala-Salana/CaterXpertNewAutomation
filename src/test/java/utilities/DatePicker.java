@@ -1,13 +1,10 @@
 package utilities;
 
-import java.time.Duration;
-import java.time.Month;
 import java.util.List;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeDriver;
 
 public class DatePicker {
 
@@ -16,10 +13,10 @@ public class DatePicker {
 	{
 		while(true)
 		{
-			WebElement Currentyear = driver.findElement(By.xpath("//button[@class='current']"));
-			WebElement Currentmonth = driver.findElement(By.xpath("//div[@class='bs-datepicker-head']//button[2]/span"));
+			WebElement currentYear = driver.findElement(By.xpath("//button[@class='current']"));
+			WebElement currentMonth = driver.findElement(By.xpath("//div[@class='bs-datepicker-head']//button[2]/span"));
 
-			if(Currentyear.getText().equals(year) && Currentmonth.getText().equals(month))
+			if(currentYear.getText().equals(year) && currentMonth.getText().equals(month))
 
 				break;
 			driver.findElement(By.xpath("//button[@class='next']")).click();

@@ -6,27 +6,26 @@ import java.util.Properties;
 
 public class ConfigReader {
 
-	Properties properties = new Properties();
+    private final Properties properties = new Properties();
 
-	public String getProperty(String key) {
+    public ConfigReader() {
 
-	    try {
-	        InputStream is = getClass()
-	                .getClassLoader()
-	                .getResourceAsStream("Config.properties");
+        try (InputStream is = getClass()
+                .getClassLoader()
+                .getResourceAsStream("Config.properties")) {
 
-	        if (is == null) {
-	            throw new RuntimeException("Config.properties file not found");
-	        }
+            if (is == null) {
+                throw new RuntimeException("Config.properties file not found");
+            }
 
-	        properties.load(is);
+            properties.load(is);
 
-	    } catch (IOException e) {
-	        throw new RuntimeException("Unable to read Config.properties file");
-	    }
+        } catch (IOException e) {
+            throw new RuntimeException("Unable to read Config.properties file", e);
+        }
+    }
 
-	    return properties.getProperty(key);
-	}
+    public String getProperty(String key) {
+        return properties.getProperty(key);
+    }
 }
-
-

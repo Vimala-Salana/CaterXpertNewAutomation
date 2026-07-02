@@ -1,6 +1,5 @@
 package testCases.SalesModule;
 
-import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import factory.DriverFactory;
@@ -22,9 +21,9 @@ public class CreateCustomerTest extends BaseClass {
 
 		//Assert.assertEquals(cp.getCreateCustomerhdr(), "Create Customer");
 
-		//cp.fillCustomerMandatoryfields(); 
+		cp.fillCustomerMandatoryfields(); 
 		Thread.sleep(1000); 
-		//cp.clickCreatebtn();
+		cp.clickCreatebtn();
 
 		// searching customer
 
