@@ -3,7 +3,7 @@ package testCases.SalesModule;
 import org.testng.annotations.Test;
 
 import factory.DriverFactory;
-import pageObjects.AEDashboardPage;
+import pageObjects.HambergerMenuPage;
 import pageObjects.EventListingPage;
 import testBase.BaseClass;
 
@@ -12,15 +12,19 @@ public class EventListingTest extends BaseClass{
 	@Test
 	public void eventListing()
 	{
-		AEDashboardPage aePage = new AEDashboardPage(DriverFactory.getDriver());
+		HambergerMenuPage aePage = new HambergerMenuPage(DriverFactory.getDriver());
 		if(!aePage.isEventListingPresent())
 		{
 		aePage.clickhambergerMenu();
 		aePage.clickEventListinglnk();
 		}
 		
+		String eventNo = "3149";
 		EventListingPage eventlist = new EventListingPage(DriverFactory.getDriver());
-		eventlist.enterEventNo("DO-63322");
-		eventlist.clickEventDashboardicon();
+		eventlist.enterEventNo(eventNo);
+		eventlist.closeInventoryPopupIfPresent();
+		eventlist.clickEventDashboardIcon(eventNo);
+		
+		//eventlist.clickEventDashboardIcon(eventNo);
 	}
 }

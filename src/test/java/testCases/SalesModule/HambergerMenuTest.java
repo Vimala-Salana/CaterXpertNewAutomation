@@ -4,15 +4,15 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import factory.DriverFactory;
-import pageObjects.AEDashboardPage;
+import pageObjects.HambergerMenuPage;
 import testBase.BaseClass;
 
-public class AEDashbordTest extends BaseClass{
+public class HambergerMenuTest extends BaseClass{
 
 	@Test(priority = 2)
-	public void aEDashboard() throws InterruptedException
+	public void aEDashboard()
 	{
-		AEDashboardPage aePage = new AEDashboardPage(DriverFactory.getDriver());
+		HambergerMenuPage aePage = new HambergerMenuPage(DriverFactory.getDriver());
 		String aeDashboardhdr = aePage.getAEDashboardHeader();
 		Assert.assertEquals(aeDashboardhdr, "AE Dashboard","AE Dashboard header text mismatch!");
 	}

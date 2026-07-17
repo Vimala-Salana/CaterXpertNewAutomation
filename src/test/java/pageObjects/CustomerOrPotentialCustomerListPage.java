@@ -36,8 +36,8 @@ public class CustomerOrPotentialCustomerListPage {
 		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 		
 		//wait.until(ExpectedConditions.invisibilityOfElementLocated(By.cssSelector("div.ngx-spinner-overlay")));
-		WebElement NewCustomerbtn =  wait.until(ExpectedConditions.visibilityOf(btnNewCustomer));
-	    ((JavascriptExecutor) driver).executeScript("arguments[0].click();", NewCustomerbtn);
+		WebElement newCustomerbtn =  wait.until(ExpectedConditions.visibilityOf(btnNewCustomer));
+	    ((JavascriptExecutor) driver).executeScript("arguments[0].click();", newCustomerbtn);
 		//wait.until(ExpectedConditions.elementToBeClickable(btnNewCustomer)).click();
 	}
 	

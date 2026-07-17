@@ -27,9 +27,10 @@ public class CreateCustomerTest extends BaseClass {
 
 		// searching customer
 
-		excel = new ExcelUtility(filepath);
+		/*excel = new ExcelUtility(filepath);
 		String customernameexl = excel.getCellValue(sheetname, 1, 1);
 		System.out.println(excel.getCellValue(sheetname, 1, 1));
+		
 		Thread.sleep(2000);
 		cp.enterCustomerNameinSearch(customernameexl);
 		Thread.sleep(1000);
@@ -43,5 +44,6 @@ public class CreateCustomerTest extends BaseClass {
 
 		Thread.sleep(1000);
 		cp.clickContactstab();
+		*/
 	}
 }

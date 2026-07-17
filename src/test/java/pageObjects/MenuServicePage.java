@@ -42,12 +42,17 @@ public class MenuServicePage {
 	}
 
 	@FindBy(xpath = "//button[text()=' Search & Add ']") WebElement btnsearchAndAdd;
+	@FindBy(xpath = "//span[@ptooltip='Filter']") WebElement filterIcon;
+	@FindBy(xpath = "//button[normalize-space(text())='Go']") WebElement filterGo;
 
 	public void clickSearchAndAddbtn()
 	{
 		waitutil.waitForOverlay();
 		wait.until(ExpectedConditions.elementToBeClickable(btnsearchAndAdd));
 		((JavascriptExecutor) driver).executeScript("arguments[0].click();", btnsearchAndAdd);
+		wait.until(ExpectedConditions.elementToBeClickable(filterIcon)).click();
+		wait.until(ExpectedConditions.elementToBeClickable(filterGo));
+		filterGo.click();
 	}
 	
 	By noRecordsTxt = By.xpath("//p[normalize-space()='No records found']");
@@ -123,10 +128,11 @@ public class MenuServicePage {
 	
 	public void clickListClose()
 	{
-		waitutil.waitForOverlay();
-
 		By closeLocator = By.xpath("(//app-search-add//button[text()=' Close '])[1]");
-		wait.until(ExpectedConditions.visibilityOfElementLocated(closeLocator)).click();
+		wait.until(ExpectedConditions.invisibilityOfElementLocated(By.xpath("//div[contains(@class,'swal2-container')]")));
+		waitutil.waitForOverlay();
+		WebElement listclose = wait.until(ExpectedConditions.visibilityOfElementLocated(closeLocator));
+		((JavascriptExecutor) driver).executeScript("arguments[0].click();", listclose);
 		waitutil.waitForOverlay();
 		
 	}
@@ -135,7 +141,7 @@ public class MenuServicePage {
 	public void clickFinalize()
 	{
 		wait.until(ExpectedConditions.elementToBeClickable(finalizebtn));
-		finalizebtn.click();
+		((JavascriptExecutor) driver).executeScript("arguments[0].click();", finalizebtn);
 		waitutil.waitForOverlay();
 	}
 

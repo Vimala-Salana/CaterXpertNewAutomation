@@ -76,12 +76,12 @@ public class BeverageservicePage {
 	}
 
 	//@FindBy(xpath = "//input[contains(@id,'qty')]") List<WebElement> quantityfields;
-	By quantityfields = By.xpath("//input[contains(@id,'qty')]");
+	By quantityfields = By.xpath("//input[contains(@id,'qt')]");
 
 	public void enterQuantity()
 	{
 		int size = wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(quantityfields)).size();
-		System.out.println(size);
+		//System.out.println(size);
 		for(int i=0;i<size;i++)
 		{
 			List<WebElement> qty = driver.findElements(quantityfields);
@@ -229,7 +229,24 @@ public class BeverageservicePage {
 		return false;
 	}
 
+	@FindBy(xpath = "//button[text()=' Finalize ']") WebElement btnFinalize;
 
+	public void clickFinalize()
+	{
+		waitutil.waitForOverlay();
+		wait.until(ExpectedConditions.elementToBeClickable(btnFinalize));
+		btnFinalize.click();
+		waitutil.waitForOverlay();
+	}
+
+	@FindBy(xpath = "//div[@role='tabpanel' and (@aria-hidden='false')]//button[.=' Close ']") WebElement staffclosebtn;
+
+	public void clickBeverageServiceClose()
+	{
+		waitutil.waitForOverlay();
+		wait.until(ExpectedConditions.elementToBeClickable(staffclosebtn));
+		staffclosebtn.click();
+	}
 
 
 }

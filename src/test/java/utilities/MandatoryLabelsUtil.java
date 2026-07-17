@@ -27,19 +27,19 @@ public class MandatoryLabelsUtil extends BaseClass{
 		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(20));
 		waitutil = new WaitUtils(driver);
 		waitutil.waitForOverlay();
-		
-		wait.until(new ExpectedCondition<Boolean>() {
-		    @Override
-		    public Boolean apply(WebDriver d) {
-		        List<WebElement> labels = d.findElements(mandatoryLabelsLocator);
 
-		        if (labels.isEmpty()) return false;
-
-		        String first = labels.get(0).getText().replace("*", "").trim();
-
-		        return first.equalsIgnoreCase("Business Unit");
-		    }
-		});
+		/*
+		 * wait.until(new ExpectedCondition<Boolean>() {
+		 * 
+		 * @Override public Boolean apply(WebDriver d) { List<WebElement> labels =
+		 * d.findElements(mandatoryLabelsLocator);
+		 * 
+		 * if (labels.isEmpty()) return false;
+		 * 
+		 * String first = labels.get(0).getText().replace("*", "").trim();
+		 * 
+		 * return first.equalsIgnoreCase("Business Unit"); } });
+		 */
 
 		//Selecting first option from Business Unit
 		By businessUnitlocator = By.xpath(MandatoryFieldsXpaths.BUSINESS_UNIT);
@@ -54,6 +54,7 @@ public class MandatoryLabelsUtil extends BaseClass{
 
 			By multiSelect = By.xpath(MandatoryFieldsXpaths.MULTISELECT_LIST);
 			By singleSelect = By.xpath(MandatoryFieldsXpaths.DROPDOWN_LIST);
+			By multiselectClose = By.xpath("//button[contains(@class,'p-multiselect-close')]//span");
 
 			if (!driver.findElements(multiSelect).isEmpty()) 
 			{
@@ -61,7 +62,8 @@ public class MandatoryLabelsUtil extends BaseClass{
 				WebElement option = driver.findElement(By.xpath("(//ul[contains(@class,'p-multiselect-items')]//li)[1]"));
 
 				((JavascriptExecutor) driver).executeScript("arguments[0].click();", option);
-				//System.out.println("clicked multi-select BU");
+				wait.until(ExpectedConditions.elementToBeClickable(multiselectClose)).click();
+				System.out.println("clicked multi-select BU");
 				waitutil.waitForOverlay();
 			}
 
@@ -70,7 +72,7 @@ public class MandatoryLabelsUtil extends BaseClass{
 				WebElement option = driver.findElement(By.xpath("(//ul[contains(@class,'p-dropdown-items')]//li)[1]"));
 
 				((JavascriptExecutor) driver).executeScript("arguments[0].click();", option);
-				//System.out.println("clicked single select BU");
+				System.out.println("clicked single select BU");
 				waitutil.waitForOverlay();
 			}
 		}
@@ -88,20 +90,21 @@ public class MandatoryLabelsUtil extends BaseClass{
 		 */
 		waitutil.waitForOverlay();
 
-		
 
 
-		int labelsize = wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(mandatoryLabelsLocator)).size();
+
+		int labelsize = wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(mandatoryLabelsLocator)).size();
 
 		System.out.println(" Total mandatory fields found: " + labelsize);
 
-		for (int i = 1; i < labelsize; i++) 
+		for (int i = 0; i < labelsize; i++) 
 		{
 			List<WebElement> mandatoryLabels = driver.findElements(mandatoryLabelsLocator);
 			//System.out.println(mandatoryLabels.size());
-			WebElement label = wait.until(ExpectedConditions.elementToBeClickable(mandatoryLabels.get(i)));
+			WebElement label = mandatoryLabels.get(i);
 			if(label.isDisplayed() && label.isEnabled())
 			{
+				wait.until(ExpectedConditions.visibilityOf(mandatoryLabels.get(i)));
 				String labelText = label.getText().replace("*", "").trim();
 
 				System.out.println(labelText);
@@ -120,20 +123,20 @@ public class MandatoryLabelsUtil extends BaseClass{
 					if ((tag.equals("input") || tag.equals("textarea")) && input.isEnabled())
 					{
 						// 1. Capture the value and handle potential nulls
-				        String currentValue = input.getAttribute("value");
-				   
-				        // 2. Expand the check to ignore default zero values or placeholders
-				        if(currentValue.trim().isEmpty() )
-				        {
-				            wait.until(ExpectedConditions.elementToBeClickable(input)).click();
-				            // 4. Use CTRL+A + BACKSPACE instead of .clear() for better event triggering
-				            input.sendKeys(org.openqa.selenium.Keys.chord(org.openqa.selenium.Keys.CONTROL, "a"), org.openqa.selenium.Keys.BACK_SPACE);
-				            input.sendKeys(excelValue);
-				        }
-				        else 
-				        {
-				            System.out.println("Skipped " + labelText + " because it already contains: " + currentValue);
-				        }
+						String currentValue = input.getAttribute("value");
+
+						// 2. Expand the check to ignore default zero values or placeholders
+						if(currentValue.trim().isEmpty() )
+						{
+							wait.until(ExpectedConditions.elementToBeClickable(input)).click();
+							// 4. Use CTRL+A + BACKSPACE instead of .clear() for better event triggering
+							input.sendKeys(org.openqa.selenium.Keys.chord(org.openqa.selenium.Keys.CONTROL, "a"), org.openqa.selenium.Keys.BACK_SPACE);
+							input.sendKeys(excelValue);
+						}
+						else 
+						{
+							System.out.println("Skipped " + labelText + " because it already contains: " + currentValue);
+						}
 					}
 				}
 				else if(!label.findElements(By.xpath(MandatoryFieldsXpaths.DROPDOWN)).isEmpty())
@@ -145,8 +148,10 @@ public class MandatoryLabelsUtil extends BaseClass{
 					{
 						((JavascriptExecutor) driver).executeScript("arguments[0].click();", dropdown);
 						List<WebElement> list = driver.findElements(By.xpath(MandatoryFieldsXpaths.MULTISELECT_LIST));
+						wait.until(ExpectedConditions.elementToBeClickable(list.get(0)));
 						list.get(0).click();
 						dropdown.click();
+						waitutil.waitForOverlay();
 
 					}
 					else if(classAttr.contains("p-dropdown-trigger-icon") && dropdown.isEnabled())
@@ -167,6 +172,7 @@ public class MandatoryLabelsUtil extends BaseClass{
 								WebElement option = driver.findElement(By.xpath("(//ul[contains(@class,'p-dropdown-items')]//li)[1]"));
 
 								((JavascriptExecutor) driver).executeScript("arguments[0].click();", option);
+								waitutil.waitForOverlay();
 								//wait.until(ExpectedConditions.elementToBeClickable(firstOption)).click();
 								// wait.until(ExpectedConditions.refreshed(ExpectedConditions.elementToBeClickable(firstOption))).click();
 							}
@@ -204,7 +210,8 @@ public class MandatoryLabelsUtil extends BaseClass{
 						{
 							if(option.getText().equals(excelValue))
 							{
-								Thread.sleep(1000);
+								//Thread.sleep(1000);
+								wait.until(ExpectedConditions.elementToBeClickable(option));
 								option.click();
 								break;
 							}
@@ -212,8 +219,8 @@ public class MandatoryLabelsUtil extends BaseClass{
 					}
 				}
 			}
-			
+
 		}	
-		driver.findElement(By.tagName("body")).click();
+		//driver.findElement(By.tagName("body")).click();
 	}
 }

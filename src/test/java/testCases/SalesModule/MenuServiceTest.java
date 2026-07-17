@@ -7,7 +7,7 @@ import org.testng.SkipException;
 import org.testng.annotations.Test;
 
 import factory.DriverFactory;
-import pageObjects.AEDashboardPage;
+import pageObjects.HambergerMenuPage;
 import pageObjects.EventDashboardPage;
 import pageObjects.MenuServicePage;
 import testBase.BaseClass;
@@ -20,7 +20,7 @@ public class MenuServiceTest extends BaseClass
 
 		EventDashboardPage dashboard = new EventDashboardPage(DriverFactory.getDriver());
 
-		Thread.sleep(3000);
+		//Thread.sleep(3000);
 		List<String> service = List.of("Menu");
 		List<String> status = List.of("New","Prog","Resent");
 		List<String> iconlabel = List.of("Service Request");
@@ -40,7 +40,7 @@ public class MenuServiceTest extends BaseClass
 				mp.menuServiceClose();
 				if(constraintExists)
 				{
-					AEDashboardPage aepage = new AEDashboardPage(DriverFactory.getDriver());
+					HambergerMenuPage aepage = new HambergerMenuPage(DriverFactory.getDriver());
 					aepage.clickhambergerMenu();
 					aepage.clickApprovals();
 					String eventNo = (String) context.getAttribute("eventNo");

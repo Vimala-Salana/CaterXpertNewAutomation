@@ -44,16 +44,7 @@ public class KitchenNavigationPage{
 		}
 	}
 
-	@FindBy(xpath = "//span[text()=' dining ']") WebElement baseNavigation;
-	public void navigateTokitchen()
-	{
-		baseNavigation.click();
-		WebElement frameright = driver.findElement(By.xpath("//frame[@name='right']"));
-		driver.switchTo().frame(frameright);
-		driver.findElement(By.xpath("//a[normalize-space(text())='Kitchen New']")).click();
-		driver.switchTo().defaultContent();
-		waitutil.waitForOverlay();
-	}
+	
 
 	@FindBy(xpath = "//thead[.//th[text()=' Menu ']]//following-sibling::tbody//span[@class='cursor-pointer']") List<WebElement> kitchenMenu;
 

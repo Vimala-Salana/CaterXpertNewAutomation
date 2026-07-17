@@ -53,7 +53,7 @@ public class CreateCustomerPage
 	}
 
 	@FindBy(xpath = "//input[contains(@placeholder,'Search Customer')]") WebElement txtSearchCustomer;
-	public void enterCustomerNameinSearch(String customerName) throws InterruptedException, AWTException
+	public void enterCustomerNameinSearch(String customerName)
 	{
 		wait.until(ExpectedConditions.invisibilityOfElementLocated(By.className("spinner")));
 		wait.until(ExpectedConditions.invisibilityOfElementLocated(By.cssSelector("div.overlay")));

@@ -33,10 +33,10 @@ public class StaffingServicePage {
 		serviceUtil = new ServiceUtil(driver);
 	}
 
-	@FindBy(xpath = "//span[contains(normalize-space(text()),'Event Services')]") WebElement Staffinghdr;
+	@FindBy(xpath = "//span[contains(normalize-space(text()),'Event Services')]") WebElement staffinghdr;
 	public String getStaffingServiceHdr()
 	{
-		return Staffinghdr.getText();
+		return staffinghdr.getText();
 	}
 	
 	@FindBy(xpath = "//input[@maxlength='5']") List<WebElement> staffQty;
@@ -57,14 +57,14 @@ public class StaffingServicePage {
 		}
 	}
 
-	@FindBy(xpath = "//button[text()=' Save ']") WebElement btnSave;
+	@FindBy(xpath = "//div[@role='tabpanel' and (@aria-hidden='false')]//button[text()=' Save ']") WebElement btnSave;
 
-	public void clickSave() throws InterruptedException
+	public void clickSave()
 	{
 		waitutil.waitForOverlay();
 		wait.until(ExpectedConditions.elementToBeClickable(btnSave));
 		btnSave.click();
-		waitutil.waitForOverlay();
+		
 	}
 
 	@FindBy(xpath = "//button[text()=' Finalize ']") WebElement btnFinalize;
@@ -74,7 +74,7 @@ public class StaffingServicePage {
 		waitutil.waitForOverlay();
 		wait.until(ExpectedConditions.elementToBeClickable(btnFinalize));
 		btnFinalize.click();
-		waitutil.waitForOverlay();
+		
 	}
 
 	public boolean staffingConstraints()

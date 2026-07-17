@@ -86,41 +86,41 @@ public class EstimatesPage {
 
 			String suggestedprice = driver.findElement(suggestedPriceBy).getAttribute("value");
 			double price = Double.parseDouble(suggestedprice);
-			String finalValue= null;
+			String subTotalAmt= null;
 			//System.out.println(price);
 			if(!menuNumber.isEmpty())
 			{
 				System.out.println("Menu Estimate Found");
-				finalValue = (price > 0) ? suggestedprice : "100";
+				subTotalAmt = (price > 0) ? suggestedprice : "100";
 
 			}
 			else if(!personnelEstimate.isEmpty())
 			{
 				System.out.println("Personnel Estimate Found");
 
-				finalValue = (price > 0) ? suggestedprice : "100";
+				subTotalAmt = (price > 0) ? suggestedprice : "100";
 			}
 			else if(price>0)
 			{
-				finalValue = suggestedprice; 	//for warehouse estimates
+				subTotalAmt = suggestedprice; 	//for warehouse estimates
 
 			}
 
-			if(finalValue != null)  
+			if(subTotalAmt != null)  
 			{
-				//System.out.println(finalValue);
+				//System.out.println(subTotalAmt);
 				subTotal.clear();
-				subTotal.sendKeys(finalValue);
+				subTotal.sendKeys(subTotalAmt);
 				serviceTotaltxt.click();
 				serviceTotal = serviceTotaltxt.getAttribute("value");	
 
-				BigDecimal finalAmount = new BigDecimal(finalValue);
+				//BigDecimal finalAmount = new BigDecimal(subTotalAmt);
 				BigDecimal serviceAmount = new BigDecimal(serviceTotal);
 
 				System.out.println("Service Total of "+serviceName +" is "+ serviceAmount.setScale(2, RoundingMode.HALF_UP));
-				discount = finalAmount.subtract(serviceAmount).setScale(2, RoundingMode.HALF_UP);   //discount=finalAmount-ServiceAmount
+				//discount = finalAmount.subtract(serviceAmount).setScale(2, RoundingMode.HALF_UP);   //discount=finalAmount-ServiceAmount
 
-				System.out.println("Discount of "+serviceName +" is "+discount);
+				//System.out.println("Discount of "+serviceName +" is "+discount);
 				totalServiceAmount = totalServiceAmount.add(serviceAmount);
 				estimatesSave.click();
 				waitutil.waitForOverlay();
@@ -167,7 +167,7 @@ public class EstimatesPage {
 		
 		Double calcualtedTotal = Double.parseDouble(taxTotal) + totalServiceAmount.doubleValue();
 		
-		
+		calcualtedTotal = BigDecimal.valueOf(calcualtedTotal).setScale(2, RoundingMode.HALF_UP).doubleValue();
 		System.out.println("Calculated Total is - "+calcualtedTotal);
 	
 		return calcualtedTotal;

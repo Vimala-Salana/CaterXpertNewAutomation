@@ -1,11 +1,13 @@
 package testCases.SalesModule;
+import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
 import org.testng.ITestContext;
 import org.testng.annotations.Test;
 
 import factory.DriverFactory;
-import pageObjects.AEDashboardPage;
 import pageObjects.CreateEventPage;
+import pageObjects.EventListingPage;
+import pageObjects.HambergerMenuPage;
 import testBase.BaseClass;
 
 public class CreateEventTest extends BaseClass{
@@ -15,9 +17,9 @@ public class CreateEventTest extends BaseClass{
 	{
 		String sheetname = "Create Event";
 		//driver.findElement(By.xpath("//button[text()='OK']")).click();
-		AEDashboardPage aepage = new AEDashboardPage(DriverFactory.getDriver()); 
-		aepage.clickhambergerMenu();
-		aepage.clickCreateEvent();
+		HambergerMenuPage hamberger = new HambergerMenuPage(DriverFactory.getDriver()); 
+		hamberger.clickhambergerMenu();
+		hamberger.clickCreateEvent();
 
 
 		CreateEventPage eventpage = new CreateEventPage(DriverFactory.getDriver(),filepath,sheetname);
@@ -36,9 +38,10 @@ public class CreateEventTest extends BaseClass{
 		
 		if(constraintExists)
 		{
-		aepage.clickhambergerMenu();
-		aepage.clickApprovals();
+			hamberger.clickhambergerMenu();
+			hamberger.clickApprovals();
 		eventpage.ApproveEventConstraints(constraintExists,eventNo);
 		}
 	}
+
 }

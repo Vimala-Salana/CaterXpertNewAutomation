@@ -4,8 +4,8 @@ import org.testng.ITestContext;
 import org.testng.annotations.Test;
 
 import factory.DriverFactory;
-import pageObjects.AEDashboardPage;
 import pageObjects.EventListingPage;
+import pageObjects.HambergerMenuPage;
 import pageObjects.SchedulingDashboardPage;
 import testBase.BaseClass;
 
@@ -20,7 +20,7 @@ public class SchedulingDashboardTest extends BaseClass{
 		if(scheduling.getSchedulingHeader().equalsIgnoreCase("Schedule Dashboard"))
 			System.out.println("Validated Scheduling Dashboard Header");
 
-		AEDashboardPage aedashbaord = new AEDashboardPage(DriverFactory.getDriver());
+		HambergerMenuPage aedashbaord = new HambergerMenuPage(DriverFactory.getDriver());
 		aedashbaord.clickhambergerMenu();
 		aedashbaord.clickEventListinglnk();
 

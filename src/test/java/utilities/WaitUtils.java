@@ -25,21 +25,15 @@ public class WaitUtils {
 			{
 				List<WebElement> overlays =
 						driver.findElements(By.cssSelector(
-								
-								
-											"div.overlay, " +
-								            "div.spinner, " +
-								            "div.ngx-spinner-overlay, " +
-								          //".swal2-backdrop-show, " +
-								           // ".swal2-popup, " +
-								           ".swal2-container," +
-								           // ".p-toast," +
-								         // ".p-sidebar-mask,"   +
-								         	"swal2-title,"+
-								         	"mat-dialog-container,"+ // success messages
-								            ".p-component-overlay"	+
-								            ".cdk-overlay-backdrop"
-								          ));
+							    "div.overlay," +
+							    	    "div.spinner," +
+							    	    "div.ngx-spinner-overlay," +
+							    	    ".swal2-container," +
+							    	    ".swal2-title"
+							    	   // "mat-dialog-container," +
+							    	   // ".p-component-overlay," +
+							    	   // ".cdk-overlay-backdrop"
+							    	));
 				
 				/*
 				 * .cdk-overlay-pane .mat-dialog-container .p-toast .swal2-popup

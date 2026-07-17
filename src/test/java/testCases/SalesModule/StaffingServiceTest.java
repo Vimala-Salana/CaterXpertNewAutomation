@@ -6,7 +6,7 @@ import org.testng.ITestContext;
 import org.testng.annotations.Test;
 
 import factory.DriverFactory;
-import pageObjects.AEDashboardPage;
+import pageObjects.HambergerMenuPage;
 import pageObjects.EventDashboardPage;
 import pageObjects.StaffingServicePage;
 import testBase.BaseClass;
@@ -27,11 +27,12 @@ public class StaffingServiceTest extends BaseClass
 		{
 			Thread.sleep(1000);
 			String serviceName  = staff.getStaffingServiceHdr().trim();
-			System.out.println("service  "+service+"  serviceNameheader : "+serviceName);
+			//System.out.println("service  "+service+"  serviceNameheader : "+serviceName);
 			if(service.stream().anyMatch(serviceName::contains))
 			{
 				staff.giveStaffQty();
 				staff.clickSave();
+				staff.staffingInfo();
 				staff.clickFinalize();
 				boolean constraintExists = staff.staffingConstraints();
 				staff.staffingInfo();
@@ -39,7 +40,7 @@ public class StaffingServiceTest extends BaseClass
 				
 				if(constraintExists)
 				{
-					AEDashboardPage aepage = new AEDashboardPage(DriverFactory.getDriver());
+					HambergerMenuPage aepage = new HambergerMenuPage(DriverFactory.getDriver());
 					aepage.clickhambergerMenu();
 					aepage.clickApprovals();
 					String eventNo = (String) context.getAttribute("eventNo");

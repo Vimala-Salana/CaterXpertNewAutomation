@@ -35,8 +35,6 @@ public class CreateContactTest extends BaseClass{
 			if(contactnamexl.equalsIgnoreCase(contactsName)) {
 				Thread.sleep(1000);
 				contactPage.clickNewEventIcon();
-				//DriverFactory.getDriver().findElement(By.xpath("//span[text()=' event ']")).click();
-				//contactPage.clickNewEventIcon();
 			}
 			else
 				System.out.println("Contact name not found");

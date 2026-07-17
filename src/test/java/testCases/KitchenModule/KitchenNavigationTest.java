@@ -7,6 +7,7 @@ import org.testng.SkipException;
 import org.testng.annotations.Test;
 
 import factory.DriverFactory;
+import pageObjects.BasetoSalesNavigationPage;
 import pageObjects.EventListingPage;
 import pageObjects.KitchenNavigationPage;
 import testBase.BaseClass;
@@ -14,10 +15,12 @@ import testBase.BaseClass;
 public class KitchenNavigationTest extends BaseClass{
 
 	@Test
-	public void menu(ITestContext context) throws InterruptedException
+	public void menu(ITestContext context)
 	{
+		
+		BasetoSalesNavigationPage base = new BasetoSalesNavigationPage(DriverFactory.getDriver());
+		base.navigateTokitchen();
 		KitchenNavigationPage kitchenMenu = new KitchenNavigationPage(DriverFactory.getDriver());
-		kitchenMenu.navigateTokitchen();
 		kitchenMenu.handleChangeRequestPopUp();
 		EventListingPage eventlist = new EventListingPage(DriverFactory.getDriver());
 		

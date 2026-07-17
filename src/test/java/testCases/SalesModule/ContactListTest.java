@@ -4,8 +4,8 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import factory.DriverFactory;
-import pageObjects.AEDashboardPage;
 import pageObjects.ContactListPage;
+import pageObjects.HambergerMenuPage;
 import testBase.BaseClass;
 
 public class ContactListTest extends BaseClass{
@@ -13,9 +13,9 @@ public class ContactListTest extends BaseClass{
 	@Test
 	public void validateContactListhdr()
 	{
-		AEDashboardPage aepage = new AEDashboardPage(DriverFactory.getDriver());
-		//aepage.clickhambergerMenu();
-		//aepage.clickContcat();
+		//HambergerMenuPage hm = new HambergerMenuPage(DriverFactory.getDriver());
+		//hm.clickhambergerMenu();
+		//hm.clickContcat();
 		
 		ContactListPage cp = new ContactListPage(DriverFactory.getDriver());
 		Assert.assertEquals(cp.getContactListHeader(), "Contact List");

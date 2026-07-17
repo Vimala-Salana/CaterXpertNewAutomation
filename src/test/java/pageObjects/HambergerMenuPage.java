@@ -15,13 +15,13 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import utilities.ConfigReader;
 import utilities.WaitUtils;
 
-public class AEDashboardPage{
+public class HambergerMenuPage{
 
 	public WebDriver driver;
 	public ConfigReader config = new ConfigReader();
 	WebDriverWait wait; 
 	WaitUtils waitutil;
-	public AEDashboardPage(WebDriver driver)
+	public HambergerMenuPage(WebDriver driver)
 	{  
 		this.driver = driver;
 		PageFactory.initElements(driver,this);
@@ -47,11 +47,12 @@ public class AEDashboardPage{
 		return hdrAEDashboard.getText();
 	}
 	
-	@FindBy(xpath = "//div[contains(@class,'d-flex')]//span[contains(.,'menu')]") WebElement hambergerMenu;
+	@FindBy(xpath = "//nav//div[contains(@class,'d-flex')]//span[contains(.,'menu')]") WebElement hambergerMenu;
 	public void clickhambergerMenu() {
 			
-		WebElement menu =  wait.until(ExpectedConditions.elementToBeClickable(hambergerMenu));
-	    ((JavascriptExecutor) driver).executeScript("arguments[0].click();", menu);
+		 wait.until(ExpectedConditions.elementToBeClickable(hambergerMenu));
+	    //((JavascriptExecutor) driver).executeScript("arguments[0].click();", menu);
+		hambergerMenu.click();
 	    waitutil.waitForOverlay();
 	    
 	}
@@ -64,10 +65,9 @@ public class AEDashboardPage{
 		WebElement createEventLnk =  wait.until(ExpectedConditions.visibilityOf(lnkCreateEvent));
 	    ((JavascriptExecutor) driver).executeScript("arguments[0].click();", createEventLnk);
 		//wait.until(ExpectedConditions.elementToBeClickable(lnkCreateEvent)).click();
-	     waitutil.waitForOverlay();
 	}
 	
-	public void clickCustomerOrPotentialCustomer()
+	public void clickCustomerOrPotentialCustomerdrp()
 	{
 		
 		wait.until(ExpectedConditions.invisibilityOfElementLocated(By.cssSelector("div.overlay")));
@@ -76,6 +76,13 @@ public class AEDashboardPage{
 		WebElement createCustomerLnk =  wait.until(ExpectedConditions.visibilityOf(txtCustomer));
 	    ((JavascriptExecutor) driver).executeScript("arguments[0].click();", createCustomerLnk);
    		//wait.until(ExpectedConditions.elementToBeClickable(txtCustomerOrPotentialCustomer)).click();
+	}
+	
+	@FindBy(xpath = "//a[@href='#/sales/customerListing' and (@aria-expanded='false')]") WebElement lnkCustomer;
+	public void clickCustomerlnk()
+	{
+		 wait.until(ExpectedConditions.visibilityOf(lnkCustomer));
+		 lnkCustomer.click();
 	}
 	public void clickContcat()
 	{
@@ -117,10 +124,15 @@ public class AEDashboardPage{
 		
 	}
 	
-	@FindBy(xpath = "//span[text()='Approvals']") WebElement lnkapprovals;
+	
+	@FindBy(xpath = "//a[@href='#/sales/approval-inbox']") WebElement lnkapprovals;
+	@FindBy(xpath = "//span[text()='Sales Admin']") WebElement drpSalesAdmin;
+	
 	public void clickApprovals()
 	{
 		wait.until(ExpectedConditions.invisibilityOfElementLocated(By.cssSelector("div.ngx-spinner-overlay")));
+		wait.until(ExpectedConditions.elementToBeClickable(drpSalesAdmin));
+		drpSalesAdmin.click();
 		wait.until(ExpectedConditions.elementToBeClickable(lnkapprovals));
 		//lnkapprovals.click();
 		 ((JavascriptExecutor) driver).executeScript("arguments[0].click();", lnkapprovals);

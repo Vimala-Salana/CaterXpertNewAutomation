@@ -33,7 +33,7 @@ public class CreateEventPage {
 		this.sheetname = sheetname;
 		PageFactory.initElements(driver, this);
 		waitutil = new WaitUtils(driver);
-		wait = new WebDriverWait(driver, Duration.ofSeconds(20));
+		wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 		serviceutil = new ServiceUtil(driver);
 	}
 	
@@ -42,7 +42,7 @@ public class CreateEventPage {
 		this.driver =driver;
 		PageFactory.initElements(driver, this);
 		waitutil = new WaitUtils(driver);
-		wait = new WebDriverWait(driver, Duration.ofSeconds(20));
+		wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 		serviceutil = new ServiceUtil(driver);
 	}
 	
@@ -74,7 +74,9 @@ public class CreateEventPage {
 	@FindBy(xpath = "(//button[text()=' Close '])[2]") WebElement btnClose;
 	public void clickClosebtn()
 	{
+		System.out.println("Waiting for overlay...");
 		wait.until(ExpectedConditions.invisibilityOfElementLocated(By.cssSelector("div.overlay")));
+		System.out.println("Overlay disappeared.");
 		wait.until(ExpectedConditions.elementToBeClickable(btnClose)).click();
 	}
 	
@@ -85,6 +87,7 @@ public class CreateEventPage {
 	}
 	
 	@FindBy(xpath ="//label[text()=' Event # ']//following-sibling::label[2]") WebElement eventNumlocator;
+	//By eventNumlocator = By.xpath("//label[text()=' Event # ']//following-sibling::label[2]");
 	public String getEventNo()
 	{
 		waitutil.waitForOverlay();
@@ -93,7 +96,7 @@ public class CreateEventPage {
 		return eventNo;
 	}
 	
-	public void ApproveEventConstraints(boolean constraintsExists, String eventNo) throws InterruptedException
+	public void ApproveEventConstraints(boolean constraintsExists, String eventNo)
 	{
 			serviceutil.approveConstraints(constraintsExists,eventNo);
 			EventListingPage eventlist = new EventListingPage(driver);
