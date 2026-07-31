@@ -1,2 +1,0 @@
-[INFO] Native Click succeeded | Locator=By.xpath: //input[@value='Go'] | Attempt=1 | Duration=1303 ms
-[INFO] login Passed
