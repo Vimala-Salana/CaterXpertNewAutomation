@@ -9,7 +9,7 @@ import testBase.BaseClass;
 
 public class SalesNewNavigationTest extends BaseClass{
 	
-	@Test(priority = 1)
+	@Test(priority = 1, groups = {"Regression", "All"})
 	public void salesNewNavigation()
 	{
 			BasetoSalesNavigationPage base = new BasetoSalesNavigationPage(DriverFactory.getDriver());

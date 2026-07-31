@@ -1,0 +1,10 @@
+org.openqa.selenium.StaleElementReferenceException: stale element reference: stale element not found
+  (Session info: chrome=150.0.7871.188)
+For documentation on this error, please visit: https://www.selenium.dev/documentation/webdriver/troubleshooting/errors#stale-element-reference-exception
+Build info: version: '4.21.0', revision: '79ed462ef4'
+System info: os.name: 'Windows 10', os.arch: 'amd64', os.version: '10.0', java.version: '17.0.12'
+Driver info: org.openqa.selenium.chrome.ChromeDriver
+Command: [052918ed941398287034c600351783b1, getElementText {id=f.E6E5D87443A62075F16B826669310BA5.d.314C81BA27D0A7046F5BC40A8B10D7B7.e.29051}]
+Capabilities {acceptInsecureCerts: false, browserName: chrome, browserVersion: 150.0.7871.188, chrome: {chromedriverVersion: 150.0.7871.124 (9261fd0a595..., userDataDir: C:\AutomationProfile}, fedcm:accounts: true, goog:chromeOptions: {debuggerAddress: localhost:62825}, goog:processID: 6960, networkConnectionEnabled: false, pageLoadStrategy: normal, platformName: windows, proxy: Proxy(), se:cdp: ws://localhost:62825/devtoo..., se:cdpVersion: 150.0.7871.188, setWindowRect: true, strictFileInteractability: false, timeouts: {implicit: 0, pageLoad: 300000, script: 30000}, unhandledPromptBehavior: dismiss and notify, webauthn:extension:credBlob: true, webauthn:extension:largeBlob: true, webauthn:extension:minPinLength: true, webauthn:extension:prf: true, webauthn:virtualAuthenticators: true}
+Element: [[ChromeDriver: chrome on windows (052918ed941398287034c600351783b1)] -> xpath: //div[@class='service-header']//following::thead[1][@class='thead-dark']//th[position()>1]]
+Session ID: 052918ed941398287034c600351783b1

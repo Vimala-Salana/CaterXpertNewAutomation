@@ -51,6 +51,7 @@ public class HambergerMenuPage{
 	public void clickhambergerMenu() {
 			
 		 wait.until(ExpectedConditions.elementToBeClickable(hambergerMenu));
+			wait.until(ExpectedConditions.invisibilityOfElementLocated(By.cssSelector("div.overlay")));
 	    //((JavascriptExecutor) driver).executeScript("arguments[0].click();", menu);
 		hambergerMenu.click();
 	    waitutil.waitForOverlay();

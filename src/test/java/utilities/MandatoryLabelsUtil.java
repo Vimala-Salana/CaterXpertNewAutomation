@@ -1,9 +1,6 @@
 package utilities;
 
-import java.text.DateFormatSymbols;
 import java.time.Duration;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 
@@ -11,7 +8,6 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -122,14 +118,12 @@ public class MandatoryLabelsUtil extends BaseClass{
 					String tag = input.getTagName().toLowerCase();
 					if ((tag.equals("input") || tag.equals("textarea")) && input.isEnabled())
 					{
-						// 1. Capture the value and handle potential nulls
 						String currentValue = input.getAttribute("value");
 
-						// 2. Expand the check to ignore default zero values or placeholders
 						if(currentValue.trim().isEmpty() )
 						{
 							wait.until(ExpectedConditions.elementToBeClickable(input)).click();
-							// 4. Use CTRL+A + BACKSPACE instead of .clear() for better event triggering
+							// CTRL+A + BACKSPACE instead of .clear() for better event triggering
 							input.sendKeys(org.openqa.selenium.Keys.chord(org.openqa.selenium.Keys.CONTROL, "a"), org.openqa.selenium.Keys.BACK_SPACE);
 							input.sendKeys(excelValue);
 						}
@@ -188,33 +182,20 @@ public class MandatoryLabelsUtil extends BaseClass{
 					if ((tag.equals("input") && input.isEnabled()))
 					{
 						input.click();
-						String text = labelText +" Date";
-						System.out.println(text+" "+fieldData.get(text));
-						LocalDate localDate = LocalDate.now().plusDays(Long.parseLong(fieldData.get(text)));
-						String date = localDate.format(DateTimeFormatter.ofPattern("MM/dd/yyyy"));
-						System.out.println(date);
-						String[] dateParts = date.split("/");
-						int monthNumber = Integer.parseInt(dateParts[0]);
-						String month = new DateFormatSymbols().getMonths()[monthNumber - 1];  // Converts month number to name
-						String day = dateParts[1];
-						String year = dateParts[2];
+
+						String[] parts = excelValue.split(",");
+						int dateOffset = Integer.parseInt(parts[0].trim());
+						String time = parts.length > 1 ? parts[1].trim() : null;
 
 						DatePicker dp = new DatePicker();
-						dp.selectDate(driver, month, day, year);
+						dp.selectDate(driver, dateOffset);
 
-						WebElement time = label.findElement(By.xpath(MandatoryFieldsXpaths.TIME_FIELD));
-						time.click();
-						List<WebElement> drpoptions = driver.findElements(By.xpath(MandatoryFieldsXpaths.TIME_OPTIONS));
-
-						for(WebElement option:drpoptions)
+						if(!label.findElements(By.xpath(MandatoryFieldsXpaths.TIME_FIELD)).isEmpty() && time != null && !time.isEmpty())
 						{
-							if(option.getText().equals(excelValue))
-							{
-								//Thread.sleep(1000);
-								wait.until(ExpectedConditions.elementToBeClickable(option));
-								option.click();
-								break;
-							}
+							WebElement timeIcon = label.findElement(By.xpath(MandatoryFieldsXpaths.TIME_FIELD));
+							timeIcon.click();
+							
+							dp.selectTime(driver, time);
 						}
 					}
 				}

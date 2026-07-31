@@ -10,12 +10,13 @@ import utilities.WaitUtils;
 
 public class LoginTest extends BaseClass{
 
-	@Test(priority = 1)
+	@Test(priority = 1, groups = {"Regression", "All"})
 	public void login()
 	{
+		//System.out.println("Driver value: " + DriverFactory.getDriver());
 		LoginPage login = new LoginPage(DriverFactory.getDriver());
 		login.enterCaterId();
-		login.enterUserID();
+		login.enterUserId();
 		login.enterPassword();
 		login.clickLogin();
 	}

@@ -14,8 +14,9 @@
 		</encoder>
 	</appender>
 
-	<root level="debug">
+	<root level="info">
 		<appender-ref ref="CONSOLE" />
 		<appender-ref ref="FILE" />
+		<logger name="org.testng" level="WARN"/>
 	</root>
 </configuration>

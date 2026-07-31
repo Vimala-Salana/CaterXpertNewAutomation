@@ -1,6 +1,7 @@
 package testBase;
 
 import org.testng.annotations.BeforeSuite;
+import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Parameters;
 
 import factory.DriverFactory;
@@ -13,8 +14,9 @@ public class BaseClass {
 	public ConfigReader config = new ConfigReader();
 	ExcelUtility excel;
 	
+	@BeforeTest(alwaysRun = true)
 	@Parameters("browser")
-	@BeforeSuite
+	
 	public void setUpTest(String browser)
 	{
 		//ChromeOptions options = new ChromeOptions();

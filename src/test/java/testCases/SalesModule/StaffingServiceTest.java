@@ -14,7 +14,7 @@ import testBase.BaseClass;
 public class StaffingServiceTest extends BaseClass
 {
 
-	@Test
+	@Test(groups = {"Regression", "All"})
 	public void staffingRequest(ITestContext context) throws InterruptedException
 	{
 		EventDashboardPage dashboard = new EventDashboardPage(DriverFactory.getDriver());

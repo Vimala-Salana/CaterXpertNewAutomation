@@ -13,8 +13,8 @@ import utilities.ExcelUtility;
 
 public class CustomerOrPotentialCustomerListTest extends BaseClass{
 	ExcelUtility excel;
-	@Test(priority=4)
-	public void CustomerOrPotentialCustomerList()
+	@Test(priority=4, groups = {"Regression", "All"})
+	public void newCustomerNavigation()
 	{
 		HambergerMenuPage hamberger = new HambergerMenuPage(DriverFactory.getDriver());
 		hamberger.clickhambergerMenu();
@@ -25,7 +25,6 @@ public class CustomerOrPotentialCustomerListTest extends BaseClass{
 		//Assert.assertEquals(hdrCustomerList, "Customer/Potential Customer List","header mismatch");
 		//Thread.sleep(1000);
 		customerlistpage.ClickNewCustomer(); //For New Customer flow
-		
 		
 	}
 }

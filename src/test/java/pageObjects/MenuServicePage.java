@@ -130,7 +130,6 @@ public class MenuServicePage {
 	{
 		By closeLocator = By.xpath("(//app-search-add//button[text()=' Close '])[1]");
 		wait.until(ExpectedConditions.invisibilityOfElementLocated(By.xpath("//div[contains(@class,'swal2-container')]")));
-		waitutil.waitForOverlay();
 		WebElement listclose = wait.until(ExpectedConditions.visibilityOfElementLocated(closeLocator));
 		((JavascriptExecutor) driver).executeScript("arguments[0].click();", listclose);
 		waitutil.waitForOverlay();

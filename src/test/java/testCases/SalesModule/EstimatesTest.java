@@ -13,15 +13,10 @@ import testBase.BaseClass;
 
 public class EstimatesTest extends BaseClass{
 	
-	EstimatesPage estimates;	
-	 @BeforeClass
-	    public void initPages() 
-	 {
-		  estimates = new EstimatesPage(DriverFactory.getDriver());
-	    }
-	@Test (priority =1)
+	@Test (priority=1, groups = {"Regression", "EventCreationDirect"})
 	public void estimates()
 	{
+		EstimatesPage estimates = new EstimatesPage(DriverFactory.getDriver());
 		EventDashboardPage dashboard = new EventDashboardPage(DriverFactory.getDriver());
 		List<String> service = List.of("Estimates");
 		List<String> iconlabel = List.of("Estimates Lite","Estimates");

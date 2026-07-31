@@ -58,4 +58,8 @@ public class WaitUtils {
 		wait.until(d ->
 		driver.findElements(By.cssSelector(".ng-animating")).isEmpty());
 	}
+	public void waitForApplication()
+	{
+		
+	}
 }

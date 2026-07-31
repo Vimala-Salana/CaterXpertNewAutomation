@@ -74,9 +74,7 @@ public class CreateEventPage {
 	@FindBy(xpath = "(//button[text()=' Close '])[2]") WebElement btnClose;
 	public void clickClosebtn()
 	{
-		System.out.println("Waiting for overlay...");
 		wait.until(ExpectedConditions.invisibilityOfElementLocated(By.cssSelector("div.overlay")));
-		System.out.println("Overlay disappeared.");
 		wait.until(ExpectedConditions.elementToBeClickable(btnClose)).click();
 	}
 	

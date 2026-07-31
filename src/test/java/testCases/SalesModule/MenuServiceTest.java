@@ -14,7 +14,7 @@ import testBase.BaseClass;
 
 public class MenuServiceTest extends BaseClass
 {
-	@Test
+	@Test(groups = {"Regression", "All"})
 	public void menuServiceRequest(ITestContext context) throws InterruptedException
 	{
 

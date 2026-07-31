@@ -6,24 +6,27 @@ import org.testng.annotations.Test;
 
 import factory.DriverFactory;
 import pageObjects.CreateEventPage;
-import pageObjects.EventListingPage;
 import pageObjects.HambergerMenuPage;
 import testBase.BaseClass;
 
 public class CreateEventTest extends BaseClass{
 
-	@Test
-	public void createEvent(ITestContext context) throws Exception
+	
+	@Test(groups = {"Regression", "EventCreationDirect"})
+	public void createEventDirect()
 	{
-		String sheetname = "Create Event";
-		//driver.findElement(By.xpath("//button[text()='OK']")).click();
 		HambergerMenuPage hamberger = new HambergerMenuPage(DriverFactory.getDriver()); 
 		hamberger.clickhambergerMenu();
 		hamberger.clickCreateEvent();
-
-
+	}
+	 
+	@Test(groups = {"Regression", "All"})
+	public void createEventFromContact(ITestContext context) throws Exception
+	{
+		String sheetname = "Create Event";
+		//driver.findElement(By.xpath("//button[text()='OK']")).click();
 		CreateEventPage eventpage = new CreateEventPage(DriverFactory.getDriver(),filepath,sheetname);
-
+		HambergerMenuPage hamberger = new HambergerMenuPage(DriverFactory.getDriver()); 
 		//validating CreateEvent header
 		Assert.assertEquals(eventpage.getCreateEventhdr(), "Create Event");
 		

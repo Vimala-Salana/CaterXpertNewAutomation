@@ -152,11 +152,11 @@ public class BeverageservicePage {
 
 		System.out.println("No of items: " + rows.size());
 		boolean hasAvailable = false;
-		boolean hasReserved = false;
 		for (WebElement h : headers) {
 			String text = h.getText().trim();
 			if (text.equalsIgnoreCase("Available Qty")) hasAvailable = true;
-			if (text.equalsIgnoreCase("Reserved Qty")) hasReserved = true;
+			if (text.equalsIgnoreCase("Reserved Qty")) {
+			}
 		}
 		if(hasAvailable = true)
 			System.out.println("Available Qty and Reserved Qty are visible");

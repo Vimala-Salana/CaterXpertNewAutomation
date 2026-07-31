@@ -11,7 +11,7 @@ public class CreateCustomerTest extends BaseClass {
 
 	ExcelUtility excel;
 
-	@Test(priority = 1)
+	@Test(priority = 1, groups = {"Regression", "All"})
 	public void createCustomer() throws Exception {
 		excel = new ExcelUtility(filepath);
 

@@ -10,7 +10,7 @@ import utilities.ExcelUtility;
 public class CreateContactTest extends BaseClass{
 
 	ExcelUtility excel;
-	@Test
+	@Test(groups = {"Regression", "All"})
 	public void createContcat() throws Exception
 	{
 		String sheetname = "Create Contact";

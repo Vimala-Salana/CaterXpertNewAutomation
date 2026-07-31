@@ -2,53 +2,184 @@ package utilities;
 
 import java.time.Duration;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.openqa.selenium.By;
+import org.openqa.selenium.ElementNotInteractableException;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.Keys;
+import org.openqa.selenium.StaleElementReferenceException;
+import org.openqa.selenium.NoSuchElementException;
+
+import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import org.openqa.selenium.NoSuchElementException;
-import org.openqa.selenium.TimeoutException;
 
 public class ElementInteractionUtil {
-	
-	private static final Logger logger = LogManager.getLogger(ElementInteractionUtil.class);
 
-    public WebDriver driver;
-    private WebDriverWait wait;
-    private static final Duration TIMEOUT = Duration.ofSeconds(10);
+	private final WebDriver driver;
+	private final WebDriverWait wait;
+	private final WaitUtils waitUtils;
+	private final JavascriptExecutor js;
+	private static final Duration TIMEOUT = Duration.ofSeconds(10);
+	private static final int MAX_CLICK_ATTEMPTS = 3;
 
-    public ElementInteractionUtil(WebDriver driver) {
-        
-        this.driver = driver;
-        this.wait = new WebDriverWait(driver, TIMEOUT);
-    }
+	public ElementInteractionUtil(WebDriver driver) {
 
-    public boolean click(WebElement webElement) {
-        boolean status = false;
-        try {
-            wait.until(ExpectedConditions.elementToBeClickable(webElement));
-            webElement.click();
-            logger.info("Clicked on element: " + webElement);
-            status = true;
-        } catch (NoSuchElementException | TimeoutException e) {
-            logger.error("Unable to click on element: " + webElement, e);
-        }
-        return status;
-    }
+		this.driver = driver;
+		this.wait = new WebDriverWait(driver, TIMEOUT);
+		waitUtils = new WaitUtils(driver);
+		js = (JavascriptExecutor) driver;
+	}
 
-    public boolean sendKeys(WebElement webElement, String text) {
-        boolean status = false;
-        try {
-            wait.until(ExpectedConditions.visibilityOf(webElement));
-            webElement.clear();
-            webElement.sendKeys(text);
-            logger.info("Entered text into element: " + webElement);
-            status = true;
-        } catch (Exception e) {
-            logger.error("Unable to send text to element: " + webElement, e);
-        }
-        return status;
-    }
+
+	public void click(By locator) {
+
+		long startTime = System.nanoTime();
+
+		Exception lastException = null;
+
+
+
+
+		for (int attempt = 1; attempt <= MAX_CLICK_ATTEMPTS; attempt++) {
+
+			try {
+
+				try {
+					// Native Click Retry
+					nativeClick(locator);
+
+					LoggerManager.logActionSuccess(locator, startTime, attempt, "Native Click");
+
+					return;
+
+				} catch(ElementNotInteractableException  exception) {
+					LoggerManager.warn("Attempt "+ attempt+ "/"+ MAX_CLICK_ATTEMPTS+ " | Native click failed for "+ locator+ ". Reason: "
+							+ exception.getMessage()
+							+ ". Trying Actions click.");
+				}
+
+				try {
+					actionsClick(locator);
+
+					LoggerManager.logActionSuccess(locator, startTime, attempt, "Actions Click");
+
+					return;
+
+				} catch(ElementNotInteractableException  exception) {
+
+					LoggerManager.warn("Attempt "+ attempt+ "/"+ MAX_CLICK_ATTEMPTS+ " | Actions click failed for "+ locator+ ". Reason: "
+							+ exception.getMessage()
+							+ ". Trying JavaScript click.");
+				}
+				javascriptClick(locator);
+				LoggerManager.logActionSuccess(locator, startTime, attempt, "JavaScript Click");	
+				return;
+			}
+			catch(StaleElementReferenceException | NoSuchElementException | TimeoutException exception){                                                                    
+				lastException = exception;	
+				LoggerManager.warn(
+						String.format("Retrying click (%d/%d) for [%s]. Reason: %s",attempt,MAX_CLICK_ATTEMPTS,locator,exception.getMessage()));
+
+			}
+			catch (Exception exception) {
+
+				lastException = exception;
+				break;
+			}
+		}
+
+		long duration = Duration.ofNanos(System.nanoTime() - startTime).toMillis();
+
+		String message = String.format("Unable to click [%s]. Duration: %d ms.  Reason: %s", locator, duration, 
+				lastException != null ? lastException.getMessage() : "Unknown");
+
+		LoggerManager.error(message, lastException);
+		ReportManager.fail(message);
+
+		throw new RuntimeException(message, lastException);
+	}
+
+	//Reusable method for Normal Click
+	public void nativeClick(By locator)
+	{
+		waitUtils.waitForOverlay();
+		WebElement element = wait.until(ExpectedConditions.elementToBeClickable(locator));
+		js.executeScript("arguments[0].scrollIntoView({block:'center'});", element);
+
+		element.click();
+	}
+
+	//Reusable method for Actions Click
+	public void actionsClick(By locator)
+	{
+
+		waitUtils.waitForOverlay();
+
+		WebElement element = wait.until(ExpectedConditions.elementToBeClickable(locator));	
+		new Actions(driver)
+		.moveToElement(element)
+		.click()
+		.perform();
+
+	}
+
+	//Reusable method for JavaScript Click
+	public void javascriptClick(By locator) {
+
+		WebElement element = wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
+
+		js.executeScript("arguments[0].scrollIntoView({block:'center'});",element);
+
+		js.executeScript("arguments[0].click();",element);
+
+
+	}
+
+	//Click Element only if present - Use it for dynamic Elements/Icons
+	public boolean clickIfPresent(By locator) {
+
+		if (driver.findElements(locator).isEmpty()) {
+
+			LoggerManager.info("Optional element not present: " + locator);
+
+			return false;
+		}
+
+		click(locator);
+		return true;
+	}
+
+	//Reusable method for SendKeys
+	public void typeText(By locator, String value) {
+		waitUtils.waitForOverlay();
+		WebElement element = wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
+		//clear
+		element.sendKeys(Keys.CONTROL + "a");
+		element.sendKeys(Keys.BACK_SPACE);
+		element.sendKeys(value); //Enter value
+
+	}
+
+	//Reusable method for getText
+	public String getText(By locator) {
+		WebElement element = wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
+		return element.getText();
+	}
+
+	//Reusable method for getAttribute
+	public String getAttribute(By locator, String attributeName) {
+		WebElement element = wait.until(ExpectedConditions.presenceOfElementLocated(locator));
+		return element.getAttribute(attributeName);
+	}
+
+	//Reusable method for getAttribute of Value
+
+	public String getValue(By locator) {
+
+		return getAttribute(locator,"value");
+	}
+
 }

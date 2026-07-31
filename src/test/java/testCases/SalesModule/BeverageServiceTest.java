@@ -15,13 +15,12 @@ import testBase.BaseClass;
 
 public class BeverageServiceTest extends BaseClass{
 
-	@Test
+	@Test(groups = {"Regression", "All"})
 	public void beveageservice(ITestContext context) throws InterruptedException
 	{
 		EventDashboardPage dashboard = new EventDashboardPage(DriverFactory.getDriver());
 
-
-		List<String> service = List.of("Beverage");
+		List<String> service = List.of("Beverage","Non Alc Bev");
 		List<String> status = List.of("New","Prog","Resent","None");
 		List<String> iconlabel = List.of("Service Request");
 		if(dashboard.clickServiceLabelIcon(service, status, iconlabel))
