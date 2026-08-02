@@ -21,12 +21,12 @@
 			<!--<class name="testCases.SalesModule.CreateContactTest" /> -->
 			<class name="testCases.SalesModule.CreateEventTest" />
 			<!--<class name="testCases.SalesModule.EventListingTest" />
-			<class name="testCases.SalesModule.EventDashboardTest" />-->
+			<class name="testCases.SalesModule.EventDashboardTest" />
 			<class name="testCases.SalesModule.MenuServiceTest" />
 			<class name="testCases.SalesModule.StaffingServiceTest" />
 			<class name="testCases.SalesModule.BeverageServiceTest" />
-			<class name="testCases.SalesModule.EstimatesTest" />
-			<!--<class name="testCases.KitchenModule.KitchenNavigationTest" />-->
+			<class name="testCases.SalesModule.EstimatesTest" />-->
+		<!--<class name="testCases.KitchenModule.KitchenNavigationTest" />-->
 		</classes>
 	</test>
 </suite> 

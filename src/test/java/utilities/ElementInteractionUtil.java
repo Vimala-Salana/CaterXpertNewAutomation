@@ -5,7 +5,6 @@ import java.time.Duration;
 import org.openqa.selenium.By;
 import org.openqa.selenium.ElementNotInteractableException;
 import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.Keys;
 import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.NoSuchElementException;
 
@@ -40,9 +39,6 @@ public class ElementInteractionUtil {
 
 		Exception lastException = null;
 
-
-
-
 		for (int attempt = 1; attempt <= MAX_CLICK_ATTEMPTS; attempt++) {
 
 			try {
@@ -51,8 +47,7 @@ public class ElementInteractionUtil {
 					// Native Click Retry
 					nativeClick(locator);
 
-					LoggerManager.logActionSuccess(locator, startTime, attempt, "Native Click");
-
+					LoggerManager.logActionSuccess(locator, startTime,  "Native Click", attempt);		
 					return;
 
 				} catch(ElementNotInteractableException  exception) {
@@ -64,7 +59,7 @@ public class ElementInteractionUtil {
 				try {
 					actionsClick(locator);
 
-					LoggerManager.logActionSuccess(locator, startTime, attempt, "Actions Click");
+					LoggerManager.logActionSuccess(locator, startTime,  "Actions Click", attempt);
 
 					return;
 
@@ -75,13 +70,12 @@ public class ElementInteractionUtil {
 							+ ". Trying JavaScript click.");
 				}
 				javascriptClick(locator);
-				LoggerManager.logActionSuccess(locator, startTime, attempt, "JavaScript Click");	
+				LoggerManager.logActionSuccess(locator, startTime,  "Java Script Click", attempt);			
 				return;
 			}
 			catch(StaleElementReferenceException | NoSuchElementException | TimeoutException exception){                                                                    
 				lastException = exception;	
-				LoggerManager.warn(
-						String.format("Retrying click (%d/%d) for [%s]. Reason: %s",attempt,MAX_CLICK_ATTEMPTS,locator,exception.getMessage()));
+				LoggerManager.logActionFailure(locator, startTime, "Click", exception,attempt);
 
 			}
 			catch (Exception exception) {
@@ -113,16 +107,15 @@ public class ElementInteractionUtil {
 	}
 
 	//Reusable method for Actions Click
-	public void actionsClick(By locator)
-	{
+	public void actionsClick(By locator) {
 
-		waitUtils.waitForOverlay();
 
 		WebElement element = wait.until(ExpectedConditions.elementToBeClickable(locator));	
 		new Actions(driver)
 		.moveToElement(element)
 		.click()
 		.perform();
+
 
 	}
 
@@ -155,24 +148,47 @@ public class ElementInteractionUtil {
 	//Reusable method for SendKeys
 	public void typeText(By locator, String value) {
 		waitUtils.waitForOverlay();
-		WebElement element = wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
-		//clear
-		element.sendKeys(Keys.CONTROL + "a");
-		element.sendKeys(Keys.BACK_SPACE);
-		element.sendKeys(value); //Enter value
+		long startTime = System.nanoTime();
+		waitUtils.waitForOverlay();
+
+		try {
+			WebElement element = wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
+			//clear
+			element.clear();
+			element.sendKeys(value); //Enter value
+			LoggerManager.logActionSuccess(locator, startTime, "Type Text", null);
+		} catch(Exception e) {
+			LoggerManager.logActionFailure(locator, startTime, "SendKeys", e, null);
+		}
 
 	}
 
 	//Reusable method for getText
 	public String getText(By locator) {
-		WebElement element = wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
-		return element.getText();
+		long startTime = System.nanoTime();
+		try {
+			WebElement element = wait.until(ExpectedConditions.presenceOfElementLocated(locator));
+			LoggerManager.logActionSuccess(locator, startTime, "Get Text", null);
+			return element.getText();
+		} catch(Exception e) {
+			LoggerManager.logActionFailure(locator, startTime, "Get Text", e, null);
+			throw e;
+		}
+
 	}
 
 	//Reusable method for getAttribute
 	public String getAttribute(By locator, String attributeName) {
-		WebElement element = wait.until(ExpectedConditions.presenceOfElementLocated(locator));
-		return element.getAttribute(attributeName);
+	    long startTime = System.nanoTime();
+	    try {
+	    	WebElement element = wait.until(ExpectedConditions.presenceOfElementLocated(locator));
+	        LoggerManager.logActionSuccess(locator, startTime, "Get Attrubute", null);
+			return element.getAttribute(attributeName);
+	    } catch(Exception e) {
+			LoggerManager.logActionFailure(locator, startTime, "Get Attribute", e, null);
+			throw e;
+	    }
+		
 	}
 
 	//Reusable method for getAttribute of Value

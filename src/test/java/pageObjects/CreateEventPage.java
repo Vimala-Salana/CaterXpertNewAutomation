@@ -12,6 +12,7 @@ import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import utilities.ElementInteractionUtil;
 import utilities.ExcelUtility;
 import utilities.MandatoryLabelsUtil;
 import utilities.ServiceUtil;
@@ -26,6 +27,8 @@ public class CreateEventPage {
 	WaitUtils waitutil;
 	ServiceUtil serviceutil;
 	public String eventNo;
+	ElementInteractionUtil elementUtil;
+	
 	public CreateEventPage(WebDriver driver,String filepath,String sheetname)
 	{
 		this.driver =driver;
@@ -34,6 +37,7 @@ public class CreateEventPage {
 		PageFactory.initElements(driver, this);
 		waitutil = new WaitUtils(driver);
 		wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+		this.elementUtil = new ElementInteractionUtil(driver);
 		serviceutil = new ServiceUtil(driver);
 	}
 	
@@ -63,12 +67,10 @@ public class CreateEventPage {
 		waitutil.waitForOverlay();
 	}
 	
-	@FindBy(xpath ="//button[normalize-space()='Create']") WebElement btnCreate;
+	private final By btnCreate = By.xpath("//button[normalize-space()='Create']");
 	public void clickCreatebtn()
 	{
-		wait.until(ExpectedConditions.elementToBeClickable(btnCreate));
-		btnCreate.click();
-		waitutil.waitForOverlay();
+		elementUtil.click(btnCreate);
 	}
 	
 	@FindBy(xpath = "(//button[text()=' Close '])[2]") WebElement btnClose;
@@ -84,13 +86,12 @@ public class CreateEventPage {
 		return serviceutil.Constraints();
 	}
 	
-	@FindBy(xpath ="//label[text()=' Event # ']//following-sibling::label[2]") WebElement eventNumlocator;
-	//By eventNumlocator = By.xpath("//label[text()=' Event # ']//following-sibling::label[2]");
+	//@FindBy(xpath ="//label[text()=' Event # ']//following-sibling::label[2]") WebElement eventNumlocator;
+	private final By eventNumlocator = By.xpath("//label[text()=' Event # ']//following-sibling::label[2]");
 	public String getEventNo()
 	{
-		waitutil.waitForOverlay();
-		wait.until(ExpectedConditions.visibilityOf(eventNumlocator));
-		eventNo = eventNumlocator.getText();
+		//waitutil.waitForOverlay();
+		eventNo = elementUtil.getText(eventNumlocator);
 		return eventNo;
 	}
 	

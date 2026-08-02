@@ -101,6 +101,21 @@
 					</suiteXmlFiles>
 				</configuration>
 			</plugin>
+
+			<plugin>
+				<artifactId>maven-clean-plugin</artifactId>
+				<version>3.4.0</version>
+				<configuration>
+					<filesets>
+					<fileset>
+						<directory>azure-results</directory>
+					</fileset>
+					<fileset>
+						<directory>logs</directory>
+					</fileset>
+					</filesets>
+				</configuration>
+			</plugin>
 		</plugins>
 	</build>
 

@@ -15,6 +15,7 @@ import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import utilities.ElementInteractionUtil;
 import utilities.ExcelUtility;
 import utilities.MandatoryLabelsUtil;
 
@@ -25,12 +26,15 @@ public class CreateCustomerPage
 	String filepath;
 	String sheetname;
 	WebDriverWait wait;
+	public ElementInteractionUtil elementUtil;
+
 	public CreateCustomerPage(WebDriver driver, String filepath, String sheetname)
 	{
 		this.driver = driver;
 		this.filepath = filepath;
 		this.sheetname = sheetname;
 		PageFactory.initElements(driver,this);
+		this.elementUtil = new ElementInteractionUtil(driver);
 		wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 	}
 
@@ -46,10 +50,10 @@ public class CreateCustomerPage
 		MandatoryLabelsUtil.fillMandatoryFields(driver, data);
 	}
 
-	@FindBy (xpath = "//button[normalize-space(text())='Create']") WebElement btnCreate;
+	private final By btnCreate = By.xpath("//button[normalize-space(text())='Create']");
 	public void clickCreatebtn()
 	{
-		btnCreate.click();
+		elementUtil.click(btnCreate);
 	}
 
 	@FindBy(xpath = "//input[contains(@placeholder,'Search Customer')]") WebElement txtSearchCustomer;
@@ -63,10 +67,10 @@ public class CreateCustomerPage
 		
 	}
 	
-	@FindBy(xpath = "(//tbody[@class='ng-star-inserted']//tr//td//a)[1]") WebElement lstcustomerName;
+	private final By lstcustomerName = By.xpath("(//tbody[@class='ng-star-inserted']//tr//td//a)[1]");
 	public String getCustomerNamefromlst()
 	{
-		return lstcustomerName.getText();
+		return elementUtil.getText(lstcustomerName);
 	}
 	public void clickCustomerNamefromlst()
 	{

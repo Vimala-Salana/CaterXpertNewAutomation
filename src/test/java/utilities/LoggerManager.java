@@ -78,16 +78,18 @@ public final class LoggerManager {
         testLogs.remove();
     }
     
-    public static void logActionSuccess(By locator, long startTime, int attempt, String clickType) {
+    public static void logActionSuccess(By locator, long startTime, String action, Integer attempt) {
 
         long duration = Duration.ofNanos( System.nanoTime() - startTime).toMillis();
 
+        String attemptInfo = attempt != null ? " | Attempt=" + attempt : "";
+        
         String message = String.format(
-                "%s succeeded | Locator=%s | Attempt=%d | Duration=%d ms",
-                clickType,
+                "%s succeeded | Locator=%s | Duration=%d ms%s",
+                action,
                 locator,
-                attempt,
-                duration);
+                duration,
+        		attemptInfo);
         
         logger.info(message);
 
@@ -96,4 +98,25 @@ public final class LoggerManager {
         Allure.step(message);
     }
 
+    
+    public static void logActionFailure(By locator, long startTime, String action, Exception e, Integer attempt) {
+
+        long duration = Duration.ofNanos(System.nanoTime() - startTime).toMillis();
+        
+        String attemptInfo = attempt != null ? " | Attempt=" + attempt : "";
+
+        String message = String.format(
+                "%s failed | Locator=%s | Duration=%d ms | Exception=%s | Message=%s%s",
+                action,
+                locator,
+                duration,
+                e.getClass().getSimpleName(),
+                e.getMessage(),
+                attemptInfo
+        );
+
+        logger.error(message);
+        append("ERROR", message);
+        Allure.step(message);
+    }
 }

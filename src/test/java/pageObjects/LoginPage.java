@@ -9,39 +9,36 @@ import utilities.ElementInteractionUtil;
 
 public class LoginPage {
 
-	private final ConfigReader config;
 	ElementInteractionUtil elementUtil;
-
 
 	public LoginPage(WebDriver driver)
 	{
-		this.config = new ConfigReader();
 		this.elementUtil = new ElementInteractionUtil(driver);
 	}
 
-	private static final By TXT_CATER_ID = By.xpath("//input[@id='CatererId']");
-	private static final By TXT_USER_ID = By.xpath("//input[@id='UserName']");
-	private static final By TXT_PASSWORD = By.xpath("//input[@id='Password']");
+	private final By txtCaterId = By.xpath("//input[@id='CatererId']");
+	private final By txtUserId = By.xpath("//input[@id='UserName']");
+	private final By txtPassword = By.xpath("//input[@id='Password']");
 
-	private static final By BTN_GO = By.xpath("//input[@value='Go']");
+	private final By btnGo = By.xpath("//input[@value='Go']");
 
-	public void enterCaterId()
+	public void enterCaterId(String caterId)
 	{
 
-		elementUtil.typeText(TXT_CATER_ID,config.getProperty("caterid") );
+		elementUtil.typeText(txtCaterId, caterId);
 	}
-	public void enterUserId()
+	public void enterUserId(String userId)
 	{
-		elementUtil.typeText(TXT_USER_ID,config.getProperty("userid") );
+		elementUtil.typeText(txtUserId, userId);
 
 	}
-	public void enterPassword()
+	public void enterPassword(String password)
 	{
-		elementUtil.typeText(TXT_PASSWORD,config.getProperty("password") );
+		elementUtil.typeText(txtPassword,password );
 
 	}
 	public void clickLogin()
 	{
-		elementUtil.click(BTN_GO);
+		elementUtil.click(btnGo);
 	}
 }
