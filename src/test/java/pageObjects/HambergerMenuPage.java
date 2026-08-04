@@ -39,7 +39,7 @@ public class HambergerMenuPage{
 	@FindBy(xpath = "//span[normalize-space(text())='Customer/Potential Customer']") WebElement txtCustomerOrPotentialCustomer; //CRM
 	//@FindBy(xpath = "//span[(normalize-space(text())='Customer')]") WebElement txtCustomer;
 	private final By drpCustomer = By.xpath("//span[(normalize-space(text())='Customer')]");
-	@FindBy(xpath = "//span[text()='Contact']") WebElement txtContcat;
+	private final By txtcontact = By.xpath("//span[text()='Contacts']");
 	@FindBy(xpath = "//span[text()='Create Inquiry']") WebElement txtCreateInquiry;
 	
 
@@ -85,8 +85,7 @@ public class HambergerMenuPage{
 	
 	public void clickContcat()
 	{
-		
-		txtContcat.click();
+		elementUtil.click(txtcontact);
 	}
 	
 	public void clickOpenInquiries()

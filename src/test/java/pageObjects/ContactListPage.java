@@ -1,18 +1,21 @@
 package pageObjects;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 
-public class ContactListPage {
+import testBase.BasePage;
+
+public class ContactListPage extends BasePage{
 
 	public WebDriver driver;
 
 	public ContactListPage(WebDriver driver)
 	{
-		this.driver = driver;
-		PageFactory.initElements(driver,this);
+		super(driver);
 	}
 	@FindBy(xpath = "//span[normalize-space(text())='Contact List']") WebElement hdrContactList;
 	@FindBy(xpath = "//button[text()=' New Contact ']") WebElement btnNewContact;
@@ -24,5 +27,20 @@ public class ContactListPage {
 	public void clickNewContact()
 	{
 		btnNewContact.click();
+	}
+	
+	private final By txtSearchCustomer = By.xpath("//input[contains(@placeholder,'Contact Search')]");
+
+	public void searchContactName(String contactName)
+	{
+		elementUtil.typeText(txtSearchCustomer, contactName);
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("div.overlay")));
+		wait.until(ExpectedConditions.invisibilityOfElementLocated(By.cssSelector("div.overlay")));
+	}
+	
+	private final By lstcontactName = By.xpath("(//table[contains(@class,'visit-table')]//td[3]//span)[1]");
+	public String getContactNamefromlst()
+	{
+		return elementUtil.getText(lstcontactName);
 	}
 }

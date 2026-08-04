@@ -9,6 +9,7 @@
     <classes>
       <class name="testCases.SalesModule.LoginTest"/>
       <class name="testCases.SalesModule.CreateCustomerTest"/>
+      <class name="testCases.SalesModule.CreateContactTest"/>
     </classes>
   </test> <!-- RegressionTest -->
 </suite> <!-- RegressionSuite -->

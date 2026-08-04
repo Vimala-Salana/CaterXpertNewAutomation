@@ -108,7 +108,7 @@ public class MandatoryLabelsUtil extends BaseClass{
 				String excelValue = fieldData.get(labelText);
 				System.out.println(excelValue);
 
-				if(label.getText().contains("Business Unit"))
+				if(label.getText().toLowerCase().startsWith("business unit"))
 				{
 					System.out.println("BU Skipped");
 				}

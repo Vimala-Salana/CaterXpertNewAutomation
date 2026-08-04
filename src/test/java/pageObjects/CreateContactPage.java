@@ -12,22 +12,15 @@ import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import testBase.BasePage;
 import utilities.ExcelUtility;
 import utilities.MandatoryLabelsUtil;
 
-public class CreateContactPage {
+public class CreateContactPage extends BasePage{
 
-	public WebDriver driver;
-	String filepath;
-	String sheetname;
-	WebDriverWait wait;
-	public CreateContactPage(WebDriver driver, String filepath, String sheetname)
+	public CreateContactPage(WebDriver driver)
 	{
-		this.driver = driver;
-		this.filepath = filepath;
-		this.sheetname = sheetname;
-		PageFactory.initElements(driver,this);
-		wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+		super(driver);
 	}
 
 	@FindBy(xpath = "//span[normalize-space(text())='Create Contact']") WebElement hdrCreateContcat;
@@ -37,10 +30,8 @@ public class CreateContactPage {
 		return hdrCreateContcat.getText();
 	}
 
-	public void fillContactMandatoryfileds() throws Exception
+	public void fillContactMandatoryfileds(Map<String, String> data) throws Exception
 	{
-		ExcelUtility excelUtil = new ExcelUtility(filepath);
-		Map<String, String> data = excelUtil.getMandatoryFieldData(sheetname);
 		MandatoryLabelsUtil.fillMandatoryFields(driver, data);
 	}
 

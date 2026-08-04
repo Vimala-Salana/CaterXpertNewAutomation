@@ -41,6 +41,7 @@ public class CreateCustomerPage
 	}
 
 	public void fillCustomerMandatoryfields(Map<String, String> data) throws Exception {
+		 System.out.println("CreateCustomerPage driver = " + driver); System.out.println("CreateCustomerPage driver = " + driver);
 		  MandatoryLabelsUtil.fillMandatoryFields(driver, data);
 	}
 

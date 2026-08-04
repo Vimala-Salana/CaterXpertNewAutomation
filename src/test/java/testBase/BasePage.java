@@ -24,6 +24,7 @@ public class BasePage {
 	
 	public BasePage(WebDriver driver)
 	{  
+		
 		this.driver = driver;	
 		PageFactory.initElements(driver,this);
 		waitutil = new WaitUtils(driver);
@@ -31,5 +32,6 @@ public class BasePage {
 		elementUtil = new ElementInteractionUtil(driver);
 		js = (JavascriptExecutor) driver;
 		serviceUtil = new ServiceUtil(driver);
+		System.out.println("Driver in BasePage: " + driver);
 	}
 }
