@@ -2,9 +2,7 @@ package pageObjects;
 
 import java.time.Duration;
 import java.util.List;
-
 import org.openqa.selenium.By;
-import org.openqa.selenium.By.ByXPath;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -12,21 +10,15 @@ import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import testBase.BasePage;
 import utilities.ElementInteractionUtil;
 import utilities.WaitUtils;
 
-public class BasetoSalesNavigationPage {
-	public WebDriver driver;
-	WebDriverWait wait;
-	WaitUtils waitutil;
-	public ElementInteractionUtil elementUtil;
+public class BasetoSalesNavigationPage extends BasePage{
+
 	public BasetoSalesNavigationPage(WebDriver driver)
 	{
-		this.driver = driver;
-		PageFactory.initElements(driver,this);
-		waitutil = new WaitUtils(driver);
-		wait = new WebDriverWait(driver, Duration.ofSeconds(20));
-		this.elementUtil = new ElementInteractionUtil(driver);
+		super(driver);
 	}
 
 	@FindBy(xpath = "//frame[@name='header']") WebElement frameHdr;
@@ -47,7 +39,7 @@ public class BasetoSalesNavigationPage {
 
 	public void salesNewNavigation()
 	{
-		
+		wait.until(ExpectedConditions.visibilityOf(frameHdr));
 		driver.switchTo().frame(frameHdr);
 		elementUtil.clickIfPresent(iconHome);
 		

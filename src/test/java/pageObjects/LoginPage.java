@@ -2,18 +2,15 @@ package pageObjects;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.support.PageFactory;
 
-import utilities.ConfigReader;
+import testBase.BasePage;
 import utilities.ElementInteractionUtil;
 
-public class LoginPage {
-
-	ElementInteractionUtil elementUtil;
+public class LoginPage extends BasePage{
 
 	public LoginPage(WebDriver driver)
 	{
-		this.elementUtil = new ElementInteractionUtil(driver);
+		super(driver);
 	}
 
 	private final By txtCaterId = By.xpath("//input[@id='CatererId']");
@@ -37,8 +34,16 @@ public class LoginPage {
 		elementUtil.typeText(txtPassword,password );
 
 	}
-	public void clickLogin()
+	public void clickGo()
 	{
 		elementUtil.click(btnGo);
+	}
+	
+	public void login(String caterId,String userId, String password)
+	{
+		enterCaterId(caterId);
+		enterUserId(userId);
+		enterPassword(password);
+		clickGo();
 	}
 }

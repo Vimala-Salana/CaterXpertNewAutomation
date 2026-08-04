@@ -16,6 +16,9 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 
+import io.qameta.allure.Allure;
+import utilities.LoggerManager;
+import utilities.ReportManager;
 import utilities.WaitUtils;
 
 public class BeverageservicePage {
@@ -154,12 +157,16 @@ public class BeverageservicePage {
 		boolean hasAvailable = false;
 		for (WebElement h : headers) {
 			String text = h.getText().trim();
-			if (text.equalsIgnoreCase("Available Qty")) hasAvailable = true;
-			if (text.equalsIgnoreCase("Reserved Qty")) {
+			if (text.equalsIgnoreCase("Available Qty")) {
+				hasAvailable = true;
 			}
 		}
-		if(hasAvailable = true)
-			System.out.println("Available Qty and Reserved Qty are visible");
+		if(hasAvailable)
+			ReportManager.info("Available Qty and Reserved Qty are visible");
+		else
+		{
+			ReportManager.info("Available Qty and Reserved Qty are not visible");
+		}
 
 		for (int i = 0; i < rows.size(); i++) {
 

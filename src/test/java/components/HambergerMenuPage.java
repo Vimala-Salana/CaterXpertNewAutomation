@@ -12,121 +12,95 @@ import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import testBase.BasePage;
 import utilities.ConfigReader;
 import utilities.WaitUtils;
 
-public class HambergerMenuPage{
+public class HambergerMenuPage extends BasePage{
 
-	public WebDriver driver;
-	public ConfigReader config = new ConfigReader();
-	WebDriverWait wait; 
-	WaitUtils waitutil;
 	public HambergerMenuPage(WebDriver driver)
 	{  
-		this.driver = driver;
-		PageFactory.initElements(driver,this);
-		waitutil = new WaitUtils(driver);
-		wait = new WebDriverWait(driver,Duration.ofSeconds(10));
+		super(driver);
 	}
 	
-	@FindBy(xpath = "//span[normalize-space(text())='AE Dashboard']") WebElement hdrAEDashboard;
-
-	@FindBy(xpath = "//span[text()='Open Inquiries']") WebElement lnkOpenInquiries;
-	@FindBy(xpath = "//tr[1]/td/div/i[2]") WebElement btnCreateEvent;
-	@FindBy(xpath = "//button[text()='Yes']") WebElement alertYes;
-	
-	@FindBy(xpath = "//span[normalize-space(text())='Customer/Potential Customer']") WebElement txtCustomerOrPotentialCustomer; //CRM
-	@FindBy(xpath = "//span[(normalize-space(text())='Customer')]") WebElement txtCustomer;
-	@FindBy(xpath = "//span[text()='Contact']") WebElement txtContcat;
-	@FindBy(xpath = "//span[text()='Create Inquiry']") WebElement txtCreateInquiry;
+	private By hdrAEDashboard = By.xpath("//span[normalize-space(text())='AE Dashboard']");
+	private By lnkOpenInquiries = By.xpath("//span[text()='Open Inquiries']");
+	private By btnCreateEvent = By.xpath("//tr[1]/td/div/i[2]");
+	private By alertYes = By.xpath("//button[text()='Yes']");
+	private By txtCustomerOrPotentialCustomer = By.xpath("//span[normalize-space(text())='Customer/Potential Customer']");
+	private By txtCustomer = By.xpath("//span[normalize-space(text())='Customer']");
+	private By txtContcat = By.xpath("//span[text()='Contact']");
+	private By txtCreateInquiry = By.xpath("//span[text()='Create Inquiry']");
 	
 
 	public String getAEDashboardHeader()
 	{
-		wait.until(ExpectedConditions.visibilityOf(hdrAEDashboard));
-		return hdrAEDashboard.getText();
+		return elementUtil.getText(hdrAEDashboard);
 	}
 
 	
-	@FindBy(xpath = "//span[text()='Create Event']") WebElement lnkCreateEvent;
+	//@FindBy(xpath = "//span[text()='Create Event']") WebElement lnkCreateEvent;
+	private final By lnkCreateEvent = By.xpath("//span[text()='Create Event']");
 
 	public void clickCreateEvent() 
 	{
-		wait.until(ExpectedConditions.invisibilityOfElementLocated(By.cssSelector("div.ngx-spinner-overlay")));
-		WebElement createEventLnk =  wait.until(ExpectedConditions.visibilityOf(lnkCreateEvent));
-	    ((JavascriptExecutor) driver).executeScript("arguments[0].click();", createEventLnk);
-		//wait.until(ExpectedConditions.elementToBeClickable(lnkCreateEvent)).click();
+		elementUtil.click(lnkCreateEvent);
 	}
 	
 	public void clickCustomerOrPotentialCustomerdrp()
 	{
 		
-		wait.until(ExpectedConditions.invisibilityOfElementLocated(By.cssSelector("div.overlay")));
-		wait.until(ExpectedConditions.invisibilityOfElementLocated(By.cssSelector("div.ngx-spinner-overlay")));
-		//WebElement createCustomerLnk =  wait.until(ExpectedConditions.visibilityOf(txtCustomerOrPotentialCustomer));
-		WebElement createCustomerLnk =  wait.until(ExpectedConditions.visibilityOf(txtCustomer));
-	    ((JavascriptExecutor) driver).executeScript("arguments[0].click();", createCustomerLnk);
-   		//wait.until(ExpectedConditions.elementToBeClickable(txtCustomerOrPotentialCustomer)).click();
+		elementUtil.click(txtCustomerOrPotentialCustomer);
+		
 	}
 	
-	@FindBy(xpath = "//a[@href='#/sales/customerListing' and (@aria-expanded='false')]") WebElement lnkCustomer;
+	private final By lnkCustomer = By.xpath("//a[@href='#/sales/customerListing' and (@aria-expanded='false')]");
 	public void clickCustomerlnk()
 	{
-		 wait.until(ExpectedConditions.visibilityOf(lnkCustomer));
-		 lnkCustomer.click();
+		 elementUtil.click(lnkCustomer);
 	}
 	public void clickContcat()
 	{
 		
-		txtContcat.click();
+		elementUtil.click(txtContcat);
 	}
 	
 	public void clickOpenInquiries()
 	{
-		wait = new WebDriverWait(driver, Duration.ofSeconds(2));
-		wait.until(ExpectedConditions.invisibilityOfElementLocated(By.cssSelector(".p-progress-spinner"))); 
-		lnkOpenInquiries.click();
+		elementUtil.click(lnkOpenInquiries);
 	}
 	
 	public void clickCreateInquiry()
 	{
 		
-		txtCreateInquiry.click();
+		elementUtil.click(txtCreateInquiry);
 	}
 	
 	
 	//@FindBy(xpath = "//span[text()=' Event Listing ']") WebElement hdrEventListing; // to validate event listing header
-	By eventListingHeader = By.xpath("//span[normalize-space()='Event Listing']");
-	@FindBy(xpath = "//span[text()='Event Listing']") WebElement lnkEventListing;
+	private final By hdrEventListing = By.xpath("//span[normalize-space()='Event Listing']");
+	private final By lnkEventListing = By.xpath("//span[text()='Event Listing']");
+	
 	
 	public boolean isEventListingPresent() {
 
 	    waitutil.waitForOverlay();
 	   // wait.until(ExpectedConditions.visibilityOfElementLocated(eventListingHeader));
-	    return !driver.findElements(eventListingHeader).isEmpty();
+	    return !driver.findElements(hdrEventListing).isEmpty();
 	}
 	
 	public void clickEventListinglnk()
 	{
-		wait.until(ExpectedConditions.invisibilityOfElementLocated(By.cssSelector("div.overlay")));
-		wait.until(ExpectedConditions.elementToBeClickable(lnkEventListing));
-		waitutil.waitForOverlay();
-		lnkEventListing.click();
-		
+		elementUtil.click(lnkEventListing);
 	}
 	
 	
-	@FindBy(xpath = "//a[@href='#/sales/approval-inbox']") WebElement lnkapprovals;
-	@FindBy(xpath = "//span[text()='Sales Admin']") WebElement drpSalesAdmin;
+	private final By drpSalesAdmin = By.xpath("//span[text()='Sales Admin']");
+	private final By lnkapprovals = By.xpath("//a[@href='#/sales/approval-inbox']");
 	
 	public void clickApprovals()
 	{
-		wait.until(ExpectedConditions.invisibilityOfElementLocated(By.cssSelector("div.ngx-spinner-overlay")));
-		wait.until(ExpectedConditions.elementToBeClickable(drpSalesAdmin));
-		drpSalesAdmin.click();
-		wait.until(ExpectedConditions.elementToBeClickable(lnkapprovals));
-		//lnkapprovals.click();
-		 ((JavascriptExecutor) driver).executeScript("arguments[0].click();", lnkapprovals);
-		waitutil.waitForOverlay();
+		elementUtil.click(drpSalesAdmin);
+		elementUtil.click(lnkapprovals);
 	}
 }

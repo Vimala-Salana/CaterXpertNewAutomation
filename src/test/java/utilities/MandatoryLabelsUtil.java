@@ -23,6 +23,7 @@ public class MandatoryLabelsUtil extends BaseClass{
 		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(20));
 		waitutil = new WaitUtils(driver);
 		waitutil.waitForOverlay();
+		ElementInteractionUtil elementutil = new ElementInteractionUtil(driver);
 
 		/*
 		 * wait.until(new ExpectedCondition<Boolean>() {
@@ -163,9 +164,10 @@ public class MandatoryLabelsUtil extends BaseClass{
 							wait.until(ExpectedConditions.elementToBeClickable(drpoptions.get(0)));
 							if (!drpoptions.isEmpty()) {
 
-								WebElement option = driver.findElement(By.xpath("(//ul[contains(@class,'p-dropdown-items')]//li)[1]"));
-
-								((JavascriptExecutor) driver).executeScript("arguments[0].click();", option);
+								//WebElement option = driver.findElement(By.xpath("(//ul[contains(@class,'p-dropdown-items')]//li)[1]"));
+								By optFirst = By.xpath("(//ul[contains(@class,'p-dropdown-items')]//li)[1]");
+								elementutil.click(optFirst);
+								
 								waitutil.waitForOverlay();
 								//wait.until(ExpectedConditions.elementToBeClickable(firstOption)).click();
 								// wait.until(ExpectedConditions.refreshed(ExpectedConditions.elementToBeClickable(firstOption))).click();

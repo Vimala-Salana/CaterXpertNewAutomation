@@ -2,11 +2,13 @@ package utilities;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.poi.EncryptedDocumentException;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.DataFormatter;
 import org.apache.poi.ss.usermodel.Row;
@@ -25,11 +27,15 @@ public class ExcelUtility {
 	private Cell cell = null;
 	private String value;
 
-	public ExcelUtility(String path) throws IOException {
+	public ExcelUtility(String path) {
+	    this.path = path;
 
-		this.path = path;
-		fis = new FileInputStream(new File(path));
-		workbook = WorkbookFactory.create(fis);
+	    try {
+	        fis = new FileInputStream(path);
+	        workbook = WorkbookFactory.create(fis);
+	    } catch (IOException | EncryptedDocumentException e) {
+	        throw new RuntimeException("Failed to load Excel file: " + path, e);
+	    }
 	}
 	public Map<String, String> getMandatoryFieldData(String sheetName) throws IOException {
 		Map<String, String> data = new HashMap<>();

@@ -14,19 +14,14 @@ import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import testBase.BasePage;
 import utilities.WaitUtils;
 
-public class EstimatesPage {
+public class EstimatesPage extends BasePage{
 
-	WebDriver driver;
-	WebDriverWait wait;
-	WaitUtils waitutil;
 	public EstimatesPage(WebDriver driver)
 	{
-		this.driver = driver;
-		PageFactory.initElements(driver, this);
-		waitutil = new WaitUtils(driver);
-		wait = new WebDriverWait(driver,Duration.ofSeconds(50));
+		super(driver);
 	}
 
 	@FindBy(xpath = "//span[text()=' Estimate Sections ']") WebElement estimatesFullHdr;
@@ -192,7 +187,11 @@ public class EstimatesPage {
 		totalEstimatesSaveBtn.click();
 		System.out.println("Saved Total Estimates");
 	}
-
-
+	
+	private final By btnClose = By.xpath("//button[normalize-space(text())='Close']");
+	public void closeTotalEstimates()
+	{
+		elementUtil.click(btnClose);
+	}
 
 }

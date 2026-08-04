@@ -2,6 +2,7 @@ package utilities;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.time.Duration;
 import java.util.Properties;
 
 public class ConfigReader {
@@ -27,5 +28,10 @@ public class ConfigReader {
 
     public String getProperty(String key) {
         return properties.getProperty(key);
+    }
+    
+    public Duration getDuration(String key)
+    {
+    	return Duration.ofSeconds(Long.parseLong(properties.getProperty(key)));
     }
 }

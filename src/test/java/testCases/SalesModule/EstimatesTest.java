@@ -32,6 +32,7 @@ public class EstimatesTest extends BaseClass{
 			
 			Assert.assertEquals(estimates.getEstimatesTotals(), estimates.getActualTotal(),"Actual and Calculated Totals are not Same");
 			estimates.saveTotalEstimates();
+			estimates.closeTotalEstimates();
 		}
 		else
 		{

@@ -1,8 +1,5 @@
 package pageObjects;
 
-import java.awt.AWTException;
-import java.awt.Robot;
-import java.awt.event.KeyEvent;
 import java.time.Duration;
 import java.util.Map;
 
@@ -18,23 +15,22 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import utilities.ElementInteractionUtil;
 import utilities.ExcelUtility;
 import utilities.MandatoryLabelsUtil;
+import utilities.WaitUtils;
 
 public class CreateCustomerPage 
 {
 
 	public WebDriver driver;
-	String filepath;
-	String sheetname;
 	WebDriverWait wait;
+	WaitUtils waitutil;
 	public ElementInteractionUtil elementUtil;
 
-	public CreateCustomerPage(WebDriver driver, String filepath, String sheetname)
+	public CreateCustomerPage(WebDriver driver)
 	{
 		this.driver = driver;
-		this.filepath = filepath;
-		this.sheetname = sheetname;
 		PageFactory.initElements(driver,this);
 		this.elementUtil = new ElementInteractionUtil(driver);
+		waitutil = new WaitUtils(driver);
 		wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 	}
 
@@ -44,10 +40,8 @@ public class CreateCustomerPage
 		return hdrCreateCustomer.getText();
 	}
 
-	public void fillCustomerMandatoryfields() throws Exception {
-		ExcelUtility excelUtil = new ExcelUtility(filepath);
-		Map<String, String> data = excelUtil.getMandatoryFieldData(sheetname);
-		MandatoryLabelsUtil.fillMandatoryFields(driver, data);
+	public void fillCustomerMandatoryfields(Map<String, String> data) throws Exception {
+		  MandatoryLabelsUtil.fillMandatoryFields(driver, data);
 	}
 
 	private final By btnCreate = By.xpath("//button[normalize-space(text())='Create']");
@@ -55,15 +49,21 @@ public class CreateCustomerPage
 	{
 		elementUtil.click(btnCreate);
 	}
+	
+	private final By contactClose = By.xpath("//div[@aria-hidden='false']//button[normalize-space(text())='Close']");
+	public void clickContactClose()
+	{
+		elementUtil.click(contactClose);
+	}
 
-	@FindBy(xpath = "//input[contains(@placeholder,'Search Customer')]") WebElement txtSearchCustomer;
+	//@FindBy(xpath = "//input[contains(@placeholder,'Search Customer')]") WebElement txtSearchCustomer;
+	private final By txtSearchCustomer = By.xpath("//input[contains(@placeholder,'Search Customer')]");
 	public void enterCustomerNameinSearch(String customerName)
 	{
-		wait.until(ExpectedConditions.invisibilityOfElementLocated(By.className("spinner")));
+		elementUtil.typeText(txtSearchCustomer, customerName);
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("div.overlay")));
 		wait.until(ExpectedConditions.invisibilityOfElementLocated(By.cssSelector("div.overlay")));
-		wait.until(ExpectedConditions.invisibilityOfElementLocated(By.cssSelector("div.ngx-spinner-overlay")));
-		 wait.until(ExpectedConditions.elementToBeClickable(txtSearchCustomer));
-		 txtSearchCustomer.sendKeys(customerName,Keys.ENTER);
+		// txtSearchCustomer.sendKeys(customerName,Keys.ENTER);
 		
 	}
 	

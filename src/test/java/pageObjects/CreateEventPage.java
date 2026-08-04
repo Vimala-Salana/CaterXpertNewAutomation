@@ -12,38 +12,32 @@ import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import testBase.BasePage;
 import utilities.ElementInteractionUtil;
 import utilities.ExcelUtility;
 import utilities.MandatoryLabelsUtil;
 import utilities.ServiceUtil;
 import utilities.WaitUtils;
 
-public class CreateEventPage {
-
-	WebDriver driver;
+public class CreateEventPage extends BasePage{
+	
 	String filepath;
 	String sheetname;
-	WebDriverWait wait;
-	WaitUtils waitutil;
 	ServiceUtil serviceutil;
 	public String eventNo;
-	ElementInteractionUtil elementUtil;
 	
-	public CreateEventPage(WebDriver driver,String filepath,String sheetname)
+	public CreateEventPage(WebDriver driver, String filepath,String sheetname)
 	{
-		this.driver =driver;
+		super(driver);
 		this.filepath = filepath;
 		this.sheetname = sheetname;
 		PageFactory.initElements(driver, this);
-		waitutil = new WaitUtils(driver);
-		wait = new WebDriverWait(driver, Duration.ofSeconds(5));
-		this.elementUtil = new ElementInteractionUtil(driver);
 		serviceutil = new ServiceUtil(driver);
 	}
 	
 	public CreateEventPage(WebDriver driver)
 	{
-		this.driver =driver;
+		super(driver);
 		PageFactory.initElements(driver, this);
 		waitutil = new WaitUtils(driver);
 		wait = new WebDriverWait(driver, Duration.ofSeconds(5));

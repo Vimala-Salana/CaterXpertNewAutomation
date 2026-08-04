@@ -14,23 +14,17 @@ import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import testBase.BasePage;
 import utilities.WaitUtils;
 
-public class EventListingPage {
+public class EventListingPage extends BasePage{
 
-	WebDriver driver;
-	WebDriverWait wait;
-	WaitUtils waitutil;
 	WebDriverWait shortWait;
 	public EventListingPage(WebDriver driver)
 	{
-		this.driver =driver;
-		PageFactory.initElements(driver, this);
-		wait = new WebDriverWait(driver, Duration.ofSeconds(20));
-		waitutil = new WaitUtils(driver);
+		super(driver);
 		shortWait = new WebDriverWait(driver, Duration.ofSeconds(5));
 	}
-
 
 
 	@FindBy(xpath = "//input[@placeholder='Event #']") WebElement searchEvent;

@@ -1,5 +1,5 @@
 <!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
-<suite name="Regression Suite">
+<suite name="XML Suite">
 	<listeners>
 		<listener class-name="utilities.TestListener" />
 	</listeners>
@@ -14,18 +14,17 @@
 		<classes>
 			<class name="testCases.SalesModule.LoginTest" />
 			<class name="testCases.SalesModule.SalesNewNavigationTest" />
-			<!-- <class
-			name="testCases.SalesModule.CustomerOrPotentialCustomerListTest"/>
+			<!-- <class name="testCases.SalesModule.CustomerOrPotentialCustomerListTest"/>
 			<class name="testCases.SalesModule.CreateCustomerTest" />-->
 			<!--<class name="testCases.SalesModule.ContactListTest" />-->
 			<!--<class name="testCases.SalesModule.CreateContactTest" /> -->
 			<class name="testCases.SalesModule.CreateEventTest" />
 			<!--<class name="testCases.SalesModule.EventListingTest" />
-			<class name="testCases.SalesModule.EventDashboardTest" />
+			<class name="testCases.SalesModule.EventDashboardTest" />-->
 			<class name="testCases.SalesModule.MenuServiceTest" />
 			<class name="testCases.SalesModule.StaffingServiceTest" />
 			<class name="testCases.SalesModule.BeverageServiceTest" />
-			<class name="testCases.SalesModule.EstimatesTest" />-->
+			<class name="testCases.SalesModule.EstimatesTest" />
 		<!--<class name="testCases.KitchenModule.KitchenNavigationTest" />-->
 		</classes>
 	</test>

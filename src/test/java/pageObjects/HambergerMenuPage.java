@@ -1,8 +1,6 @@
 package pageObjects;
 
 import java.time.Duration;
-import java.util.List;
-
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
@@ -13,6 +11,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import utilities.ConfigReader;
+import utilities.ElementInteractionUtil;
 import utilities.WaitUtils;
 
 public class HambergerMenuPage{
@@ -21,12 +20,14 @@ public class HambergerMenuPage{
 	public ConfigReader config = new ConfigReader();
 	WebDriverWait wait; 
 	WaitUtils waitutil;
+	ElementInteractionUtil elementUtil;
 	public HambergerMenuPage(WebDriver driver)
 	{  
 		this.driver = driver;
 		PageFactory.initElements(driver,this);
 		waitutil = new WaitUtils(driver);
 		wait = new WebDriverWait(driver,Duration.ofSeconds(10));
+		elementUtil = new ElementInteractionUtil(driver);
 	}
 	
 	@FindBy(xpath = "//span[normalize-space(text())='AE Dashboard']") WebElement hdrAEDashboard;
@@ -36,7 +37,8 @@ public class HambergerMenuPage{
 	@FindBy(xpath = "//button[text()='Yes']") WebElement alertYes;
 	
 	@FindBy(xpath = "//span[normalize-space(text())='Customer/Potential Customer']") WebElement txtCustomerOrPotentialCustomer; //CRM
-	@FindBy(xpath = "//span[(normalize-space(text())='Customer')]") WebElement txtCustomer;
+	//@FindBy(xpath = "//span[(normalize-space(text())='Customer')]") WebElement txtCustomer;
+	private final By drpCustomer = By.xpath("//span[(normalize-space(text())='Customer')]");
 	@FindBy(xpath = "//span[text()='Contact']") WebElement txtContcat;
 	@FindBy(xpath = "//span[text()='Create Inquiry']") WebElement txtCreateInquiry;
 	
@@ -47,36 +49,24 @@ public class HambergerMenuPage{
 		return hdrAEDashboard.getText();
 	}
 	
-	@FindBy(xpath = "//nav//div[contains(@class,'d-flex')]//span[contains(.,'menu')]") WebElement hambergerMenu;
+	//@FindBy(xpath = "//nav//div[contains(@class,'d-flex')]//span[contains(.,'menu')]") WebElement hambergerMenu;
+	private final By iconHamburgerMenu = By.xpath("//nav//div[contains(@class,'d-flex')]//span[contains(.,'menu')]");
 	public void clickhambergerMenu() {
-			
-		 wait.until(ExpectedConditions.elementToBeClickable(hambergerMenu));
-			wait.until(ExpectedConditions.invisibilityOfElementLocated(By.cssSelector("div.overlay")));
-	    //((JavascriptExecutor) driver).executeScript("arguments[0].click();", menu);
-		hambergerMenu.click();
-	    waitutil.waitForOverlay();
+	    elementUtil.click(iconHamburgerMenu);
 	    
 	}
 	
-	@FindBy(xpath = "//span[text()='Create Event']") WebElement lnkCreateEvent;
+	private final By lnkCreateEvent = By.xpath("//span[text()='Create Event']");
 
 	public void clickCreateEvent() 
 	{
-		wait.until(ExpectedConditions.invisibilityOfElementLocated(By.cssSelector("div.ngx-spinner-overlay")));
-		WebElement createEventLnk =  wait.until(ExpectedConditions.visibilityOf(lnkCreateEvent));
-	    ((JavascriptExecutor) driver).executeScript("arguments[0].click();", createEventLnk);
-		//wait.until(ExpectedConditions.elementToBeClickable(lnkCreateEvent)).click();
+		elementUtil.click(lnkCreateEvent);
 	}
 	
 	public void clickCustomerOrPotentialCustomerdrp()
 	{
-		
-		wait.until(ExpectedConditions.invisibilityOfElementLocated(By.cssSelector("div.overlay")));
-		wait.until(ExpectedConditions.invisibilityOfElementLocated(By.cssSelector("div.ngx-spinner-overlay")));
-		//WebElement createCustomerLnk =  wait.until(ExpectedConditions.visibilityOf(txtCustomerOrPotentialCustomer));
-		WebElement createCustomerLnk =  wait.until(ExpectedConditions.visibilityOf(txtCustomer));
-	    ((JavascriptExecutor) driver).executeScript("arguments[0].click();", createCustomerLnk);
-   		//wait.until(ExpectedConditions.elementToBeClickable(txtCustomerOrPotentialCustomer)).click();
+		elementUtil.click(drpCustomer);  
+	    
 	}
 	
 	@FindBy(xpath = "//a[@href='#/sales/customerListing' and (@aria-expanded='false')]") WebElement lnkCustomer;
@@ -85,6 +75,14 @@ public class HambergerMenuPage{
 		 wait.until(ExpectedConditions.visibilityOf(lnkCustomer));
 		 lnkCustomer.click();
 	}
+	
+	public void navigateToCreateCustomer(){
+		clickhambergerMenu();
+		clickCustomerOrPotentialCustomerdrp();
+		clickCustomerlnk();
+		
+	}
+	
 	public void clickContcat()
 	{
 		

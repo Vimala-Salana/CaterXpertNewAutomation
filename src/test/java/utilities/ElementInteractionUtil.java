@@ -3,6 +3,7 @@ package utilities;
 import java.time.Duration;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.ElementClickInterceptedException;
 import org.openqa.selenium.ElementNotInteractableException;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.StaleElementReferenceException;
@@ -72,6 +73,11 @@ public class ElementInteractionUtil {
 				javascriptClick(locator);
 				LoggerManager.logActionSuccess(locator, startTime,  "Java Script Click", attempt);			
 				return;
+				
+			}
+			catch (ElementClickInterceptedException e) {
+			    lastException = e;
+			    LoggerManager.warn("Click intercepted. Retrying...");
 			}
 			catch(StaleElementReferenceException | NoSuchElementException | TimeoutException exception){                                                                    
 				lastException = exception;	
@@ -109,7 +115,7 @@ public class ElementInteractionUtil {
 	//Reusable method for Actions Click
 	public void actionsClick(By locator) {
 
-
+		waitUtils.waitForOverlay();
 		WebElement element = wait.until(ExpectedConditions.elementToBeClickable(locator));	
 		new Actions(driver)
 		.moveToElement(element)
@@ -174,7 +180,6 @@ public class ElementInteractionUtil {
 			LoggerManager.logActionFailure(locator, startTime, "Get Text", e, null);
 			throw e;
 		}
-
 	}
 
 	//Reusable method for getAttribute
