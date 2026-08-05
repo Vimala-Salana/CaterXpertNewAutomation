@@ -2,63 +2,56 @@ package workFlows;
 
 import java.util.List;
 
-import org.apache.poi.ss.usermodel.Header;
 import org.openqa.selenium.WebDriver;
-import org.testng.Assert;
-import org.testng.ITestContext;
-import org.testng.SkipException;
 
 import components.HamburgerMenuPage;
 import components.HeaderPage;
 import pageObjects.EventDashboardPage;
 import pageObjects.EventListingPage;
 import pageObjects.MenuServicePage;
+import utilities.LoggerManager;
 
-public class MenuServiceFlow {
-	
+public class ServicesWorkFlows {
+
 	private MenuServicePage menuServicePage;
-	private HamburgerMenuPage hambergerMenuPage;
+	private HamburgerMenuPage hamburgerMenuPage;
 	private EventDashboardPage eventDashboardPage;
 	EventListingPage eventlistPage;
 	private HeaderPage headerPage;
-	ServicesWorkFlows servicesFlows;
 	
-	
-	public MenuServiceFlow(WebDriver driver)
+	public ServicesWorkFlows(WebDriver driver)
 	{
 		menuServicePage = new MenuServicePage(driver);
-		hambergerMenuPage = new HamburgerMenuPage(driver);
+		hamburgerMenuPage = new HamburgerMenuPage(driver);
 		eventDashboardPage = new EventDashboardPage(driver);
 		eventlistPage = new EventListingPage(driver);
 		headerPage = new HeaderPage(driver);
-		
 	}
 	
-/*	public void openMenuServiceFromEventDashboard()
+	public void openServiceRequestFromEventDashboard(List<String> serviceName)
 	{
 		//Navigating to Menu Service from Event Dashboard
 		
 		List<String> status = List.of("New","Prog","Resent");
 		List<String> iconlabel = List.of("Service Request");
 		
-		eventDashboardPage.clickServiceLabelIcon(service, status, iconlabel);
+		if(!eventDashboardPage.clickServiceLabelIcon(serviceName, status, iconlabel))
+			
+			throw new RuntimeException(serviceName+" is not Mapped");
+			
 	}
-	*/
 	
-	public void openServiceRequestFromEventListing(String eventNo)
+	public void openServiceRequestFromEventListing(String eventNo, List<String> serviceName)
 	{
-		hambergerMenuPage.navigatetoEventListing();
+		hamburgerMenuPage.navigatetoEventListing();
 		
 		eventlistPage.enterEventNo(eventNo);
 		eventlistPage.closeInventoryPopupIfPresent();
 		eventlistPage.clickEventDashboardIcon(eventNo);
-		//openServiceFromEventDashboard();
+		openServiceRequestFromEventDashboard(serviceName);
 	}
 	
-	
-	
-	
-	public void finalizeService(String eventNo) throws InterruptedException
+	public void finalizeService(String eventNo, List<String> serviceName)
 	{
 		menuServicePage.clickFinalize();
 		boolean constraintExists = menuServicePage.menuServiceConstraints(); 
@@ -66,19 +59,34 @@ public class MenuServiceFlow {
 		menuServicePage.menuServiceClose();
 		if(constraintExists)
 		{
-			headerPage.clickhambergerMenu();
-			hambergerMenuPage.clickApprovals();
-			menuServicePage.approveMenuserviceConstraints(eventNo);
+			approveServiceConstraints(eventNo);
 		}
 		
+		validateServiceStatus(serviceName);
+		
+	}
+	
+	private void approveServiceConstraints(String eventNo)
+	{
+		headerPage.clickhambergerMenu();
+		hamburgerMenuPage.clickApprovals();
+		menuServicePage.approveMenuserviceConstraints(eventNo);
+	}
+	
+	public void validateServiceStatus(List<String> serviceName)
+	{
 		for(String header : eventDashboardPage.readAllHeaders())
 		{
-			//if(service.stream().anyMatch(header::contains))
+			if(serviceName.stream().anyMatch(header::contains))
 			{
-				System.out.println("Service Status : "+header);
+				LoggerManager.info("Service Status : "+ header);
 				break;
+			}
+			else {
+				
 			}
 		}
 	}
-	
 }
+
+

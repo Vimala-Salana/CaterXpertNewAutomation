@@ -1,14 +1,8 @@
 package testCases.SalesModule;
-import java.io.IOException;
 import java.util.Map;
-
-import org.testng.Assert;
 import org.testng.ITestContext;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-
-import components.HambergerMenuPage;
-import components.HeaderPage;
 import factory.DriverFactory;
 import pageObjects.BasetoSalesNavigationPage;
 import pageObjects.CreateEventPage;

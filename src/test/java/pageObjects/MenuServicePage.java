@@ -13,6 +13,8 @@ import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import com.google.gson.annotations.Until;
+
 import testBase.BasePage;
 import utilities.ServiceUtil;
 import utilities.WaitUtils;
@@ -67,7 +69,7 @@ public class MenuServicePage extends BasePage{
 	private final By chkItems = By.xpath("//p-checkbox[@ptooltip='Select Item']");
 
 	//private final By itemsCheckBoxLoc = By.xpath("//p-checkbox[@ptooltip='Select Item']");
-	private final By menuNames = By.xpath("//span[contains(normalize-space(),'Select')]");
+	private final By menuNames = By.xpath("//span[text()='- Select -']");
 	private final By list = By.xpath("//li[@role='option']");
 	private final By checkboxLoc = By.xpath("//p-checkbox[@ptooltip='Select Item']//div[contains(@class,'p-checkbox-box')]");
 	
@@ -75,18 +77,25 @@ public class MenuServicePage extends BasePage{
 	private final By searchAndAddClose = By.xpath("(//app-search-add//button[text()=' Close '])[1]");
 
 
-	public void addMenuItems() throws InterruptedException
+	public void aenterMenuItemsQty()
 	{	
 		
 		wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(chkItems));
 		List<WebElement> elements = driver.findElements(chkItems);
 
 		for (int i = 0; i < elements.size(); i++) {
-
+			System.out.println(i+"----"+elements.size());
 			try {
 				WebElement el = driver.findElements(checkboxLoc).get(i);
+				
+				//wait.until(ExpectedConditions.elementToBeClickable(el));
+				
+				if(el.isDisplayed())
+				{
+					((JavascriptExecutor) driver).executeScript("arguments[0].click();", el);
+				}
 
-				((JavascriptExecutor) driver).executeScript("arguments[0].click();", el);
+				
 
 			} catch (StaleElementReferenceException e) {
 				i--; // retry same index
@@ -109,7 +118,11 @@ public class MenuServicePage extends BasePage{
 			List<WebElement> options = driver.findElements(list);
 			wait.until(ExpectedConditions.elementToBeClickable(options.get(0)));
 			options.get(0).click(); // click the first option
-			Thread.sleep(100);
+			try {
+				Thread.sleep(100);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
 
 		}	
 		System.out.println("Added Menu Items");
@@ -117,6 +130,12 @@ public class MenuServicePage extends BasePage{
 		elementUtil.click(searchAndAddSave);
 		elementUtil.click(searchAndAddClose);
 
+	}
+	
+	public void addMenuItems()
+	{
+			clickSearchAndAddbtn();
+			aenterMenuItemsQty();			
 	}
 	
 	public void clickListSave()
@@ -140,7 +159,7 @@ public class MenuServicePage extends BasePage{
 		return serviceUtil.Constraints();
 	}
 
-	public void fillmenuInfo()
+	public void fillMenuInfo()
 	{
 		serviceUtil.Info();
 
@@ -153,9 +172,9 @@ public class MenuServicePage extends BasePage{
 		menuClose.click();
 	}
 
-	public void approveMenuserviceConstraints(boolean constraintsExists, String eventNo) throws InterruptedException
+	public void approveMenuserviceConstraints(String eventNo)
 	{
-		serviceUtil.approveConstraints(constraintsExists, eventNo);
+		serviceUtil.approveConstraints(eventNo);
 		EventListingPage eventlist = new EventListingPage(driver);
 		eventlist.EventDashboardNavigation(eventNo);
 	}

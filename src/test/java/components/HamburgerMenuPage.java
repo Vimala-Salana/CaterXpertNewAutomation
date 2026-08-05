@@ -16,10 +16,10 @@ import testBase.BasePage;
 import utilities.ConfigReader;
 import utilities.WaitUtils;
 
-public class HambergerMenuPage extends BasePage{
+public class HamburgerMenuPage extends BasePage{
 
 	private HeaderPage headerPage;
-	public HambergerMenuPage(WebDriver driver)
+	public HamburgerMenuPage(WebDriver driver)
 	{  
 		super(driver);
 		headerPage = new HeaderPage(driver);

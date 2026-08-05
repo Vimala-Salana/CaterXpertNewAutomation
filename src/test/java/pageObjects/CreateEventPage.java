@@ -87,7 +87,7 @@ public class CreateEventPage extends BasePage{
 	
 	public void ApproveEventConstraints(boolean constraintsExists, String eventNo)
 	{
-			serviceutil.approveConstraints(constraintsExists,eventNo);
+			serviceutil.approveConstraints(eventNo);
 			EventListingPage eventlist = new EventListingPage(driver);
 			eventlist.EventDashboardNavigation(eventNo);
 	}

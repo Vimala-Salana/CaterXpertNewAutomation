@@ -207,10 +207,8 @@ public class ServiceUtil {
 	By pendingConstraints = By.xpath("//span[text()=' Pending ']");
 	By approvalSave = By.xpath("//button[text()=' Save ']");
 	By approvalClose = By.xpath("//button[text()=' Close ']");
-	public void approveConstraints(boolean constraintExists, String eventNo)
+	public void approveConstraints(String eventNo)
 	{ 
-		if(constraintExists) 		//constraintExists==true
-		{
 			waitutil.waitForOverlay();
 
 			By noRecords = By.xpath("//p[contains(text(),'records found')]");
@@ -240,6 +238,5 @@ public class ServiceUtil {
 			waitutil.waitForOverlay();
 			wait.until(ExpectedConditions.elementToBeClickable(approvalClose)).click();
 
-		}
 	}
 }

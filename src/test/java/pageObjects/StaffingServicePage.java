@@ -92,7 +92,7 @@ public class StaffingServicePage {
 	
 	public void approveStaffingConstraints(boolean constraintsExists, String eventNo) throws InterruptedException
 	{
-		serviceUtil.approveConstraints(constraintsExists, eventNo);
+		serviceUtil.approveConstraints(eventNo);
 		EventListingPage eventlist = new EventListingPage(driver);
 		eventlist.EventDashboardNavigation(eventNo);
 	}

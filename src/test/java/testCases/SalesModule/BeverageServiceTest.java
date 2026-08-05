@@ -48,7 +48,7 @@ public class BeverageServiceTest extends BaseClass{
 			bevService.validateItems();
 			bevService.clickFinalize();
 			boolean constraintExists = mp.menuServiceConstraints(); 
-			mp.fillmenuInfo();
+			mp.fillMenuInfo();
 			bevService.clickBeverageServiceClose();
 			if(constraintExists)
 			{
@@ -60,7 +60,7 @@ public class BeverageServiceTest extends BaseClass{
 				{
 					throw new SkipException("Event No not set - CreateEventTest may have failed");
 				}
-				mp.approveMenuserviceConstraints(constraintExists,eventNo);
+				mp.approveMenuserviceConstraints(eventNo);
 			}
 
 		}

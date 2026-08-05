@@ -6,18 +6,18 @@ import java.util.Map;
 import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
 
-import components.HambergerMenuPage;
+import components.HamburgerMenuPage;
 import components.HeaderPage;
 import pageObjects.CreateEventPage;
 
 public class EventFlow {
 
-	private HambergerMenuPage hambergerMenuPage;
+	private HamburgerMenuPage hambergerMenuPage;
 	private HeaderPage headerPage;
 	CreateEventPage eventPage;
 	public EventFlow(WebDriver driver)
 	{
-		hambergerMenuPage = new HambergerMenuPage(driver);
+		hambergerMenuPage = new HamburgerMenuPage(driver);
 		headerPage = new HeaderPage(driver);
 		eventPage = new CreateEventPage(driver);
 	}
