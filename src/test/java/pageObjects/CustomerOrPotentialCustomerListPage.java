@@ -9,15 +9,13 @@ import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-public class CustomerOrPotentialCustomerListPage {
+import testBase.BasePage;
 
-	public WebDriver driver;
-	WebDriverWait wait;
+public class CustomerOrPotentialCustomerListPage extends BasePage{
+
 	public CustomerOrPotentialCustomerListPage(WebDriver driver)
 	{  
-		this.driver = driver;
-		PageFactory.initElements(driver,this);
-		wait = new WebDriverWait(driver,Duration.ofSeconds(10));
+		super(driver);
 	}
 	@FindBy(xpath="//span[normalize-space(text())='Customer/Potential Customer List']") WebElement hdrCustomerOrPotentialCustomerList;
 

@@ -70,8 +70,12 @@ public class MenuServicePage extends BasePage{
 	private final By menuNames = By.xpath("//span[contains(normalize-space(),'Select')]");
 	private final By list = By.xpath("//li[@role='option']");
 	private final By checkboxLoc = By.xpath("//p-checkbox[@ptooltip='Select Item']//div[contains(@class,'p-checkbox-box')]");
+	
+	private final By searchAndAddSave = By.xpath("(//app-search-add//button[text()=' Save '])[1]");
+	private final By searchAndAddClose = By.xpath("(//app-search-add//button[text()=' Close '])[1]");
 
-	public void selectMenuItems() throws InterruptedException
+
+	public void addMenuItems() throws InterruptedException
 	{	
 		
 		wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(chkItems));
@@ -109,30 +113,20 @@ public class MenuServicePage extends BasePage{
 
 		}	
 		System.out.println("Added Menu Items");
+		
+		elementUtil.click(searchAndAddSave);
+		elementUtil.click(searchAndAddClose);
 
-	}
-
-	@FindBy(xpath = "(//app-search-add//button[text()=' Save '])[1]") WebElement searchAndAddSave;
-	@FindBy(xpath = "(//app-search-add//button[text()=' Close '])[1]") WebElement searchAndAddClose;
-
-	public void clickListSave()
-	{
-		wait.until(ExpectedConditions.elementToBeClickable(searchAndAddSave)).click();
-		waitutil.waitForOverlay();
-		/*
-		 * wait.until(driver -> { try { return driver.findElements(By.cssSelector(
-		 * "div.overlay, div.swal2-container, .swal2-popup, .swal2-backdrop-show, .p-toast"
-		 * )) .stream() .noneMatch(e -> e.isDisplayed()); } catch
-		 * (StaleElementReferenceException e) { return true; } });
-		 */		
 	}
 	
-	By btnCloseLocator = By.xpath("(//app-search-add//button[text()=' Close '])[1]");
-	public void clickListClose()
+	public void clickListSave()
 	{
-		
-		elementUtil.click(btnCloseLocator);
-		
+		elementUtil.click(searchAndAddSave);
+	}
+	
+	public void  clickListClose()
+	{
+		elementUtil.click(searchAndAddClose);
 	}
 	
 	private final By btnFinalize = By.xpath("//button[text()=' Finalize ']");

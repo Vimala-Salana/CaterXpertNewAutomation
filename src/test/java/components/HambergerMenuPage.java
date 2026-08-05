@@ -18,9 +18,11 @@ import utilities.WaitUtils;
 
 public class HambergerMenuPage extends BasePage{
 
+	private HeaderPage headerPage;
 	public HambergerMenuPage(WebDriver driver)
 	{  
 		super(driver);
+		headerPage = new HeaderPage(driver);
 	}
 	
 	private By hdrAEDashboard = By.xpath("//span[normalize-space(text())='AE Dashboard']");
@@ -85,13 +87,16 @@ public class HambergerMenuPage extends BasePage{
 	public boolean isEventListingPresent() {
 
 	    waitutil.waitForOverlay();
-	   // wait.until(ExpectedConditions.visibilityOfElementLocated(eventListingHeader));
 	    return !driver.findElements(hdrEventListing).isEmpty();
 	}
 	
-	public void clickEventListinglnk()
+	public void navigatetoEventListing()
 	{
-		elementUtil.click(lnkEventListing);
+		if(!isEventListingPresent())
+		{
+			headerPage.clickhambergerMenu();
+			elementUtil.click(lnkEventListing);
+		}
 	}
 	
 	

@@ -52,13 +52,9 @@ public class CreateEventPage extends BasePage{
 		return hdrCreateEvent.getText();
 	}
 	
-	public void fillEventMandatoryfields() throws Exception
+	public void fillEventMandatoryfields(Map<String, String> data) throws Exception
 	{
-		waitutil.waitForOverlay();
-		ExcelUtility excelUtil = new ExcelUtility(filepath);
-		Map<String, String> data = excelUtil.getMandatoryFieldData(sheetname);
 		MandatoryLabelsUtil.fillMandatoryFields(driver, data);
-		waitutil.waitForOverlay();
 	}
 	
 	private final By btnCreate = By.xpath("//button[normalize-space()='Create']");

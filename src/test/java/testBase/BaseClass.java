@@ -45,7 +45,7 @@ public class BaseClass {
 		  login.login(caterid,userid,password); 
 	  } 	
 	 
-	  //@AfterMethod
+	  @AfterMethod
 	  public void tearDown() 
 	  { 
 		  DriverFactory.quitDriver();

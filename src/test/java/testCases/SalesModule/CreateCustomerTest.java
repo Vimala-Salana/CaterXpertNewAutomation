@@ -15,24 +15,23 @@ import pageObjects.HambergerMenuPage;
 import testBase.BaseClass;
 import utilities.ExcelUtility;
 import utilities.ReportManager;
+import workFlows.CustomerFlow;
 
 public class CreateCustomerTest extends BaseClass {
 
 	ExcelUtility excelUtil;
 	private CreateCustomerPage customerPage;
 	private BasetoSalesNavigationPage basePage; 
-	private HambergerMenuPage hamburgerMenuPage;
-	private CustomerOrPotentialCustomerListPage customerListpage;
 	Map<String, String> data;
 	private String sheetname;
+	private CustomerFlow customerFlow;
 	
 	@BeforeMethod
 	public void setup() throws IOException
 	{
-		customerPage = new CreateCustomerPage(DriverFactory.getDriver());
-		hamburgerMenuPage = new HambergerMenuPage(DriverFactory.getDriver());
-		customerListpage = new CustomerOrPotentialCustomerListPage(DriverFactory.getDriver());
 		basePage = new BasetoSalesNavigationPage(DriverFactory.getDriver());
+		customerFlow = new CustomerFlow(DriverFactory.getDriver());
+		
 		basicLogin();
 		
 		basePage.salesNewNavigation();
@@ -40,13 +39,11 @@ public class CreateCustomerTest extends BaseClass {
 		excelUtil = new ExcelUtility(filepath);
 		sheetname = "Create Customer";
 		data = excelUtil.getMandatoryFieldData(sheetname);
-		
-		hamburgerMenuPage.navigateToCreateCustomer();
+		customerFlow.navigatetocreateCustomer();
 		
 		//String hdrCustomerList = customerlistpage.getCustomerOrPotentialCustomerListhdr();
 		//Assert.assertEquals(hdrCustomerList, "Customer/Potential Customer List","header mismatch");
 		//Thread.sleep(1000);
-		customerListpage.ClickNewCustomer();
 		
 	}
 
@@ -54,11 +51,9 @@ public class CreateCustomerTest extends BaseClass {
 	public void verifyCreateCustomerWithMandatoryFieldsOnly() throws Exception {
 
 		//Assert.assertEquals(customerPage.getCreateCustomerhdr(), "Create Customer");
-		customerPage.fillCustomerMandatoryfields(data); 
-		customerPage.clickCreatebtn();
+		customerFlow.createCustomer(data);
 		customerPage.clickContactClose();
 		
-
 		// searching customer
 
 		String customernameexl = excelUtil.getCellValue(sheetname, 1, 1);

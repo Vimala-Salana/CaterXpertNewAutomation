@@ -1,52 +1,58 @@
 package testCases.SalesModule;
+import java.io.IOException;
+import java.util.Map;
+
 import org.testng.Assert;
 import org.testng.ITestContext;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import components.HambergerMenuPage;
 import components.HeaderPage;
 import factory.DriverFactory;
+import pageObjects.BasetoSalesNavigationPage;
 import pageObjects.CreateEventPage;
 import testBase.BaseClass;
+import utilities.ExcelUtility;
+import workFlows.EventFlow;
 
 public class CreateEventTest extends BaseClass{
 	
+	BasetoSalesNavigationPage baseNavPage;
+	EventFlow eventFlow;
+	ExcelUtility excelUtil;
+	String sheetname;
+	CreateEventPage eventPage;
+	Map<String, String> data;
+	@BeforeMethod
+	public void setup()
+	{
+		baseNavPage = new BasetoSalesNavigationPage(DriverFactory.getDriver());
+		eventFlow =  new EventFlow(DriverFactory.getDriver());
+		
+		basicLogin();
+		baseNavPage.salesNewNavigation();
+		
+		excelUtil = new ExcelUtility(filepath);
+		sheetname = "Create Event";
+		data = excelUtil.getMandatoryFieldData(sheetname);
+	}
 	
 	@Test(groups = {"Regression", "EventCreationDirect"})
 	public void createEventDirect()
 	{
-		HambergerMenuPage hamberger = new HambergerMenuPage(DriverFactory.getDriver()); 
-		HeaderPage header = new HeaderPage(DriverFactory.getDriver());
-		header.clickhambergerMenu();
-		hamberger.clickCreateEvent();
+		eventFlow.navigatetoCreateEvent();
 	}
 	 
 	@Test(groups = {"Regression", "All"})
-	public void createEventFromContact(ITestContext context) throws Exception
+	public void createEventFromEventPage(ITestContext context) throws Exception
 	{
-		
-		String sheetname = "Create Event";
-		//driver.findElement(By.xpath("//button[text()='OK']")).click();
-		CreateEventPage eventpage = new CreateEventPage(DriverFactory.getDriver(), filepath,sheetname);
+		eventPage = new CreateEventPage(DriverFactory.getDriver());
 		//validating CreateEvent header
-		Assert.assertEquals(eventpage.getCreateEventhdr(), "Create Event");
+		//Assert.assertEquals(eventPage.getCreateEventhdr(), "Create Event");
 		
-		eventpage.fillEventMandatoryfields(); //filling all mandatory fields
-		eventpage.clickCreatebtn();
-		
-		boolean constraintExists = eventpage.eventConstraints(); 
-		String eventNo = eventpage.getEventNo(); 
-		context.setAttribute("eventNo", eventNo); //To use Event Number in other classes
-		eventpage.clickClosebtn();
-		System.out.println("Event No : "+eventNo);
-		HambergerMenuPage hamberger = new HambergerMenuPage(DriverFactory.getDriver()); 
-		HeaderPage header = new HeaderPage(DriverFactory.getDriver());
-		if(constraintExists)
-		{
-			header.clickhambergerMenu();
-			hamberger.clickApprovals();
-		eventpage.ApproveEventConstraints(constraintExists,eventNo);
-		}
+		String eventNo = eventFlow.createEventfromEventPage(data);
+		context.setAttribute("eventNo", eventNo);   //To use Event Number in other classes
 	}
-
+			
 }

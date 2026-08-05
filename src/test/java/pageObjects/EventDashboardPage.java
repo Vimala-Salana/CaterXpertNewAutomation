@@ -46,7 +46,6 @@ public class EventDashboardPage {
 	{
 		waitutil.waitForOverlay();
 		wait.until(ExpectedConditions.visibilityOfAllElements(headersList));
-		System.out.println("headers");
 		// Looping through all the headers
 		for (WebElement header : headersList) 
 		{

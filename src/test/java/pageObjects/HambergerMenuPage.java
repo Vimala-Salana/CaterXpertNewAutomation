@@ -10,24 +10,17 @@ import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import testBase.BasePage;
 import utilities.ConfigReader;
 import utilities.ElementInteractionUtil;
 import utilities.WaitUtils;
 
-public class HambergerMenuPage{
+public class HambergerMenuPage extends BasePage{
 
-	public WebDriver driver;
-	public ConfigReader config = new ConfigReader();
-	WebDriverWait wait; 
-	WaitUtils waitutil;
-	ElementInteractionUtil elementUtil;
+
 	public HambergerMenuPage(WebDriver driver)
 	{  
-		this.driver = driver;
-		PageFactory.initElements(driver,this);
-		waitutil = new WaitUtils(driver);
-		wait = new WebDriverWait(driver,Duration.ofSeconds(10));
-		elementUtil = new ElementInteractionUtil(driver);
+		super(driver);
 	}
 	
 	@FindBy(xpath = "//span[normalize-space(text())='AE Dashboard']") WebElement hdrAEDashboard;

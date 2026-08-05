@@ -37,7 +37,7 @@ public class ExcelUtility {
 	        throw new RuntimeException("Failed to load Excel file: " + path, e);
 	    }
 	}
-	public Map<String, String> getMandatoryFieldData(String sheetName) throws IOException {
+	public Map<String, String> getMandatoryFieldData(String sheetName) {
 		Map<String, String> data = new HashMap<>();
 
 		/*

@@ -12,26 +12,18 @@ import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import testBase.BasePage;
 import utilities.ElementInteractionUtil;
 import utilities.ExcelUtility;
 import utilities.MandatoryLabelsUtil;
 import utilities.WaitUtils;
 
-public class CreateCustomerPage 
+public class CreateCustomerPage extends BasePage
 {
-
-	public WebDriver driver;
-	WebDriverWait wait;
-	WaitUtils waitutil;
-	public ElementInteractionUtil elementUtil;
 
 	public CreateCustomerPage(WebDriver driver)
 	{
-		this.driver = driver;
-		PageFactory.initElements(driver,this);
-		this.elementUtil = new ElementInteractionUtil(driver);
-		waitutil = new WaitUtils(driver);
-		wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+		super(driver);
 	}
 
 	@FindBy (xpath = "//span[normalize-space(text())='Create Customer'] ") WebElement hdrCreateCustomer;
