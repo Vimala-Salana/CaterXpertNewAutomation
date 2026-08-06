@@ -31,7 +31,7 @@ public class CreateCustomerTest extends BaseClass {
 	{
 		basePage = new BasetoSalesNavigationPage(DriverFactory.getDriver());
 		customerFlow = new CustomerFlow(DriverFactory.getDriver());
-		
+		customerPage = new CreateCustomerPage(DriverFactory.getDriver());
 		basicLogin();
 		
 		basePage.salesNewNavigation();

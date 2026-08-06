@@ -1,7 +1,13 @@
 package pageObjects;
 
+import java.util.List;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+
 import testBase.BasePage;
 
 public class ServicesPage extends BasePage{
@@ -28,6 +34,27 @@ public class ServicesPage extends BasePage{
 		elementUtil.click(btnSearchAndAdd);
 	}
 	
+	@FindBy(xpath = "//div[contains(@class,'d-flex me-2')]//div[contains(@class,'p-checkbox-box')]") 
+	List<WebElement> outSourcedOrRequired;
+	
+	public void uncheckIfOutsourcedOrNotRequired()
+	{
+		waitutil.waitForOverlay();
+
+		for (WebElement checkbox : outSourcedOrRequired) 
+		{
+			WebElement input = checkbox.findElement(By.xpath("./ancestor::p-checkbox//input"));
+
+			if (checkbox.isDisplayed() && "true".equalsIgnoreCase(input.getAttribute("aria-checked"))) 
+			{
+				WebElement box = wait.until(ExpectedConditions.elementToBeClickable(checkbox));
+				box.click();
+				clickServiceSave();
+				waitutil.waitForOverlay();
+			}
+		}
+	}
+	
 	public void clickFilterIcon()
 	{
 		elementUtil.click(iconFilter);
@@ -41,9 +68,13 @@ public class ServicesPage extends BasePage{
 	private final By searchAndAddSave = By.xpath("(//app-search-add//button[text()=' Save '])[1]");
 	private final By searchAndAddClose = By.xpath("(//app-search-add//button[text()=' Close '])[1]");
 	
-	public void clickListSaveAndClose()
+	public void clickListSave()
 	{
 		elementUtil.click(searchAndAddSave);
+	}
+	
+	public void clickListClose()
+	{
 		elementUtil.click(searchAndAddClose);
 	}
 

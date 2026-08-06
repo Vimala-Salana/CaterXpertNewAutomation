@@ -2,67 +2,68 @@ package testCases.SalesModule;
 
 import java.util.List;
 
+import org.checkerframework.checker.units.qual.s;
+import org.testng.Assert;
 import org.testng.ITestContext;
-import org.testng.SkipException;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-
 import factory.DriverFactory;
-import pageObjects.BeverageservicePage;
-import pageObjects.EventDashboardPage;
-import pageObjects.HambergerMenuPage;
-import pageObjects.MenuServicePage;
+import pageObjects.BasetoSalesNavigationPage;
+import pageObjects.BeverageServicePage;
+import pageObjects.ServicesPage;
 import testBase.BaseClass;
+import workFlows.ServicesWorkFlows;
 
 public class BeverageServiceTest extends BaseClass{
+	
+	BasetoSalesNavigationPage baseNavPage;
+	BeverageServicePage beverageServicePage;
+	ServicesPage servicesPage;
+	ServicesWorkFlows servicesFlow;
+	List<String> service;
+	
+	@BeforeMethod
+	public void setup()
+	{
+		baseNavPage = new BasetoSalesNavigationPage(DriverFactory.getDriver());
+		beverageServicePage =  new BeverageServicePage(DriverFactory.getDriver());
+		servicesPage = new ServicesPage(DriverFactory.getDriver());
+		servicesFlow = new ServicesWorkFlows(DriverFactory.getDriver());
+		service = List.of("Beverage","Non Alc Bev");
+		basicLogin();
+		baseNavPage.salesNewNavigation();
+
+	}
 
 	@Test(groups = {"Regression", "All"})
 	public void beveageservice(ITestContext context) throws InterruptedException
 	{
-		EventDashboardPage dashboard = new EventDashboardPage(DriverFactory.getDriver());
-
-		List<String> service = List.of("Beverage","Non Alc Bev");
-		List<String> status = List.of("New","Prog","Resent","None");
-		List<String> iconlabel = List.of("Service Request");
-		if(dashboard.clickServiceLabelIcon(service, status, iconlabel))
-		{
-			MenuServicePage mp = new MenuServicePage(DriverFactory.getDriver());
-			BeverageservicePage bevService = new BeverageservicePage(DriverFactory.getDriver());
-			bevService.uncheckIfOutsourcedOrNotRequired();
-			mp.clickSearchAndAddbtn();
-			bevService.showMappedItems();
+	
+			servicesFlow.openServiceRequestFromEventListing("DO-76" , service);
+	
+			Assert.assertTrue(service.stream().anyMatch(s -> servicesPage.getServiceHdr().contains(s)),
+					"BeverageService not Mapped/Service not present in the Service list.");
+			servicesPage.clickSearchAndAddbtn();
+			servicesPage.uncheckIfOutsourcedOrNotRequired();
+			beverageServicePage.showMappedItems();
 			
-			bevService.enterQuantity();
-			mp.clickListSave();
-			bevService.clickOkInInventoryPopup();
-			mp.clickListClose();
+			beverageServicePage.enterQuantity();
+			servicesPage.clickListSave();
+			beverageServicePage.closeInventoryPopupIfPresent();
+			servicesPage.clickListClose();
 			
 
-			if(bevService.clickReserveIfPresent())
+			if(beverageServicePage.clickReserveIfPresent())
 			{
 				System.out.println("Reserved Qty");
-				bevService.clickOkInInventoryPopup();
+				beverageServicePage.closeInventoryPopupIfPresent();
 			}
 			
 			else
 				System.out.println("No Reserve Button Available");
-			bevService.validateItems();
-			bevService.clickFinalize();
-			boolean constraintExists = mp.menuServiceConstraints(); 
-			mp.fillMenuInfo();
-			bevService.clickBeverageServiceClose();
-			if(constraintExists)
-			{
-				HambergerMenuPage aepage = new HambergerMenuPage(DriverFactory.getDriver());
-				aepage.clickhambergerMenu();
-				aepage.clickApprovals();
-				String eventNo = (String) context.getAttribute("eventNo");
-				if(eventNo == null)
-				{
-					throw new SkipException("Event No not set - CreateEventTest may have failed");
-				}
-				mp.approveMenuserviceConstraints(eventNo);
-			}
+			beverageServicePage.validateItems();
+			
+			servicesFlow.finalizeService("DO-76", service);
 
 		}
 	}
-}

@@ -35,6 +35,7 @@ public class CreateContactTest extends BaseClass{
 	{
 		basePage = new BasetoSalesNavigationPage(DriverFactory.getDriver());
 		contactFlow = new ContactFlow();
+		contactListpage = new ContactListPage(DriverFactory.getDriver());
 		basicLogin();
 		
 		basePage.salesNewNavigation();

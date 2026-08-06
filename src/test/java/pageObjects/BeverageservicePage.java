@@ -21,13 +21,13 @@ import utilities.LoggerManager;
 import utilities.ReportManager;
 import utilities.WaitUtils;
 
-public class BeverageservicePage {
+public class BeverageServicePage {
 	public WebDriver driver;
 	String filepath;
 	String sheetname;
 	WaitUtils waitutil;
 	WebDriverWait wait;
-	public BeverageservicePage(WebDriver driver)
+	public BeverageServicePage(WebDriver driver)
 	{
 		this.driver = driver;
 		PageFactory.initElements(driver,this);
@@ -36,26 +36,7 @@ public class BeverageservicePage {
 
 	}
 
-	@FindBy(xpath = "//div[contains(@class,'d-flex me-2')]//div[contains(@class,'p-checkbox-box')]") List<WebElement> outSourcedOrRequired;
-	@FindBy(xpath = "//button[normalize-space(text())='Save']") WebElement serviceSave;
-	public void uncheckIfOutsourcedOrNotRequired()
-	{
-		waitutil.waitForOverlay();
-
-		for (WebElement checkbox : outSourcedOrRequired) 
-		{
-
-			WebElement input = checkbox.findElement(By.xpath("./ancestor::p-checkbox//input"));
-
-			if (checkbox.isDisplayed() && "true".equalsIgnoreCase(input.getAttribute("aria-checked"))) 
-			{
-				WebElement box = wait.until(ExpectedConditions.elementToBeClickable(checkbox));
-				box.click();
-				serviceSave.click();
-				waitutil.waitForOverlay();
-			}
-		}
-	}
+	
 
 	@FindBy(xpath = "//p-tabpanel[@header='Item']/div[@role='tabpanel' and not(@hidden)]//following-sibling::p") List<WebElement> noRecords;
 	@FindBy(xpath = "//span[@ptooltip='Filter']") WebElement filterIcon;
@@ -95,7 +76,7 @@ public class BeverageservicePage {
 	}
 
 	@FindBy(xpath = "//button[text()='Ok']") List<WebElement> okBtn;
-	public void clickOkInInventoryPopup()
+	public void closeInventoryPopupIfPresent()
 	{
 		if(!okBtn.isEmpty())
 		{

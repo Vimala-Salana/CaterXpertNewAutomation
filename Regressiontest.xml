@@ -12,6 +12,7 @@
       <class name="testCases.SalesModule.CreateContactTest"/>
       <class name="testCases.SalesModule.CreateEventTest"/>-->
       <class name="testCases.SalesModule.MenuServiceTest"/>
+      <class name="testCases.SalesModule.BeverageServiceTest"/>
     </classes>
   </test> <!-- RegressionTest -->
 </suite> <!-- RegressionSuite -->

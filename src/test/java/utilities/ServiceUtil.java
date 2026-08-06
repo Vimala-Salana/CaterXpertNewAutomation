@@ -1,9 +1,12 @@
 package utilities;
 
+import java.security.PrivateKey;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+
+import javax.print.DocFlavor.BYTE_ARRAY;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
@@ -21,11 +24,13 @@ public class ServiceUtil {
 	WebDriver driver;
 	WebDriverWait wait;
 	WaitUtils waitutil;
+	ElementInteractionUtil elementUtil;
 	public ServiceUtil(WebDriver driver)
 	{
 		this.driver = driver;
 		waitutil = new WaitUtils(driver);
 		this.wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+		elementUtil = new ElementInteractionUtil(driver);
 	}
 
 
@@ -44,21 +49,9 @@ public class ServiceUtil {
 		By mandatoryLabelsLocator  = By.xpath(MandatoryFieldsXpaths.MANDATORY_LABEL);
 
 		List<WebElement> mandatoryLabels = driver.findElements(mandatoryLabelsLocator);
-		//int labelsize = wait.until(ExpectedConditions.visibilityOfAllElements(mandatoryLabels)).size();
-
-		//System.out.println(" Total mandatory fields found: " + labelsize);
 		
-		//wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(mandatoryLabelsLocator));
 		for(WebElement label : mandatoryLabels)
 		{
-			
-			if(label.isDisplayed() && label.isEnabled())
-			{
-				//String labelText = label.getText().replace("*", "").trim();
-
-				//System.out.println(labelText);
-			}
-
 			if(!label.findElements(By.xpath(dropdowns)).isEmpty())			
 			{
 				System.out.println("Single Select Dropdown");
@@ -150,6 +143,7 @@ public class ServiceUtil {
 		}
 	}
 
+	private final By infoSave = By.xpath("//button[text()='Save ']");
 	public void Info()
 	{
 		//List<WebElement> infoHdr = driver.findElements(By.xpath("(//p[text()=' Info '])[1]|" ));
@@ -157,9 +151,7 @@ public class ServiceUtil {
 		if(!infoHdr.isEmpty())
 		{
 			fillInfoMandatoryFields();
-			WebElement infoSave = driver.findElement(By.xpath("//button[text()='Save ']"));
-			wait.until(ExpectedConditions.elementToBeClickable(infoSave)).click();
-			waitutil.waitForOverlay();
+			elementUtil.click(infoSave);
 		}
 		else
 		{
@@ -170,11 +162,12 @@ public class ServiceUtil {
 
 	//Constraints
 
+	private final By constraintslocator = By.xpath("//p[contains(text(),'Constraints')]");
+	private final By constraintSave = By.xpath("//span[text()='Save']");
+
 	public boolean Constraints()
 	{
 		waitutil.waitForOverlay();
-
-		By constraintslocator = By.xpath("//p[contains(text(),'Constraints')]");
 
 		try
 		{
@@ -186,10 +179,7 @@ public class ServiceUtil {
 
 			constraintNames.forEach(constraint -> System.out.println("Constraint Name : " + constraint.getText()));
 
-			WebElement constraintSave = driver.findElement(By.xpath("//span[text()='Save']"));
-
-			wait.until(ExpectedConditions.elementToBeClickable(constraintSave));
-			constraintSave.click();
+			elementUtil.click(constraintSave);
 
 			waitutil.waitForOverlay();
 
