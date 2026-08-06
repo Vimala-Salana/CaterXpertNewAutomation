@@ -34,17 +34,6 @@ public class MenuServiceFlow {
 		
 	}
 	
-/*	public void openMenuServiceFromEventDashboard()
-	{
-		//Navigating to Menu Service from Event Dashboard
-		
-		List<String> status = List.of("New","Prog","Resent");
-		List<String> iconlabel = List.of("Service Request");
-		
-		eventDashboardPage.clickServiceLabelIcon(service, status, iconlabel);
-	}
-	*/
-	
 	public void openServiceRequestFromEventListing(String eventNo)
 	{
 		hambergerMenuPage.navigatetoEventListing();

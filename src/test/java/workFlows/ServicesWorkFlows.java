@@ -8,12 +8,12 @@ import components.HamburgerMenuPage;
 import components.HeaderPage;
 import pageObjects.EventDashboardPage;
 import pageObjects.EventListingPage;
-import pageObjects.MenuServicePage;
+import pageObjects.ServicesPage;
 import utilities.LoggerManager;
 
 public class ServicesWorkFlows {
 
-	private MenuServicePage menuServicePage;
+	private ServicesPage servicesPage;
 	private HamburgerMenuPage hamburgerMenuPage;
 	private EventDashboardPage eventDashboardPage;
 	EventListingPage eventlistPage;
@@ -21,7 +21,7 @@ public class ServicesWorkFlows {
 	
 	public ServicesWorkFlows(WebDriver driver)
 	{
-		menuServicePage = new MenuServicePage(driver);
+		servicesPage = new ServicesPage(driver);
 		hamburgerMenuPage = new HamburgerMenuPage(driver);
 		eventDashboardPage = new EventDashboardPage(driver);
 		eventlistPage = new EventListingPage(driver);
@@ -53,10 +53,10 @@ public class ServicesWorkFlows {
 	
 	public void finalizeService(String eventNo, List<String> serviceName)
 	{
-		menuServicePage.clickFinalize();
-		boolean constraintExists = menuServicePage.menuServiceConstraints(); 
-		menuServicePage.fillMenuInfo();
-		menuServicePage.menuServiceClose();
+		servicesPage.clickFinalize();
+		boolean constraintExists = servicesPage.hasServiceConstraints(); 
+		servicesPage.fillInfo();
+		servicesPage.clickServiceClose();
 		if(constraintExists)
 		{
 			approveServiceConstraints(eventNo);
@@ -70,7 +70,7 @@ public class ServicesWorkFlows {
 	{
 		headerPage.clickhambergerMenu();
 		hamburgerMenuPage.clickApprovals();
-		menuServicePage.approveMenuserviceConstraints(eventNo);
+		servicesPage.approveServiceConstraints(eventNo);
 	}
 	
 	public void validateServiceStatus(List<String> serviceName)

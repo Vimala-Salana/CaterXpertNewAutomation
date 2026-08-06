@@ -24,11 +24,11 @@ public class MenuServicePage extends BasePage{
 	public MenuServicePage(WebDriver driver)
 	{
 		super(driver);
-		
+
 	}
 
 	//@FindBy(xpath = "//span[normalize-space(text())='Event Services - Menu']") WebElement menuServicehdr;
-	private final By hdrMenuService = By.xpath("//span[normalize-space(text())='Event Services - Menu']");
+	private final By hdrMenuService = By.xpath("//span[contains(text(),'Event Services')]");
 	public String getmenuServiceHdr()
 	{
 		waitutil.waitForOverlay();
@@ -53,49 +53,44 @@ public class MenuServicePage extends BasePage{
 		elementUtil.click(btnSearchAndAdd);
 		elementUtil.click(iconFilter);
 		elementUtil.click(btnFilterGo);
-		
+
 	}
-	
+
 	By noRecordsTxt = By.xpath("//p[normalize-space()='No records found']");
 	public boolean isNoRecordsFoundDisplayed() {
-	    return driver.findElements(noRecordsTxt)
-	            .stream()
-	            .anyMatch(WebElement::isDisplayed);
+		return driver.findElements(noRecordsTxt)
+				.stream()
+				.anyMatch(WebElement::isDisplayed);
 	} 
-	
+
 
 	//@FindBy(xpath = "//p-checkbox[@ptooltip='Select Item']") List <WebElement> itemsCheckBox;
-	
-	private final By chkItems = By.xpath("//p-checkbox[@ptooltip='Select Item']");
+
+	private final By chkItems = By.xpath("//p-tabpanel[@header='Item']//p-checkbox[@ptooltip='Select Item']");
 
 	//private final By itemsCheckBoxLoc = By.xpath("//p-checkbox[@ptooltip='Select Item']");
-	private final By menuNames = By.xpath("//span[text()='- Select -']");
+	private final By menuNames = By.xpath("//p-tabpanel[@header='Item']//span[contains(text(),'Select')]");
 	private final By list = By.xpath("//li[@role='option']");
 	private final By checkboxLoc = By.xpath("//p-checkbox[@ptooltip='Select Item']//div[contains(@class,'p-checkbox-box')]");
-	
+
 	private final By searchAndAddSave = By.xpath("(//app-search-add//button[text()=' Save '])[1]");
 	private final By searchAndAddClose = By.xpath("(//app-search-add//button[text()=' Close '])[1]");
 
 
-	public void aenterMenuItemsQty()
+	public void enterMenuItemsQty()
 	{	
-		
+
 		wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(chkItems));
 		List<WebElement> elements = driver.findElements(chkItems);
 
 		for (int i = 0; i < elements.size(); i++) {
-			System.out.println(i+"----"+elements.size());
+
 			try {
 				WebElement el = driver.findElements(checkboxLoc).get(i);
-				
-				//wait.until(ExpectedConditions.elementToBeClickable(el));
-				
-				if(el.isDisplayed())
-				{
-					((JavascriptExecutor) driver).executeScript("arguments[0].click();", el);
-				}
 
-				
+				//wait.until(ExpectedConditions.elementToBeClickable(el));
+
+				((JavascriptExecutor) driver).executeScript("arguments[0].click();", el);
 
 			} catch (StaleElementReferenceException e) {
 				i--; // retry same index
@@ -114,40 +109,35 @@ public class MenuServicePage extends BasePage{
 			WebElement dropdown = wait.until(ExpectedConditions.refreshed(ExpectedConditions.elementToBeClickable(menuNames)));
 			((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView({block:'center'});", dropdown);
 			wait.until(ExpectedConditions.elementToBeClickable(dropdown)).click();			
-			
+
 			List<WebElement> options = driver.findElements(list);
 			wait.until(ExpectedConditions.elementToBeClickable(options.get(0)));
 			options.get(0).click(); // click the first option
-			try {
-				Thread.sleep(100);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
 
 		}	
 		System.out.println("Added Menu Items");
-		
+
 		elementUtil.click(searchAndAddSave);
 		elementUtil.click(searchAndAddClose);
 
 	}
-	
+
 	public void addMenuItems()
 	{
-			clickSearchAndAddbtn();
-			aenterMenuItemsQty();			
+		clickSearchAndAddbtn();
+		enterMenuItemsQty();			
 	}
-	
+
 	public void clickListSave()
 	{
 		elementUtil.click(searchAndAddSave);
 	}
-	
+
 	public void  clickListClose()
 	{
 		elementUtil.click(searchAndAddClose);
 	}
-	
+
 	private final By btnFinalize = By.xpath("//button[text()=' Finalize ']");
 	public void clickFinalize()
 	{
