@@ -40,7 +40,7 @@ public class MenuServiceFlow {
 		
 		eventlistPage.enterEventNo(eventNo);
 		eventlistPage.closeInventoryPopupIfPresent();
-		eventlistPage.clickEventDashboardIcon(eventNo);
+		eventlistPage.clickEventDashboardIcon();
 		//openServiceFromEventDashboard();
 	}
 	

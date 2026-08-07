@@ -38,11 +38,11 @@ public class MenuServiceTest extends BaseClass
 	@Test(groups = {"Regression", "All"})
 	public void menuServiceRequest(ITestContext context)
 	{
-		servicesFlow.openServiceRequestFromEventListing("DO-76", service);
+		servicesFlow.openServiceRequestFromEventListing("DO-83", service);
 		Assert.assertTrue(service.stream().anyMatch(s -> servicesPage.getServiceHdr().contains(s)),
 				"Menu Service not Mapped/Service not present in the Service list.");
 		menuServicePage.addMenuItems();
-		servicesFlow.finalizeService("DO-76", service);
+		servicesFlow.finalizeService("DO-83", service);
 	}
 }
 

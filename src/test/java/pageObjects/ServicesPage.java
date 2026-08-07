@@ -82,6 +82,7 @@ public class ServicesPage extends BasePage{
 	public void clickFinalize()
 	{
 		elementUtil.click(btnFinalize);
+		//waitutil.waitForOverlay();
 	}
 
 	public boolean hasServiceConstraints()

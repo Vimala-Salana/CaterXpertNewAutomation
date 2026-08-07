@@ -36,10 +36,10 @@ public class BeverageServiceTest extends BaseClass{
 	}
 
 	@Test(groups = {"Regression", "All"})
-	public void beveageservice(ITestContext context) throws InterruptedException
+	public void beveageservice(ITestContext context)
 	{
 	
-			servicesFlow.openServiceRequestFromEventListing("DO-76" , service);
+			servicesFlow.openServiceRequestFromEventListing("DO-79" , service);
 	
 			Assert.assertTrue(service.stream().anyMatch(s -> servicesPage.getServiceHdr().contains(s)),
 					"BeverageService not Mapped/Service not present in the Service list.");
@@ -63,7 +63,7 @@ public class BeverageServiceTest extends BaseClass{
 				System.out.println("No Reserve Button Available");
 			beverageServicePage.validateItems();
 			
-			servicesFlow.finalizeService("DO-76", service);
+			servicesFlow.finalizeService("DO-79", service);
 
 		}
 	}

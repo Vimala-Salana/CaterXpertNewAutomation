@@ -23,7 +23,7 @@ public class EventListingPage extends BasePage{
 	public EventListingPage(WebDriver driver)
 	{
 		super(driver);
-		shortWait = new WebDriverWait(driver, Duration.ofSeconds(5));
+		shortWait = new WebDriverWait(driver, Duration.ofSeconds(2));
 	}
 
 
@@ -45,7 +45,7 @@ public class EventListingPage extends BasePage{
 	//@FindBy(xpath = "//span[text()=' dashboard ']") WebElement iconEventDashboard;
 	By iconEventDashboard = By.xpath("//span[text()=' dashboard ']");
 
-	public void clickEventDashboardIcon(String eventNo) {
+	public void clickEventDashboardIcon() {
 
 		elementUtil.click(iconEventDashboard);
 		/*
@@ -68,7 +68,7 @@ public class EventListingPage extends BasePage{
 		EventListingPage eventlist = new EventListingPage(driver);
 		eventlist.enterEventNo(eventNo);
 		waitutil.waitForOverlay();
-		eventlist.clickEventDashboardIcon(eventNo);
+		eventlist.clickEventDashboardIcon();
 	}
 
 	@FindBy(xpath = "//span[text()='  Sent  ']") WebElement lnkServiceStatus;
@@ -79,7 +79,8 @@ public class EventListingPage extends BasePage{
 	}
 
 	@FindBy(xpath = "//p[contains(normalize-space(),'Inventory Status Alert')]") List<WebElement> hdrInventoryAlert;
-	@FindBy(xpath = "//button[.=' Close ']") WebElement inventoryAlertClose;
+	//@FindBy(xpath = "//button[.=' Close ']") WebElement inventoryAlertClose;
+	private final By inventoryAlertClose = By.xpath("//button[.=' Close ']");
 	public void closeInventoryPopupIfPresent()
 	{
 		
@@ -88,10 +89,7 @@ public class EventListingPage extends BasePage{
 			wait.until(ExpectedConditions.invisibilityOfElementLocated(By.cssSelector("div.overlay")));
 			//waitutil.waitForOverlay();
 			shortWait.until(ExpectedConditions.visibilityOfAllElements(hdrInventoryAlert));
-			shortWait.until(ExpectedConditions.elementToBeClickable(inventoryAlertClose));
-			inventoryAlertClose.click();
-			shortWait.until(ExpectedConditions.invisibilityOfAllElements(hdrInventoryAlert));
-
+			elementUtil.click(inventoryAlertClose);
 		}
 		catch (TimeoutException | StaleElementReferenceException e)
 		{

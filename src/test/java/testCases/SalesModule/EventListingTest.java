@@ -23,7 +23,7 @@ public class EventListingTest extends BaseClass{
 		EventListingPage eventlist = new EventListingPage(DriverFactory.getDriver());
 		eventlist.enterEventNo(eventNo);
 		eventlist.closeInventoryPopupIfPresent();
-		eventlist.clickEventDashboardIcon(eventNo);
+		eventlist.clickEventDashboardIcon();
 		
 		//eventlist.clickEventDashboardIcon(eventNo);
 	}
