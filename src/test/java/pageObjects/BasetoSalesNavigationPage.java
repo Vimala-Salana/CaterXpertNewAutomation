@@ -31,7 +31,16 @@ public class BasetoSalesNavigationPage extends BasePage{
 
 	private final By lnkSalesNew = By.xpath("//a[normalize-space(text())='Sales New']");
 	
-
+	
+	
+	public By userId = By.name("userid");
+	public String getLoggedInUserId()
+	{
+		String value = elementUtil.getValue(userId);
+		System.out.println("UserId : "+value);
+		return value;
+	}
+	
 
 	public void salesNewNavigation()
 	{
@@ -41,6 +50,8 @@ public class BasetoSalesNavigationPage extends BasePage{
 		
 		driver.switchTo().defaultContent();
 		driver.switchTo().frame(frameright);
+		
+		getLoggedInUserId();
 		
 		elementUtil.click(lnkSalesNew);
 		driver.switchTo().defaultContent();

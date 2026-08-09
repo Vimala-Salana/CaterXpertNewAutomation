@@ -31,11 +31,11 @@ public class EventListingPage extends BasePage{
 
 	public void enterEventNo(String eventNo)
 	{
-		wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("div.overlay")));
+		//wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("div.overlay")));
 
-		wait.until(ExpectedConditions.invisibilityOfElementLocated(By.cssSelector("div.overlay")));
+		//wait.until(ExpectedConditions.invisibilityOfElementLocated(By.cssSelector("div.overlay")));
 
-		wait.until(ExpectedConditions.visibilityOf(searchEvent));
+		wait.until(ExpectedConditions.elementToBeClickable(searchEvent));
 		//searchEvent.clear();
 		System.out.println("Event No : "+eventNo);
 		searchEvent.sendKeys(eventNo);
@@ -45,17 +45,17 @@ public class EventListingPage extends BasePage{
 	//@FindBy(xpath = "//span[text()=' dashboard ']") WebElement iconEventDashboard;
 	By iconEventDashboard = By.xpath("//span[text()=' dashboard ']");
 
-	public void clickEventDashboardIcon() {
+	public void clickEventDashboardIcon(String  eventNo) {
 
-		elementUtil.click(iconEventDashboard);
-		/*
-		 * By dashboardIcon = By.xpath("//tr[.//span[contains(normalize-space(),'" +
-		 * eventNo + "')]]//span[@ptooltip='Event Dashboard']");
-		 * 
-		 * List<WebElement> dashboard =
-		 * wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(dashboardIcon)
-		 * ); dashboard.get(0).click();
-		 */
+		//elementUtil.click(iconEventDashboard);
+		
+		  By dashboardIcon = By.xpath("//tr[.//span[(normalize-space()='" +
+		  eventNo + "')]]//span[@ptooltip='Event Dashboard']");
+		  
+		  List<WebElement> dashboard =
+		  wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(dashboardIcon)); 
+		  dashboard.get(0).click();
+		 
 	}
 
 	public void EventDashboardNavigation(String eventNo)
@@ -68,7 +68,7 @@ public class EventListingPage extends BasePage{
 		EventListingPage eventlist = new EventListingPage(driver);
 		eventlist.enterEventNo(eventNo);
 		waitutil.waitForOverlay();
-		eventlist.clickEventDashboardIcon();
+		eventlist.clickEventDashboardIcon(eventNo);
 	}
 
 	@FindBy(xpath = "//span[text()='  Sent  ']") WebElement lnkServiceStatus;

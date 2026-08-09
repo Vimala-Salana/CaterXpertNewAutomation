@@ -34,19 +34,6 @@ public class MenuServiceFlow {
 		
 	}
 	
-	public void openServiceRequestFromEventListing(String eventNo)
-	{
-		hambergerMenuPage.navigatetoEventListing();
-		
-		eventlistPage.enterEventNo(eventNo);
-		eventlistPage.closeInventoryPopupIfPresent();
-		eventlistPage.clickEventDashboardIcon();
-		//openServiceFromEventDashboard();
-	}
-	
-	
-	
-	
 	public void finalizeService(String eventNo) throws InterruptedException
 	{
 		menuServicePage.clickFinalize();

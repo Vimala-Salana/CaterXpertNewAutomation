@@ -56,12 +56,12 @@
 			<version>1.8.1</version> <!-- Java 11 compatible -->
 		</dependency>
 
-		<!-- ExtentReports 5 -->
+		<!-- ExtentReports 5 
 		<dependency>
 			<groupId>com.aventstack</groupId>
 			<artifactId>extentreports</artifactId>
 			<version>${extent-reports.version}</version>
-		</dependency>
+		</dependency>  -->
 
 		<!-- SLF4J API for logging -->
 		<dependency>
@@ -75,6 +75,24 @@
 			<groupId>ch.qos.logback</groupId>
 			<artifactId>logback-classic</artifactId>
 			<version>1.4.11</version>
+		</dependency>
+
+		<!-- Rest Assured Dependency-->
+
+		<dependency>
+			<groupId>io.rest-assured</groupId>
+			<artifactId>rest-assured</artifactId>
+			<version>5.5.6</version>
+			<scope>test</scope>
+		</dependency>
+
+		<!-- Rest Assured Json validation Dependency-->
+
+		<dependency>
+			<groupId>io.rest-assured</groupId>
+			<artifactId>json-schema-validator</artifactId>
+			<version>5.5.6</version>
+			<scope>test</scope>
 		</dependency>
 
 	</dependencies>
@@ -107,12 +125,12 @@
 				<version>3.4.0</version>
 				<configuration>
 					<filesets>
-					<fileset>
-						<directory>azure-results</directory>
-					</fileset>
-					<fileset>
-						<directory>logs</directory>
-					</fileset>
+						<fileset>
+							<directory>azure-results</directory>
+						</fileset>
+						<fileset>
+							<directory>logs</directory>
+						</fileset>
 					</filesets>
 				</configuration>
 			</plugin>

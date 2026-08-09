@@ -92,7 +92,7 @@ public class HamburgerMenuPage extends BasePage{
 	
 	public void navigatetoEventListing()
 	{
-		if(isEventListingPresent())
+		if(!isEventListingPresent())
 		{
 			headerPage.clickhambergerMenu();
 			elementUtil.click(lnkEventListing);

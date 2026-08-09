@@ -47,7 +47,7 @@ public class ServicesWorkFlows {
 
 		eventlistPage.enterEventNo(eventNo);
 		eventlistPage.closeInventoryPopupIfPresent();
-		eventlistPage.clickEventDashboardIcon();
+		eventlistPage.clickEventDashboardIcon(eventNo);
 		openServiceRequestFromEventDashboard(serviceName);
 	}
 

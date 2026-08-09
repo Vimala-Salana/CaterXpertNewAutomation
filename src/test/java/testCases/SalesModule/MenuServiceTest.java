@@ -8,6 +8,7 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 
+import apis.EventListApi;
 import factory.DriverFactory;
 import pageObjects.BasetoSalesNavigationPage;
 import pageObjects.MenuServicePage;
@@ -22,6 +23,7 @@ public class MenuServiceTest extends BaseClass
 	MenuServicePage menuServicePage;
 	ServicesPage servicesPage;
 	ServicesWorkFlows servicesFlow;
+	EventListApi eventListApi;
 	List<String> service;
 	@BeforeMethod
 	public void setup()
@@ -30,19 +32,21 @@ public class MenuServiceTest extends BaseClass
 		menuServicePage =  new MenuServicePage(DriverFactory.getDriver());
 		servicesPage = new ServicesPage(DriverFactory.getDriver());
 		servicesFlow = new ServicesWorkFlows(DriverFactory.getDriver());
+		eventListApi = new EventListApi();
 		service = List.of("Menu");
 		basicLogin();
 		baseNavPage.salesNewNavigation();
 
 	}
 	@Test(groups = {"Regression", "All"})
-	public void menuServiceRequest(ITestContext context)
+	public void menuServiceRequest()
 	{
-		servicesFlow.openServiceRequestFromEventListing("DO-83", service);
+		String eventNo =  eventListApi.getEventId();
+		servicesFlow.openServiceRequestFromEventListing(eventNo, service);
 		Assert.assertTrue(service.stream().anyMatch(s -> servicesPage.getServiceHdr().contains(s)),
 				"Menu Service not Mapped/Service not present in the Service list.");
 		menuServicePage.addMenuItems();
-		servicesFlow.finalizeService("DO-83", service);
+		servicesFlow.finalizeService(eventNo, service);
 	}
 }
 

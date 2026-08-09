@@ -6,6 +6,7 @@ import factory.DriverFactory;
 import pageObjects.HambergerMenuPage;
 import pageObjects.EventListingPage;
 import testBase.BaseClass;
+import workFlows.ServicesWorkFlows;
 
 public class EventListingTest extends BaseClass{
 
@@ -19,11 +20,8 @@ public class EventListingTest extends BaseClass{
 		aePage.clickEventListinglnk();
 		}
 		
-		String eventNo = "3149";
-		EventListingPage eventlist = new EventListingPage(DriverFactory.getDriver());
-		eventlist.enterEventNo(eventNo);
-		eventlist.closeInventoryPopupIfPresent();
-		eventlist.clickEventDashboardIcon();
+		ServicesWorkFlows servicesWorkFlows = new ServicesWorkFlows(DriverFactory.getDriver());
+		servicesWorkFlows.openServiceRequestFromEventListing(env, null);
 		
 		//eventlist.clickEventDashboardIcon(eventNo);
 	}
