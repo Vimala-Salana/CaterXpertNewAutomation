@@ -32,6 +32,5 @@ public class BasePage {
 		elementUtil = new ElementInteractionUtil(driver);
 		js = (JavascriptExecutor) driver;
 		serviceUtil = new ServiceUtil(driver);
-		System.out.println("Driver in BasePage: " + driver);
 	}
 }

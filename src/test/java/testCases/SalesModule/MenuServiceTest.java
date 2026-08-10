@@ -41,7 +41,7 @@ public class MenuServiceTest extends BaseClass
 	@Test(groups = {"Regression", "All"})
 	public void menuServiceRequest()
 	{
-		String eventNo =  eventListApi.getEventId();
+		String eventNo =  eventListApi.getAllNewServicesEventId();
 		servicesFlow.openServiceRequestFromEventListing(eventNo, service);
 		Assert.assertTrue(service.stream().anyMatch(s -> servicesPage.getServiceHdr().contains(s)),
 				"Menu Service not Mapped/Service not present in the Service list.");

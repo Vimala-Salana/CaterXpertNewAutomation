@@ -44,7 +44,7 @@ public class StaffingServiceTest extends BaseClass
 					aepage.clickhambergerMenu();
 					aepage.clickApprovals();
 					String eventNo = (String) context.getAttribute("eventNo");
-					staff.approveStaffingConstraints(constraintExists, eventNo);
+					staff.approveStaffingConstraints(eventNo);
 				}
 				for(String header : dashboard.readAllHeaders())
 				{

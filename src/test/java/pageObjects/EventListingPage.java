@@ -58,19 +58,6 @@ public class EventListingPage extends BasePage{
 		 
 	}
 
-	public void EventDashboardNavigation(String eventNo)
-	{
-		/*
-		 * HambergerMenuPage aepage = new HambergerMenuPage(driver);
-		 * aepage.clickhambergerMenu(); aepage.clickEventListinglnk();
-		 */
-
-		EventListingPage eventlist = new EventListingPage(driver);
-		eventlist.enterEventNo(eventNo);
-		waitutil.waitForOverlay();
-		eventlist.clickEventDashboardIcon(eventNo);
-	}
-
 	@FindBy(xpath = "//span[text()='  Sent  ']") WebElement lnkServiceStatus;
 
 	public void clickonServiceStatus()

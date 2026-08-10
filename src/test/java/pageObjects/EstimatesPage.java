@@ -25,10 +25,10 @@ public class EstimatesPage extends BasePage{
 	}
 
 	@FindBy(xpath = "//span[text()=' Estimate Sections ']") WebElement estimatesFullHdr;
-	public String getEstimateshdr()
+	public boolean getEstimateshdr()
 	{
 		waitutil.waitForOverlay();
-		return estimatesFullHdr.getText();
+		return !estimatesFullHdr.getText().isEmpty();
 	}
 
 	@FindBy(xpath = "//button[text()=' Save ']") WebElement liteSavebtn;

@@ -11,6 +11,7 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import testBase.BasePage;
+import workFlows.ServicesWorkFlows;
 
 public class MenuServicePage extends BasePage{
 
@@ -158,8 +159,8 @@ public class MenuServicePage extends BasePage{
 	public void approveMenuserviceConstraints(String eventNo)
 	{
 		serviceUtil.approveConstraints(eventNo);
-		EventListingPage eventlist = new EventListingPage(driver);
-		eventlist.EventDashboardNavigation(eventNo);
+		ServicesWorkFlows servicesFlow = new ServicesWorkFlows(driver);
+		servicesFlow.navigateToEventDashboard(eventNo);
 	}
 
 

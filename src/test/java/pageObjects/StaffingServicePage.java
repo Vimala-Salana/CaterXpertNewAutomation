@@ -11,6 +11,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import utilities.ServiceUtil;
 import utilities.WaitUtils;
+import workFlows.ServicesWorkFlows;
 
 public class StaffingServicePage {
 
@@ -90,10 +91,10 @@ public class StaffingServicePage {
 		staffclosebtn.click();
 	}
 	
-	public void approveStaffingConstraints(boolean constraintsExists, String eventNo) throws InterruptedException
+	public void approveStaffingConstraints(String eventNo) throws InterruptedException
 	{
 		serviceUtil.approveConstraints(eventNo);
-		EventListingPage eventlist = new EventListingPage(driver);
-		eventlist.EventDashboardNavigation(eventNo);
+		ServicesWorkFlows servicesFlow = new ServicesWorkFlows(driver);
+		servicesFlow.navigateToEventDashboard(eventNo);
 	}
 }

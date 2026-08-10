@@ -18,6 +18,7 @@ import utilities.ExcelUtility;
 import utilities.MandatoryLabelsUtil;
 import utilities.ServiceUtil;
 import utilities.WaitUtils;
+import workFlows.ServicesWorkFlows;
 
 public class CreateEventPage extends BasePage{
 	
@@ -85,11 +86,11 @@ public class CreateEventPage extends BasePage{
 		return eventNo;
 	}
 	
-	public void ApproveEventConstraints(boolean constraintsExists, String eventNo)
+	public void ApproveEventConstraints(String eventNo)
 	{
 			serviceutil.approveConstraints(eventNo);
-			EventListingPage eventlist = new EventListingPage(driver);
-			eventlist.EventDashboardNavigation(eventNo);
+			ServicesWorkFlows servicesFlow = new ServicesWorkFlows(driver);
+			servicesFlow.navigateToEventDashboard(eventNo);
 	}
 	
 	

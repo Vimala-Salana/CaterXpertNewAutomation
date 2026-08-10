@@ -33,21 +33,26 @@ public class ServicesWorkFlows {
 		//Navigating to Menu Service from Event Dashboard
 
 		List<String> status = List.of("New","Prog","Resent");
-		List<String> iconlabel = List.of("Service Request");
+		List<String> iconlabel = List.of("Service Request","Estimates","Estimates Lite");
 
 		if(!eventDashboardPage.clickServiceLabelIcon(serviceName, status, iconlabel))
 
 			throw new RuntimeException(serviceName+" is not Mapped");
 
 	}
+	
+	public void navigateToEventDashboard(String eventNo)
+	{
+		eventlistPage.enterEventNo(eventNo);
+		eventlistPage.closeInventoryPopupIfPresent();
+		eventlistPage.clickEventDashboardIcon(eventNo);
+	}
 
 	public void openServiceRequestFromEventListing(String eventNo, List<String> serviceName)
 	{
 		hamburgerMenuPage.navigatetoEventListing();
 
-		eventlistPage.enterEventNo(eventNo);
-		eventlistPage.closeInventoryPopupIfPresent();
-		eventlistPage.clickEventDashboardIcon(eventNo);
+		navigateToEventDashboard(eventNo);
 		openServiceRequestFromEventDashboard(serviceName);
 	}
 

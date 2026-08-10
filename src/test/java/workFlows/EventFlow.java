@@ -43,7 +43,7 @@ public class EventFlow {
 		{
 			headerPage.clickhambergerMenu();
 			hambergerMenuPage.clickApprovals();
-		eventPage.ApproveEventConstraints(constraintExists,eventNo);
+			eventPage.ApproveEventConstraints(eventNo);
 		}
 		return eventNo;
 	}
