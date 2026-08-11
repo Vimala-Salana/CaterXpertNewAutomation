@@ -22,13 +22,13 @@ public class EventFlow {
 		eventPage = new CreateEventPage(driver);
 	}
 
-	public void navigatetoCreateEvent()
+	public void navigateToCreateEvent()
 	{
 		headerPage.clickhambergerMenu();
 		hambergerMenuPage.clickCreateEvent();
 	}
 
-	public String createEvent(Map<String, String> data) throws Exception
+	public String createEvent(Map<String, String> data)
 	{
 		Assert.assertEquals(eventPage.getCreateEventhdr(), "Create Event");
 
@@ -50,7 +50,7 @@ public class EventFlow {
 	
 	public String createEventfromEventPage(Map<String, String> data) throws Exception
 	{
-		navigatetoCreateEvent();
+		navigateToCreateEvent();
 		return createEvent(data);
 	}
 }

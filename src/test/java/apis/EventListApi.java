@@ -3,38 +3,55 @@ package apis;
 import static io.restassured.RestAssured.*;
 
 import java.io.ObjectInputFilter.Config;
+import java.util.List;
+import java.util.Map;
 
 import org.testng.annotations.Test;
 
+import factory.DriverFactory;
 import io.restassured.response.Response;
+import pageObjects.BasetoSalesNavigationPage;
 import utilities.ConfigReader;
 public class EventListApi {
+	
 	public ConfigReader config = new ConfigReader();
-	@Test
-	public String getAllNewServicesEventId()
+	
+	public String getAllNewServicesEventId(String loginId)
 	{
+		String url = config.getUrl();
+		String caterId = config.getCaterId();
+		
 		//https://catapps1.aquilasoftware.com/CaterXpertSales2026_0704/sales/
 		//getSalesEventsList?loginId=-1&catererId=caterxpertcat&lowerBound=1&upperBound=20&deptId=2
-		long start = System.currentTimeMillis();
-		 Response response = given()
-		.pathParam("patch","CaterXpertSales2026_0704")
-		.pathParam("module","sales")
-		.pathParam("screen","getSalesEventsList")
-		.queryParams("loginId",-1,"catererId","tpgchitest","lowerBound",1,"upperBound",200,"deptId",2)
-		.when()
-			.get(config.getProperty("test.url")+"/{patch}/{module}/{screen}");
-		 long apiTime = System.currentTimeMillis(); 
-		String eventId  = response.jsonPath().getString
-					("find { it.serviceStatusValues.every { status -> status.trim() == 'New' } "
-							+ "&& !(it.cisnumber.trim() ==~ /.*\\s+[MT]\\d*$/) }.cisnumber");
-		eventId = eventId.split("\\s")[0];
-		
-		System.out.println(eventId);
-		
-		long jsonTime = System.currentTimeMillis();
+		Response response = given()
+				.pathParam("patch","CaterXpertSales2026_0704")
+				.pathParam("module","sales")
+				.pathParam("screen","getSalesEventsList")
+				.queryParams("loginId",loginId,"catererId",caterId,"lowerBound",1,"upperBound",200,"deptId",2)
+				.when()
+				.get(url+"/{patch}/{module}/{screen}");
 
-		System.out.println("API time     : " + (apiTime - start) + " ms");
-		System.out.println("JsonPath time: " + (jsonTime - apiTime) + " ms");
-		return eventId;
+		List<Map<String, Object>> events = response.jsonPath().getList("$");
+
+		String cisNumber = null;
+
+		for (Map<String, Object> event : events) {
+
+			// Get service statuses
+			List<?> serviceStatuses = (List<?>) event.get("serviceStatusValues");
+
+			cisNumber = (String) event.get("cisnumber");
+
+			// Find requested service with New status
+			if (serviceStatuses.stream().anyMatch(status->status.toString().trim().equalsIgnoreCase("New")) 
+					&& !cisNumber.trim().matches(".*\\s+[MT]\\d*$"))
+			{
+				System.out.println(cisNumber); 	 	
+				return cisNumber;
+			}
+
+		}
+		return null;
 	}
 }
+

@@ -152,16 +152,17 @@ public class ElementInteractionUtil {
 	}
 
 	//Reusable method for SendKeys
-	public void typeText(By locator, String value) {
+	public void typeText(By locator, CharSequence... keys) {
 		waitUtils.waitForOverlay();
 		long startTime = System.nanoTime();
 		waitUtils.waitForOverlay();
 
 		try {
 			WebElement element = wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
+			wait.until(ExpectedConditions.elementToBeClickable(locator));
 			//clear
 			element.clear();
-			element.sendKeys(value); //Enter value
+			element.sendKeys(keys); //Enter value
 			LoggerManager.logActionSuccess(locator, startTime, "Type Text", null);
 		} catch(Exception e) {
 			LoggerManager.logActionFailure(locator, startTime, "SendKeys", e, null);

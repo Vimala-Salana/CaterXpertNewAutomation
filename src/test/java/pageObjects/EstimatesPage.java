@@ -2,20 +2,15 @@ package pageObjects;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.time.Duration;
 import java.util.List;
-
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 import testBase.BasePage;
-import utilities.WaitUtils;
 
 public class EstimatesPage extends BasePage{
 
@@ -28,7 +23,7 @@ public class EstimatesPage extends BasePage{
 	public boolean getEstimateshdr()
 	{
 		waitutil.waitForOverlay();
-		return !estimatesFullHdr.getText().isEmpty();
+		return !driver.findElements(By.xpath("//span[normalize-space()='Estimate Sections']")).isEmpty();
 	}
 
 	@FindBy(xpath = "//button[text()=' Save ']") WebElement liteSavebtn;
@@ -61,20 +56,18 @@ public class EstimatesPage extends BasePage{
 	String serviceTotal;
 	BigDecimal discount;
 	BigDecimal totalServiceAmount = BigDecimal.ZERO;
-	public void estimates() 
+	public void giveEstimates() 
 	{
-		int estimateSize = driver.findElements(estimateSectionList).size();
+		int estimatesSize = driver.findElements(estimateSectionList).size();
 		//System.out.println("Estimates size - "+estimateSize);
 		//for(WebElement estimateSection : estimateSections)
-		for(int i=0;i<estimateSize;i++)
+		for(int i=0;i<estimatesSize;i++)
 		{
 			waitutil.waitForOverlay();
 
-			wait.until(ExpectedConditions.elementToBeClickable(driver.findElements(estimateSectionList).get(i)));
-			waitutil.waitForOverlay();
-			String serviceName = driver.findElements(estimateSectionList).get(i).getText();
-			System.out.println(serviceName);
-			driver.findElements(estimateSectionList).get(i).click();
+			List<WebElement> serviceName = wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(estimateSectionList));
+			
+			serviceName.get(i).click();
 			wait.until(ExpectedConditions.visibilityOfElementLocated(suggestedPriceBy));
 
 			waitutil.waitForOverlay();
@@ -138,11 +131,11 @@ public class EstimatesPage extends BasePage{
 	public void selectTotalEstimateOptions()
 	{
 		waitutil.waitForOverlay();
-		List<WebElement> estimateServices = wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(estimateServicesList));
-
+		List<WebElement> estimateServices = driver.findElements(estimateServicesList);
+		
 		if(!estimateServices.isEmpty())
 		{
-
+			 wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(estimateServicesList));
 			for(WebElement service : estimateServices)
 			{
 				waitutil.waitForOverlay();

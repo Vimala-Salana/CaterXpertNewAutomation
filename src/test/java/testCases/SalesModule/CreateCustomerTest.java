@@ -14,6 +14,7 @@ import pageObjects.CustomerOrPotentialCustomerListPage;
 import pageObjects.HambergerMenuPage;
 import testBase.BaseClass;
 import utilities.ExcelUtility;
+import utilities.JsonUtil;
 import utilities.ReportManager;
 import workFlows.CustomerFlow;
 
@@ -24,10 +25,11 @@ public class CreateCustomerTest extends BaseClass {
 	private BasetoSalesNavigationPage basePage; 
 	Map<String, String> data;
 	private String sheetname;
+	private Map<String, String> customerData;
 	private CustomerFlow customerFlow;
 	
 	@BeforeMethod
-	public void setup() throws IOException
+	public void setup()
 	{
 		basePage = new BasetoSalesNavigationPage(DriverFactory.getDriver());
 		customerFlow = new CustomerFlow(DriverFactory.getDriver());
@@ -39,7 +41,11 @@ public class CreateCustomerTest extends BaseClass {
 		excelUtil = new ExcelUtility(filepath);
 		sheetname = "Create Customer";
 		data = excelUtil.getMandatoryFieldData(sheetname);
-		customerFlow.navigatetocreateCustomer();
+		
+		JsonUtil jsonUtil = new JsonUtil("src/test/resources/TestData/Customer.json");
+		customerData = jsonUtil.getData();
+		
+		customerFlow.navigateToCreateCustomer();
 		
 		//String hdrCustomerList = customerlistpage.getCustomerOrPotentialCustomerListhdr();
 		//Assert.assertEquals(hdrCustomerList, "Customer/Potential Customer List","header mismatch");
@@ -48,10 +54,10 @@ public class CreateCustomerTest extends BaseClass {
 	}
 
 	@Test(priority = 1, groups = {"Regression", "All"})
-	public void verifyCreateCustomerWithMandatoryFieldsOnly() throws Exception {
+	public void verifyCreateCustomerWithMandatoryFieldsOnly() {
 
 		//Assert.assertEquals(customerPage.getCreateCustomerhdr(), "Create Customer");
-		customerFlow.createCustomer(data);
+		customerFlow.createCustomer(customerData);
 		customerPage.clickContactClose();
 		
 		// searching customer

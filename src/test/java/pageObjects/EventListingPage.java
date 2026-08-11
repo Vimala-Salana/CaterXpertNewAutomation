@@ -27,18 +27,20 @@ public class EventListingPage extends BasePage{
 	}
 
 
-	@FindBy(xpath = "//input[@placeholder='Event #']") WebElement searchEvent;
+	//@FindBy(xpath = "//input[@placeholder='Event #']") WebElement searchEvent;
+	By searchEvent = By.xpath("//input[@placeholder='Event #']");
 
 	public void enterEventNo(String eventNo)
 	{
 		//wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("div.overlay")));
 
 		//wait.until(ExpectedConditions.invisibilityOfElementLocated(By.cssSelector("div.overlay")));
+		waitutil.waitForOverlay();
 
-		wait.until(ExpectedConditions.elementToBeClickable(searchEvent));
-		//searchEvent.clear();
 		System.out.println("Event No : "+eventNo);
-		searchEvent.sendKeys(eventNo);
+		wait.until(ExpectedConditions.elementToBeClickable(searchEvent));
+		//searchEvent.sendKeys(eventNo);
+		elementUtil.typeText(searchEvent, eventNo);
 		waitutil.waitForOverlay();
 	}
 

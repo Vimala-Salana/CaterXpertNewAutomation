@@ -64,15 +64,21 @@ public class BeverageServicePage {
 
 	public void enterQuantity()
 	{
-		int size = wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(quantityfields)).size();
+		/*int size = wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(quantityfields)).size();
 		//System.out.println(size);
 		for(int i=0;i<size;i++)
 		{
 			List<WebElement> qty = driver.findElements(quantityfields);
-			WebElement itemQty = qty.get(i);
+			WebElement itemQty = qty.get(0);
 			itemQty.sendKeys(Keys.chord(Keys.CONTROL, "a"), Keys.DELETE, "10");
 			//itemQty.sendKeys("10");
-		}
+		}*/
+		
+		List<WebElement> qty = driver.findElements(quantityfields);
+		if(!qty.isEmpty())
+		qty.get(0).sendKeys(Keys.chord(Keys.CONTROL, "a"), Keys.DELETE, "10");
+		else
+			System.out.println("No Items Exist");
 	}
 
 	@FindBy(xpath = "//button[text()='Ok']") List<WebElement> okBtn;

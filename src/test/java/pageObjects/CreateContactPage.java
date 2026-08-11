@@ -30,7 +30,7 @@ public class CreateContactPage extends BasePage{
 		return hdrCreateContcat.getText();
 	}
 
-	public void fillContactMandatoryfileds(Map<String, String> data) throws Exception
+	public void fillContactMandatoryfileds(Map<String, String> data)
 	{
 		MandatoryLabelsUtil.fillMandatoryFields(driver, data);
 	}

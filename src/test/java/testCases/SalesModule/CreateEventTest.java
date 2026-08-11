@@ -31,19 +31,11 @@ public class CreateEventTest extends BaseClass{
 		sheetname = "Create Event";
 		data = excelUtil.getMandatoryFieldData(sheetname);
 	}
-	
-	@Test(groups = {"Regression", "EventCreationDirect"})
-	public void createEventDirect()
-	{
-		eventFlow.navigatetoCreateEvent();
-	}
 	 
 	@Test(groups = {"Regression", "All"})
 	public void createEventFromEventPage(ITestContext context) throws Exception
 	{
 		eventPage = new CreateEventPage(DriverFactory.getDriver());
-		//validating CreateEvent header
-		//Assert.assertEquals(eventPage.getCreateEventhdr(), "Create Event");
 		
 		String eventNo = eventFlow.createEventfromEventPage(data);
 		context.setAttribute("eventNo", eventNo);   //To use Event Number in other classes

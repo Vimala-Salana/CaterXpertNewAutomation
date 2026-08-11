@@ -53,7 +53,7 @@ public class CreateEventPage extends BasePage{
 		return hdrCreateEvent.getText();
 	}
 	
-	public void fillEventMandatoryfields(Map<String, String> data) throws Exception
+	public void fillEventMandatoryfields(Map<String, String> data)
 	{
 		MandatoryLabelsUtil.fillMandatoryFields(driver, data);
 	}

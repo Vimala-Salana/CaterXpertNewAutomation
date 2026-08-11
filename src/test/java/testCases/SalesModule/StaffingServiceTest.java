@@ -2,63 +2,53 @@ package testCases.SalesModule;
 
 import java.util.List;
 
-import org.testng.ITestContext;
+import org.testng.Assert;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+import apis.ServicesLevelNewEventApi;
 import factory.DriverFactory;
-import pageObjects.HambergerMenuPage;
-import pageObjects.EventDashboardPage;
+import pageObjects.BasetoSalesNavigationPage;
+import pageObjects.ServicesPage;
 import pageObjects.StaffingServicePage;
 import testBase.BaseClass;
+import workFlows.ServicesWorkFlows;
 
 public class StaffingServiceTest extends BaseClass
 {
+	BasetoSalesNavigationPage baseNavPage;
+	StaffingServicePage staffingServicePage;
+	ServicesPage servicesPage;
+	ServicesWorkFlows servicesFlow;
+	ServicesLevelNewEventApi serviceEventApi;
+	List<String> service;
+	String loginId;
+
+	@BeforeMethod
+	public void setup()
+	{
+		baseNavPage = new BasetoSalesNavigationPage(DriverFactory.getDriver());
+		staffingServicePage =  new StaffingServicePage(DriverFactory.getDriver());
+		servicesFlow = new ServicesWorkFlows(DriverFactory.getDriver());
+		serviceEventApi = new ServicesLevelNewEventApi();
+		service = List.of("Personnel","Staffing","Scheduling");
+		basicLogin();
+		loginId = baseNavPage.salesNewNavigation();
+
+	}
 
 	@Test(groups = {"Regression", "All"})
-	public void staffingRequest(ITestContext context) throws InterruptedException
+	public void staffingRequest()
 	{
-		EventDashboardPage dashboard = new EventDashboardPage(DriverFactory.getDriver());
-		StaffingServicePage staff = new StaffingServicePage(DriverFactory.getDriver());
+		String eventNo =  serviceEventApi.newServiceEventId(loginId, service);
+		servicesFlow.openServiceRequestFromEventListing(eventNo, service);
+		Assert.assertTrue(service.stream().anyMatch(s -> servicesPage.getServiceHdr().contains(s)),
+				"Staffing Service not present in the Service list.");
 
-		List<String> service = List.of("Personnel","Staffing","Scheduling");
-		List<String> status = List.of("New","Prog","Resent");
-		List<String> iconlabel = List.of("Service Request");
-		if(dashboard.clickServiceLabelIcon(service,status,iconlabel))
-		{
-			Thread.sleep(1000);
-			String serviceName  = staff.getStaffingServiceHdr().trim();
-			//System.out.println("service  "+service+"  serviceNameheader : "+serviceName);
-			if(service.stream().anyMatch(serviceName::contains))
-			{
-				staff.giveStaffQty();
-				staff.clickSave();
-				staff.staffingInfo();
-				staff.clickFinalize();
-				boolean constraintExists = staff.staffingConstraints();
-				staff.staffingInfo();
-				staff.clickStaffClose();
-				
-				if(constraintExists)
-				{
-					HambergerMenuPage aepage = new HambergerMenuPage(DriverFactory.getDriver());
-					aepage.clickhambergerMenu();
-					aepage.clickApprovals();
-					String eventNo = (String) context.getAttribute("eventNo");
-					staff.approveStaffingConstraints(eventNo);
-				}
-				for(String header : dashboard.readAllHeaders())
-				{
-					if(header.contains("Staffing") || header.contains("Personnel"))
-					{
-						System.out.println("Service Status : "+header);
-						break;
-					}
-				}
-			}
-			else
-			System.out.println("Staffing Service not mapped to the Event Business Unit.");
-		}
-		else
-			System.out.println("Staffing Service Not Avaliable");
+		staffingServicePage.giveStaffQty();
+		staffingServicePage.clickSave();
+		staffingServicePage.staffingInfo();
+		servicesFlow.finalizeService(eventNo, service);
 	}
 }
+

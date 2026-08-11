@@ -23,6 +23,7 @@ public class EstimatesTest extends BaseClass{
 	EventListApi eventListApi;
 	List<String> service;
 	List<String> iconLabel;
+	String loginId;
 	
 	@BeforeMethod
 	public void setup()
@@ -35,14 +36,14 @@ public class EstimatesTest extends BaseClass{
 		service = List.of("Estimates");
 		iconLabel = List.of("Estimates Lite","Estimates");
 		basicLogin();
-		baseNavPage.salesNewNavigation();
+		loginId = baseNavPage.salesNewNavigation();
 
 	}
 	
 	@Test (priority=1, groups = {"Regression", "EventCreationDirect"})
 	public void estimates()
 	{
-		String eventNo =  eventListApi.getAllNewServicesEventId();
+		String eventNo =  eventListApi.getAllNewServicesEventId(loginId);
 		servicesFlow.navigateToEventDashboard(eventNo);
 		dashboardPage.clickServiceLabelIcon(service, null, iconLabel);
 		
@@ -50,7 +51,7 @@ public class EstimatesTest extends BaseClass{
 		
 		if(estimatesPage.getEstimateshdr())
 		{
-			estimatesPage.estimates();
+			estimatesPage.giveEstimates();
 			estimatesPage.clickTotalEstimates();
 			estimatesPage.selectTotalEstimateOptions();
 			

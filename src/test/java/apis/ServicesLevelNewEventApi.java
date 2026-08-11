@@ -12,17 +12,19 @@ public class ServicesLevelNewEventApi {
 
 	public ConfigReader config = new ConfigReader();
 
-	@Test
-	public String newServiceEventId(List<String> service) {
+	public String newServiceEventId(String loginId, List<String> service) {
 
+		String url = config.getUrl();
+		String caterId = config.getCaterId();
+		
 		Response response = given()
 				.pathParam("patch", "CaterXpertSales2026_0704")
 				.pathParam("module", "sales")
 				.pathParam("screen", "getSalesEventsList")
-				.queryParams("loginId", -1,"catererId", "tpgchitest","lowerBound", 1,
+				.queryParams("loginId", loginId ,"catererId", caterId,"lowerBound", 1,
 						"upperBound", 200,"deptId", 2)
 				.when()
-				.get(config.getProperty("test.url") + "/{patch}/{module}/{screen}");
+				.get(url + "/{patch}/{module}/{screen}");
 
 		response.then().statusCode(200);
 
@@ -32,17 +34,17 @@ public class ServicesLevelNewEventApi {
 		for (Map<String, Object> event : events) {
 
 			// Get service names
-			List<String> serviceNames = (List<String>) event.get("serviceColumnNames");
+			List<?> serviceNames = (List<?>) event.get("serviceColumnNames");
 
 			// Get service statuses
-			List<String> serviceStatuses = (List<String>) event.get("serviceStatusValues");
+			List<?> serviceStatuses = (List<?>) event.get("serviceStatusValues");
 
 			cisNumber = (String) event.get("cisnumber");
 
 			for (int i = 0; i < serviceNames.size(); i++) {
 
-				String serviceName = serviceNames.get(i).trim();
-				String status = serviceStatuses.get(i).trim();
+				String serviceName = serviceNames.get(i).toString().trim();
+				String status = serviceStatuses.get(i).toString().trim();
 
 				// Find requested service with New status
 				if (service.stream().anyMatch(s -> s.trim().equalsIgnoreCase(serviceName.trim()))

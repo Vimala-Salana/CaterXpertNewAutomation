@@ -26,6 +26,7 @@ public class MenuServiceTest extends BaseClass
 	ServicesWorkFlows servicesFlow;
 	ServicesLevelNewEventApi serviceEventApi;
 	List<String> service;
+	String loginId;
 	@BeforeMethod
 	public void setup()
 	{
@@ -36,13 +37,13 @@ public class MenuServiceTest extends BaseClass
 		serviceEventApi = new ServicesLevelNewEventApi();
 		service = List.of("Menu");
 		basicLogin();
-		baseNavPage.salesNewNavigation();
+		loginId = baseNavPage.salesNewNavigation();
 
 	}
 	@Test(groups = {"Regression", "All"})
 	public void menuServiceRequest()
 	{
-		String eventNo =  serviceEventApi.newServiceEventId(service);
+		String eventNo =  serviceEventApi.newServiceEventId(loginId, service);
 		servicesFlow.openServiceRequestFromEventListing(eventNo, service);
 		Assert.assertTrue(service.stream().anyMatch(s -> servicesPage.getServiceHdr().contains(s)),
 				"Menu Service not Mapped/Service not present in the Service list.");

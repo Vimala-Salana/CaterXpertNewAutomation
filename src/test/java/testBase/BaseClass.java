@@ -22,7 +22,6 @@ public class BaseClass {
 	public String filepath = "src/test/resources/TestData/SalesTestData.xlsx";
 	public ConfigReader config = new ConfigReader();
 	ExcelUtility excel;
-	protected String env;
 	protected LoginPage loginPage;
 	@BeforeMethod(alwaysRun = true)
 	@Parameters("browser")
@@ -34,17 +33,15 @@ public class BaseClass {
 		//driver = new ChromeDriver(options);
 			DriverFactory.initDriver(browser);
 			//driver = DriverFactory.getDriver();
-			env = System.getProperty("env", config.getProperty("default.env"));
-			String url = System.getProperty("url", config.getProperty(env + ".url"));
-	        DriverFactory.getDriver().get(url);
+	        DriverFactory.getDriver().get(config.getUrl());
 	}
 	  
 	  public void basicLogin()
 	  {
 		  LoginPage login = new LoginPage(DriverFactory.getDriver());
-		  String caterid = System.getProperty("caterid", config.getProperty(env + ".caterid"));
-		  String userid = System.getProperty("userid",config.getProperty(env+".userid"));
-		  String password = System.getProperty("password",config.getProperty(env+".password"));
+		  String caterid = config.getCaterId();
+		  String userid = config.getUserId();
+		  String password = config.getPassword();
 		  
 		  login.login(caterid,userid,password); 
 	  } 	

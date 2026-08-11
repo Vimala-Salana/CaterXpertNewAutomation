@@ -8,6 +8,7 @@ import java.util.Properties;
 public class ConfigReader {
 
     private final Properties properties = new Properties();
+    String env;
 
     public ConfigReader() {
 
@@ -28,6 +29,35 @@ public class ConfigReader {
 
     public String getProperty(String key) {
         return properties.getProperty(key);
+    }
+    
+    public String getEnvironment()
+    {
+    	return System.getProperty("env", getProperty("default.env"));
+    }
+    
+    public String getUrl()
+    {
+    	 String env = getEnvironment();
+    	return System.getProperty("url", getProperty(env +".url"));
+    }
+    
+    public String getCaterId()
+    {
+    	 env = getEnvironment();
+    	return System.getProperty("caterid", getProperty(env+".caterid"));
+    }
+    
+    public String getUserId()
+    {
+    	 env = getEnvironment();
+    	return System.getProperty("userid", getProperty(env+".userid"));
+    }
+    
+    public String getPassword()
+    {
+    	 env = getEnvironment();
+    	return System.getProperty("password", getProperty(env+".password"));
     }
     
     public Duration getDuration(String key)

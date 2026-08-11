@@ -42,7 +42,7 @@ public class BasetoSalesNavigationPage extends BasePage{
 	}
 	
 
-	public void salesNewNavigation()
+	public String salesNewNavigation()
 	{
 		wait.until(ExpectedConditions.visibilityOf(frameHdr));
 		driver.switchTo().frame(frameHdr);
@@ -51,10 +51,11 @@ public class BasetoSalesNavigationPage extends BasePage{
 		driver.switchTo().defaultContent();
 		driver.switchTo().frame(frameright);
 		
-		getLoggedInUserId();
+		String loginId = getLoggedInUserId();
 		
 		elementUtil.click(lnkSalesNew);
 		driver.switchTo().defaultContent();
+		return loginId;
 	}
 	
 	private final By lnkBaseNavigation = By.xpath("//span[text()=' dining ']");

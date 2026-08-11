@@ -109,6 +109,7 @@ public class ServicesPage extends BasePage{
 	public void clickServiceSave()
 	{
 		elementUtil.click(btnServiceSave);
+		fillInfo();
 	}
 	
 	public void approveServiceConstraints(String eventNo)

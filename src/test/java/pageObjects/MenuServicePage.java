@@ -100,11 +100,13 @@ public class MenuServicePage extends BasePage{
 			}
 
 			// Wait and click the first dropdown using JS
-			WebElement dropdown = wait.until(ExpectedConditions.refreshed(ExpectedConditions.elementToBeClickable(menuNames)));
-			((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView({block:'center'});", dropdown);
-			wait.until(ExpectedConditions.elementToBeClickable(dropdown)).click();			
+			wait.until(ExpectedConditions.refreshed(ExpectedConditions.elementToBeClickable(menuNames)));
+			//((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView({block:'center'});", dropdown);
+			//wait.until(ExpectedConditions.elementToBeClickable(dropdown)).click();
+			elementUtil.click(menuNames);
 
 			List<WebElement> options = driver.findElements(list);
+			wait.until(ExpectedConditions.visibilityOfAllElements(options));
 			wait.until(ExpectedConditions.elementToBeClickable(options.get(0)));
 			options.get(0).click(); // click the first option
 

@@ -25,12 +25,14 @@ public class ServiceUtil {
 	WebDriverWait wait;
 	WaitUtils waitutil;
 	ElementInteractionUtil elementUtil;
+	JavascriptExecutor js;
 	public ServiceUtil(WebDriver driver)
 	{
 		this.driver = driver;
 		waitutil = new WaitUtils(driver);
 		this.wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 		elementUtil = new ElementInteractionUtil(driver);
+		js = (JavascriptExecutor) driver;
 	}
 
 
@@ -55,17 +57,18 @@ public class ServiceUtil {
 			if(!label.findElements(By.xpath(dropdowns)).isEmpty())			
 			{
 				System.out.println("Single Select Dropdown");
-				WebElement drpdown = label.findElement(By.xpath(dropdowns));
-				wait.until(ExpectedConditions.elementToBeClickable(drpdown));
-				((JavascriptExecutor) driver).executeScript("arguments[0].click();", drpdown);
+				WebElement dropdown = label.findElement(By.xpath(dropdowns));
+				wait.until(ExpectedConditions.elementToBeClickable(dropdown));
+				js.executeScript("arguments[0].scrollIntoView({block:'center'});", dropdown);
+				dropdown.click();
 				List<WebElement> drpoptions = wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(
 						By.xpath(MandatoryFieldsXpaths.DROPDOWN_LIST)));
 				if (!drpoptions.isEmpty()) 
 				{
 
 					WebElement option = driver.findElement(By.xpath("(//ul[contains(@class,'p-dropdown-items')]//li)[1]"));
-
-					((JavascriptExecutor) driver).executeScript("arguments[0].click();", option);
+					js.executeScript("arguments[0].scrollIntoView({block:'center'});", dropdown);
+					option.click();
 					//wait.until(ExpectedConditions.elementToBeClickable(firstOption)).click();
 					// wait.until(ExpectedConditions.refreshed(ExpectedConditions.elementToBeClickable(firstOption))).click();
 				}
@@ -77,18 +80,20 @@ public class ServiceUtil {
 
 				WebElement multidrpdown = label.findElement(By.xpath(multiselectDropdowns));
 				wait.until(ExpectedConditions.elementToBeClickable(multidrpdown));
-				((JavascriptExecutor) driver).executeScript("arguments[0].click();", multidrpdown);
+				js.executeScript("arguments[0].scrollIntoView({block:'center'});", multidrpdown);
+				multidrpdown.click();
 				List<WebElement> drpoptions = wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(
 						By.xpath(MandatoryFieldsXpaths.MULTISELECT_LIST)));
 				if (!drpoptions.isEmpty()) 
 				{
 
 					WebElement option = driver.findElement(By.xpath("(//ul[contains(@class,'p-multiselect-items')]//li)[1]"));
-
-					((JavascriptExecutor) driver).executeScript("arguments[0].click();", option);
+					js.executeScript("arguments[0].scrollIntoView({block:'center'});", option);
+					option.click();
 					//wait.until(ExpectedConditions.elementToBeClickable(firstOption)).click();
 					// wait.until(ExpectedConditions.refreshed(ExpectedConditions.elementToBeClickable(firstOption))).click();
 				}
+				multidrpdown.click();
 			}
 
 			else if(!label.findElements(By.xpath(radiobuttons)).isEmpty())
@@ -197,6 +202,7 @@ public class ServiceUtil {
 	By pendingConstraints = By.xpath("//span[text()=' Pending ']");
 	By approvalSave = By.xpath("//button[text()=' Save ']");
 	By approvalClose = By.xpath("//button[text()=' Close ']");
+	By approvalSearch = By.xpath("//input[@type='search']");
 	public void approveConstraints(String eventNo)
 	{ 
 			waitutil.waitForOverlay();
@@ -206,7 +212,8 @@ public class ServiceUtil {
 			wait.until(ExpectedConditions.or(ExpectedConditions.invisibilityOfElementLocated(noRecords),
 					(ExpectedConditions.visibilityOfElementLocated(pendingConstraints))));	
 
-			driver.findElement(By.xpath("//input[@type='search']")).sendKeys(eventNo,Keys.ENTER);
+			//driver.findElement(By.xpath("//input[@type='search']")).sendKeys(eventNo,Keys.ENTER);
+			elementUtil.typeText(approvalSearch, eventNo, Keys.ENTER);
 			waitutil.waitForOverlay();
 			//Thread.sleep(5000);
 			int size = driver.findElements(pendingConstraints).size();

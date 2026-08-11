@@ -29,7 +29,7 @@ public class ContactFlow {
 		contactListpage.clickNewContact();
 	}
 	
-	public void createContact(Map<String, String> data) throws Exception
+	public void createContact(Map<String, String> data)
 	{
 		contactPage.fillContactMandatoryfileds(data);
 		contactPage.clickCreatebtn();

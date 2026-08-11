@@ -7,6 +7,8 @@ import org.testng.Assert;
 import org.testng.ITestContext;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
+
+import apis.ServicesLevelNewEventApi;
 import factory.DriverFactory;
 import pageObjects.BasetoSalesNavigationPage;
 import pageObjects.BeverageServicePage;
@@ -20,26 +22,29 @@ public class BeverageServiceTest extends BaseClass{
 	BeverageServicePage beverageServicePage;
 	ServicesPage servicesPage;
 	ServicesWorkFlows servicesFlow;
+	ServicesLevelNewEventApi servicesNewApi;
 	List<String> service;
+	String loginId;
 	
 	@BeforeMethod
 	public void setup()
 	{
+		servicesNewApi =  new ServicesLevelNewEventApi();
 		baseNavPage = new BasetoSalesNavigationPage(DriverFactory.getDriver());
 		beverageServicePage =  new BeverageServicePage(DriverFactory.getDriver());
 		servicesPage = new ServicesPage(DriverFactory.getDriver());
 		servicesFlow = new ServicesWorkFlows(DriverFactory.getDriver());
 		service = List.of("Beverage","Non Alc Bev");
 		basicLogin();
-		baseNavPage.salesNewNavigation();
+		loginId = baseNavPage.salesNewNavigation();
 
 	}
 
 	@Test(groups = {"Regression", "All"})
-	public void beveageservice(ITestContext context)
+	public void beveageservice()
 	{
-	
-			servicesFlow.openServiceRequestFromEventListing("DO-79" , service);
+		   String eventNo = servicesNewApi.newServiceEventId(loginId, service);
+			servicesFlow.openServiceRequestFromEventListing(eventNo , service);
 	
 			Assert.assertTrue(service.stream().anyMatch(s -> servicesPage.getServiceHdr().contains(s)),
 					"BeverageService not Mapped/Service not present in the Service list.");
@@ -63,7 +68,7 @@ public class BeverageServiceTest extends BaseClass{
 				System.out.println("No Reserve Button Available");
 			beverageServicePage.validateItems();
 			
-			servicesFlow.finalizeService("DO-79", service);
+			servicesFlow.finalizeService(eventNo, service);
 
 		}
 	}

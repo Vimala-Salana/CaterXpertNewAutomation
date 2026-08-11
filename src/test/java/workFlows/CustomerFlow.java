@@ -22,14 +22,14 @@ public class CustomerFlow{
 		customerListPage = new CustomerOrPotentialCustomerListPage(driver);
 	}
 
-	public void navigatetocreateCustomer()
+	public void navigateToCreateCustomer()
 	{
 		hamburgerMenuPage.navigateToCreateCustomer();
 		customerListPage.ClickNewCustomer();
 
 	}
 
-	public void createCustomer(Map<String, String> data) throws Exception
+	public void createCustomer(Map<String, String> data)
 	{
 		customerPage.fillCustomerMandatoryfields(data);
 		customerPage.clickCreatebtn();

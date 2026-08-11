@@ -32,8 +32,7 @@ public class CreateCustomerPage extends BasePage
 		return hdrCreateCustomer.getText();
 	}
 
-	public void fillCustomerMandatoryfields(Map<String, String> data) throws Exception {
-		 System.out.println("CreateCustomerPage driver = " + driver); System.out.println("CreateCustomerPage driver = " + driver);
+	public void fillCustomerMandatoryfields(Map<String, String> data) {
 		  MandatoryLabelsUtil.fillMandatoryFields(driver, data);
 	}
 

@@ -14,9 +14,9 @@ public class LoginTest extends BaseClass{
 	public void login()
 	{
 		LoginPage login = new LoginPage(DriverFactory.getDriver());
-		login.enterCaterId(System.getProperty("caterid", config.getProperty(env + ".caterid")));
-		login.enterUserId(System.getProperty("userid",config.getProperty(env+".userid")));
-		login.enterPassword(System.getProperty("password",config.getProperty(env+".password")));
+		login.enterCaterId(config.getCaterId());
+		login.enterUserId(config.getUserId());
+		login.enterPassword(config.getPassword());
 		login.clickGo();
 	}
 }

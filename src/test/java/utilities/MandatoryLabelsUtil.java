@@ -17,7 +17,7 @@ import testBase.BaseClass;
 public class MandatoryLabelsUtil extends BaseClass{
 	public static WebDriver driver;
 	public static WaitUtils waitutil;
-	public static void fillMandatoryFields(WebDriver driver,Map<String, String> fieldData) throws Exception 
+	public static void fillMandatoryFields(WebDriver driver,Map<String, String> fieldData)
 	{
 		By mandatoryLabelsLocator  = By.xpath(MandatoryFieldsXpaths.MANDATORY_LABEL);
 		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(20));
