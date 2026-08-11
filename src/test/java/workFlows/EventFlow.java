@@ -34,6 +34,7 @@ public class EventFlow {
 
 		eventPage.fillEventMandatoryfields(data); //filling all mandatory fields
 		eventPage.clickCreatebtn();
+		eventPage.clickYesInTaxExpiryPopupifExists();
 		
 		boolean constraintExists = eventPage.eventConstraints(); 
 		String eventNo = eventPage.getEventNo(); 

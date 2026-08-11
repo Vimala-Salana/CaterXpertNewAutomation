@@ -2,6 +2,7 @@ package pageObjects;
 
 
 import java.time.Duration;
+import java.util.List;
 import java.util.Map;
 
 import org.openqa.selenium.By;
@@ -62,6 +63,17 @@ public class CreateEventPage extends BasePage{
 	public void clickCreatebtn()
 	{
 		elementUtil.click(btnCreate);
+	}
+	
+	private final By txtTaxExpiryPopUp = By.xpath("The Customer Tax Exempt Certificate is Expired. Do you want to continue?");
+	private final By alertYes = By.xpath("//button[text()='Yes']");
+	public void clickYesInTaxExpiryPopupifExists()
+	{
+		List<WebElement> taxExpiry = driver.findElements((txtTaxExpiryPopUp));
+		if(!taxExpiry.isEmpty())
+		{
+			elementUtil.click(alertYes);
+		}
 	}
 	
 	@FindBy(xpath = "(//button[text()=' Close '])[2]") WebElement btnClose;

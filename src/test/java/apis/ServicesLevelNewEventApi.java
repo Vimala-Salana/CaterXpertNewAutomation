@@ -18,7 +18,7 @@ public class ServicesLevelNewEventApi {
 		String caterId = config.getCaterId();
 		
 		Response response = given()
-				.pathParam("patch", "CaterXpertSales2026_0704")
+				.pathParam("patch", "CaterXpertSales2026_0802")
 				.pathParam("module", "sales")
 				.pathParam("screen", "getSalesEventsList")
 				.queryParams("loginId", loginId ,"catererId", caterId,"lowerBound", 1,
@@ -40,6 +40,9 @@ public class ServicesLevelNewEventApi {
 			List<?> serviceStatuses = (List<?>) event.get("serviceStatusValues");
 
 			cisNumber = (String) event.get("cisnumber");
+			
+			if(serviceStatuses == null || serviceNames == null || cisNumber == null)
+				continue;
 
 			for (int i = 0; i < serviceNames.size(); i++) {
 

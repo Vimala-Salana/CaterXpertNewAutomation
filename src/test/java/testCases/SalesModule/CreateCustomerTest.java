@@ -27,6 +27,7 @@ public class CreateCustomerTest extends BaseClass {
 	private String sheetname;
 	private Map<String, String> customerData;
 	private CustomerFlow customerFlow;
+	JsonUtil jsonUtil;
 	
 	@BeforeMethod
 	public void setup()
@@ -42,7 +43,7 @@ public class CreateCustomerTest extends BaseClass {
 		sheetname = "Create Customer";
 		data = excelUtil.getMandatoryFieldData(sheetname);
 		
-		JsonUtil jsonUtil = new JsonUtil("src/test/resources/TestData/Customer.json");
+		jsonUtil = new JsonUtil("src/test/resources/TestData/Customer.json");
 		customerData = jsonUtil.getData();
 		
 		customerFlow.navigateToCreateCustomer();

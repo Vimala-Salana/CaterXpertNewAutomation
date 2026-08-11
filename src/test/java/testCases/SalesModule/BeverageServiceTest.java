@@ -34,7 +34,7 @@ public class BeverageServiceTest extends BaseClass{
 		beverageServicePage =  new BeverageServicePage(DriverFactory.getDriver());
 		servicesPage = new ServicesPage(DriverFactory.getDriver());
 		servicesFlow = new ServicesWorkFlows(DriverFactory.getDriver());
-		service = List.of("Beverage","Non Alc Bev");
+		service = List.of("Beverage","Non Alc Bev", "Soft Beverages");
 		basicLogin();
 		loginId = baseNavPage.salesNewNavigation();
 

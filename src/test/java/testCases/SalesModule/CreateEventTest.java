@@ -8,6 +8,7 @@ import pageObjects.BasetoSalesNavigationPage;
 import pageObjects.CreateEventPage;
 import testBase.BaseClass;
 import utilities.ExcelUtility;
+import utilities.JsonUtil;
 import workFlows.EventFlow;
 
 public class CreateEventTest extends BaseClass{
@@ -18,6 +19,7 @@ public class CreateEventTest extends BaseClass{
 	String sheetname;
 	CreateEventPage eventPage;
 	Map<String, String> data;
+	Map<String, String> eventData;
 	@BeforeMethod
 	public void setup()
 	{
@@ -29,6 +31,9 @@ public class CreateEventTest extends BaseClass{
 		
 		excelUtil = new ExcelUtility(filepath);
 		sheetname = "Create Event";
+		
+		JsonUtil jsonUtil = new JsonUtil("src/test/resources/TestData/Event.json");
+		eventData = jsonUtil.getData();
 		data = excelUtil.getMandatoryFieldData(sheetname);
 	}
 	 
@@ -37,7 +42,7 @@ public class CreateEventTest extends BaseClass{
 	{
 		eventPage = new CreateEventPage(DriverFactory.getDriver());
 		
-		String eventNo = eventFlow.createEventfromEventPage(data);
+		String eventNo = eventFlow.createEventfromEventPage(eventData);
 		context.setAttribute("eventNo", eventNo);   //To use Event Number in other classes
 	}
 			

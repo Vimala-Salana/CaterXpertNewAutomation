@@ -24,7 +24,7 @@ public class MandatoryLabelsUtil extends BaseClass{
 		waitutil = new WaitUtils(driver);
 		waitutil.waitForOverlay();
 		ElementInteractionUtil elementutil = new ElementInteractionUtil(driver);
-
+		JavascriptExecutor js = (JavascriptExecutor) driver;
 		/*
 		 * wait.until(new ExpectedCondition<Boolean>() {
 		 * 
@@ -46,7 +46,7 @@ public class MandatoryLabelsUtil extends BaseClass{
 		if(!buisnessUnit.isEmpty())
 		{
 			WebElement bu = wait.until(ExpectedConditions.elementToBeClickable(businessUnitlocator));	
-			((JavascriptExecutor) driver).executeScript("arguments[0].click();", bu);
+			js.executeScript("arguments[0].click();", bu);
 			waitutil.waitForOverlay();
 
 			By multiSelect = By.xpath(MandatoryFieldsXpaths.MULTISELECT_LIST);
@@ -57,8 +57,8 @@ public class MandatoryLabelsUtil extends BaseClass{
 			{
 				wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(multiSelect));
 				WebElement option = driver.findElement(By.xpath("(//ul[contains(@class,'p-multiselect-items')]//li)[1]"));
-
-				((JavascriptExecutor) driver).executeScript("arguments[0].click();", option);
+				js.executeScript("arguments[0].scrollIntoView({block:'center'});", option);
+				js.executeScript("arguments[0].click();", option);
 				wait.until(ExpectedConditions.elementToBeClickable(multiselectClose)).click();
 				System.out.println("clicked multi-select BU");
 				waitutil.waitForOverlay();
@@ -67,8 +67,8 @@ public class MandatoryLabelsUtil extends BaseClass{
 			else {
 				wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(singleSelect));
 				WebElement option = driver.findElement(By.xpath("(//ul[contains(@class,'p-dropdown-items')]//li)[1]"));
-
-				((JavascriptExecutor) driver).executeScript("arguments[0].click();", option);
+				js.executeScript("arguments[0].scrollIntoView({block:'center'});", option);
+				js.executeScript("arguments[0].click();", option);
 				System.out.println("clicked single select BU");
 				waitutil.waitForOverlay();
 			}
@@ -141,7 +141,8 @@ public class MandatoryLabelsUtil extends BaseClass{
 					String classAttr = dropdown.getAttribute("class");
 					if(classAttr.equalsIgnoreCase("p-multiselect-trigger"))
 					{
-						((JavascriptExecutor) driver).executeScript("arguments[0].click();", dropdown);
+						js.executeScript("arguments[0].scrollIntoView({block:'center'});", dropdown);
+						js.executeScript("arguments[0].click();", dropdown);
 						List<WebElement> list = driver.findElements(By.xpath(MandatoryFieldsXpaths.MULTISELECT_LIST));
 						wait.until(ExpectedConditions.elementToBeClickable(list.get(0)));
 						list.get(0).click();
@@ -153,11 +154,14 @@ public class MandatoryLabelsUtil extends BaseClass{
 					{
 						WebElement drpexcelValue = label.findElement(By.xpath(MandatoryFieldsXpaths.DROPDOWN_PLACEHOLDER));
 
-						if( drpexcelValue.getText().contains("Select") || drpexcelValue.getAttribute("placeholder")!=null && drpexcelValue.getAttribute("placeholder").contains("Select"))
+						if( drpexcelValue.getText().contains("Select") || drpexcelValue.getAttribute("placeholder")!=null 
+								&& drpexcelValue.getAttribute("placeholder").contains("Select"))
 						{
 							wait = new WebDriverWait(driver, Duration.ofSeconds(30));
 							waitutil.waitForOverlay();
+							js.executeScript("arguments[0].scrollIntoView({block:'center'});", dropdown);
 							wait.until(ExpectedConditions.elementToBeClickable(dropdown));
+		
 							((JavascriptExecutor) driver).executeScript("arguments[0].click();", dropdown);
 							wait.until(ExpectedConditions.invisibilityOfElementLocated(By.cssSelector("div.overlay")));
 							List<WebElement> drpoptions = driver.findElements(By.xpath(MandatoryFieldsXpaths.DROPDOWN_LIST));
