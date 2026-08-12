@@ -16,18 +16,20 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import testBase.BasePage;
 import utilities.ElementInteractionUtil;
 import utilities.ExcelUtility;
+import utilities.LoggerManager;
 import utilities.MandatoryLabelsUtil;
 import utilities.ServiceUtil;
 import utilities.WaitUtils;
 import workFlows.ServicesWorkFlows;
 
 public class CreateEventPage extends BasePage{
-	
+
 	String filepath;
 	String sheetname;
 	ServiceUtil serviceutil;
 	public String eventNo;
-	
+	WebDriverWait shortWait;
+
 	public CreateEventPage(WebDriver driver, String filepath,String sheetname)
 	{
 		super(driver);
@@ -35,8 +37,9 @@ public class CreateEventPage extends BasePage{
 		this.sheetname = sheetname;
 		PageFactory.initElements(driver, this);
 		serviceutil = new ServiceUtil(driver);
+		shortWait = new WebDriverWait(driver, Duration.ofSeconds(1));
 	}
-	
+
 	public CreateEventPage(WebDriver driver)
 	{
 		super(driver);
@@ -45,50 +48,56 @@ public class CreateEventPage extends BasePage{
 		wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 		serviceutil = new ServiceUtil(driver);
 	}
-	
+
 	@FindBy(xpath = "//span[normalize-space(text())='Create Event']") WebElement hdrCreateEvent;
-	
+
 	public String getCreateEventhdr()
 	{
 		waitutil.waitForOverlay();
 		return hdrCreateEvent.getText();
 	}
-	
+
 	public void fillEventMandatoryfields(Map<String, String> data)
 	{
 		MandatoryLabelsUtil.fillMandatoryFields(driver, data);
 	}
-	
+
 	private final By btnCreate = By.xpath("//button[normalize-space()='Create']");
 	public void clickCreatebtn()
 	{
 		elementUtil.click(btnCreate);
 	}
-	
+
 	private final By txtTaxExpiryPopUp = By.xpath("The Customer Tax Exempt Certificate is Expired. Do you want to continue?");
 	private final By alertYes = By.xpath("//button[text()='Yes']");
 	public void clickYesInTaxExpiryPopupifExists()
 	{
-		List<WebElement> taxExpiry = driver.findElements((txtTaxExpiryPopUp));
-		if(!taxExpiry.isEmpty())
-		{
-			elementUtil.click(alertYes);
+		try {
+			List<WebElement> taxExpiry = wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(txtTaxExpiryPopUp));
+			System.out.println(!taxExpiry.isEmpty());
+			if(!taxExpiry.isEmpty())
+			{
+				elementUtil.click(alertYes);
+			}
+		}
+		catch (Exception e) {
+			LoggerManager.info("Tax Expiry Popup is not displayed");
 		}
 	}
-	
+
 	@FindBy(xpath = "(//button[text()=' Close '])[2]") WebElement btnClose;
 	public void clickClosebtn()
 	{
 		wait.until(ExpectedConditions.invisibilityOfElementLocated(By.cssSelector("div.overlay")));
 		wait.until(ExpectedConditions.elementToBeClickable(btnClose)).click();
 	}
-	
+
 	public boolean eventConstraints()
 	{
 		waitutil.waitForOverlay();
 		return serviceutil.Constraints();
 	}
-	
+
 	//@FindBy(xpath ="//label[text()=' Event # ']//following-sibling::label[2]") WebElement eventNumlocator;
 	private final By eventNumlocator = By.xpath("//label[text()=' Event # ']//following-sibling::label[2]");
 	public String getEventNo()
@@ -97,13 +106,13 @@ public class CreateEventPage extends BasePage{
 		eventNo = elementUtil.getText(eventNumlocator);
 		return eventNo;
 	}
-	
+
 	public void ApproveEventConstraints(String eventNo)
 	{
-			serviceutil.approveConstraints(eventNo);
-			ServicesWorkFlows servicesFlow = new ServicesWorkFlows(driver);
-			servicesFlow.navigateToEventDashboard(eventNo);
+		serviceutil.approveConstraints(eventNo);
+		ServicesWorkFlows servicesFlow = new ServicesWorkFlows(driver);
+		servicesFlow.navigateToEventDashboard(eventNo);
 	}
-	
-	
+
+
 }

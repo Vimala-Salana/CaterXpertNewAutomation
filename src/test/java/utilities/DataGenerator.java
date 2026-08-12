@@ -15,16 +15,20 @@ public class DataGenerator {
 
 	private final Faker faker;
 	private final ObjectMapper objectMapper;
+	 private final JsonUtil jsonUtil;
 
 	public DataGenerator() {
 		faker = new Faker();
 		objectMapper = new ObjectMapper();
+		jsonUtil = new JsonUtil();
 	}
 
 	/**
 	 * Generates random values based on the field data types provided in the screen JSON file.
 	 */
-	public Map<String, String> generate(Map<String, String> fieldDataTypes, String testName) {
+	public Map<String, String> generate(String jsonPath, String testName) {
+		
+		 Map<String, String> fieldDataTypes = jsonUtil.getData(jsonPath);
 
 		Map<String, String> generatedFieldData = new LinkedHashMap<>();
 
@@ -92,6 +96,7 @@ public class DataGenerator {
 			return "Suite " + faker.number().numberBetween(100, 999);
 
 		case "city":
+		case "county":
 			return faker.address().city();
 			
 		case "zip+4":
@@ -99,9 +104,6 @@ public class DataGenerator {
 
 		case "state":
 			return faker.address().state();
-
-		case "country":
-			return faker.address().country();
 
 		case "zipCode":
 			return faker.address().zipCode();

@@ -16,7 +16,7 @@ import pageObjects.MenuServicePage;
 import pageObjects.ServicesPage;
 import pageObjects.StaffingServicePage;
 import testBase.BaseClass;
-import utilities.ExcelUtility;
+import utilities.DataGenerator;
 import workFlows.ContactFlow;
 import workFlows.CustomerFlow;
 import workFlows.EventFlow;
@@ -28,17 +28,14 @@ public class SmokeTest extends BaseClass{
 	ServicesWorkFlows servicesFlow;
 	CustomerFlow customerFlow;
 	ContactFlow contactFlow;
+	DataGenerator dataGenerator;
 	
-	ExcelUtility excelUtil;
 	Map<String, String> customerData;
-	private String customerSheetname;
 	
 	Map<String, String> contactData;
-	private String contactSheetname;
 	
 	EventFlow eventFlow;
 	Map<String, String> eventData;
-	private String eventSheetname;
 	
 	String eventNo;
 	List<String> menuService;
@@ -63,19 +60,11 @@ public class SmokeTest extends BaseClass{
 		customerFlow =  new CustomerFlow(DriverFactory.getDriver());
 		contactFlow = new ContactFlow();
 		eventFlow = new EventFlow(DriverFactory.getDriver());
-		excelUtil = new ExcelUtility(filepath);
 		
-		customerSheetname = "Create Customer";
-		customerData = excelUtil.getMandatoryFieldData(customerSheetname);
-		
-		contactSheetname = "Create Contact";
-		contactData = excelUtil.getMandatoryFieldData(contactSheetname);
-		
-		eventSheetname = "Create Event";
-		eventData = excelUtil.getMandatoryFieldData(eventSheetname);
-		
+		dataGenerator = new DataGenerator();
 		menuService = List.of("Menu");
 		beverageService = List.of("Beverage","Non Alc Bev");
+		staffingService = List.of("Personnel","Staffing","Scheduling");
 		estimateService = List.of("Estimates");
 		estimatesIcon = List.of("Estimates Lite","Estimates");
 		
@@ -99,12 +88,14 @@ public class SmokeTest extends BaseClass{
 		
 		customerFlow.navigateToCreateCustomer();
 		
+		customerData =  dataGenerator.generate(customerJsonPath, "SmokeCustomerTest");
 		customerFlow.createCustomer(customerData);
 		
+		contactData =  dataGenerator.generate(contactJsonPath, "SmokeContactTest");
 		contactFlow.createContact(contactData);
 		
 		eventFlow.navigateToCreateEvent();
-		
+		eventData =  dataGenerator.generate(eventJsonPath, "SmokeEventTest");
 		eventNo = eventFlow.createEvent(eventData);
 		
 		/* Menu Service */

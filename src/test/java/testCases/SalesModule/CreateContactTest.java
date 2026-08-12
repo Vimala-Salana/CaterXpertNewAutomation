@@ -44,9 +44,8 @@ public class CreateContactTest extends BaseClass{
 		excelUtil = new ExcelUtility(filepath);
 		sheetname = "Create Contact";
 		data = excelUtil.getMandatoryFieldData(sheetname);
-		JsonUtil jsonUtil = new JsonUtil("src/test/resources/TestData/Contact.json");
 		DataGenerator dataGenerator = new DataGenerator();
-		contactData = dataGenerator.generate(jsonUtil.getData(), "ContactTest");
+		contactData = dataGenerator.generate(contactJsonPath, "ContactTest");
 		
 		contactFlow.navigatetoCreateContact();
 	}

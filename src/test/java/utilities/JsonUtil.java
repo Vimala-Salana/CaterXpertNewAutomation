@@ -9,30 +9,27 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class JsonUtil {
 
-	private final Map<String, String> data;
+    private final ObjectMapper objectMapper;
 
-	public JsonUtil(String filePath) {
+    public JsonUtil() {
+        objectMapper = new ObjectMapper();
+    }
 
-		try {
-			ObjectMapper objectMapper = new ObjectMapper();
+    public Map<String, String> getData(String filePath) {
 
-			data = objectMapper.readValue(
-					new File(filePath),
-					new TypeReference<Map<String, String>>() {});
-		}
-		catch (IOException e) {
+        try {
+            return objectMapper.readValue(
+                    new File(filePath),
+                    new TypeReference<Map<String, String>>() {}
+            );
 
-			throw new RuntimeException("Unable to read JSON test data: " + filePath,e);
-		}
-	}
+        } catch (IOException e) {
+            throw new RuntimeException(
+                    "Unable to read JSON test data: " + filePath, e);
+        }
+    }
 
-	public String getValue(String key) {
-
-		return data.get(key);
-	}
-
-	public Map<String, String> getData() {
-
-		return data;
-	}
+    public String getValue(String filePath, String key) {
+        return getData(filePath).get(key);
+    }
 }

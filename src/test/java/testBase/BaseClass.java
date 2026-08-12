@@ -20,6 +20,11 @@ public class BaseClass {
 
 	//protected WebDriver driver;
 	public String filepath = "src/test/resources/TestData/SalesTestData.xlsx";
+	
+	public String customerJsonPath = "src/test/resources/TestData/Customer.json";
+	public String contactJsonPath = "src/test/resources/TestData/Contact.json";
+	public String eventJsonPath = "src/test/resources/TestData/Event.json";
+	
 	public ConfigReader config = new ConfigReader();
 	ExcelUtility excel;
 	protected LoginPage loginPage;

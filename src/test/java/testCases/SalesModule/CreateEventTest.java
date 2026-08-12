@@ -33,9 +33,8 @@ public class CreateEventTest extends BaseClass{
 		excelUtil = new ExcelUtility(filepath);
 		sheetname = "Create Event";
 		
-		JsonUtil jsonUtil = new JsonUtil("src/test/resources/TestData/Event.json");
 		DataGenerator dataGenerator = new DataGenerator();
-		eventData = dataGenerator.generate(jsonUtil.getData(), "ContactTest");
+		eventData = dataGenerator.generate(eventJsonPath, "EventTest");
 		data = excelUtil.getMandatoryFieldData(sheetname);
 	}
 	 

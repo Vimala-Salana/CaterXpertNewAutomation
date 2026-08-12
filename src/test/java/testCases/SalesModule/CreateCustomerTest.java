@@ -28,7 +28,6 @@ public class CreateCustomerTest extends BaseClass {
 	private String sheetname;
 	private Map<String, String> customerData;
 	private CustomerFlow customerFlow;
-	JsonUtil jsonUtil;
 	
 	@BeforeMethod
 	public void setup()
@@ -44,9 +43,8 @@ public class CreateCustomerTest extends BaseClass {
 		sheetname = "Create Customer";
 		data = excelUtil.getMandatoryFieldData(sheetname);
 		
-		jsonUtil = new JsonUtil("src/test/resources/TestData/Customer.json");
 		DataGenerator dataGenerator = new DataGenerator();
-		customerData = dataGenerator.generate(jsonUtil.getData(),"CustomerTest");
+		customerData = dataGenerator.generate(customerJsonPath,"CustomerTest");
 		
 		customerFlow.navigateToCreateCustomer();
 		
@@ -68,10 +66,11 @@ public class CreateCustomerTest extends BaseClass {
 		String customernameexl = excelUtil.getCellValue(sheetname, 1, 1);
 		System.out.println(excelUtil.getCellValue(sheetname, 1, 1));
 		
-		customerPage.enterCustomerNameinSearch(customernameexl);
+		String expectedCustomerName = customerData.get("Customer Name");
+		customerPage.enterCustomerNameinSearch(expectedCustomerName);
 		//System.out.println(customerPage.getCustomerNamefromlst()); // Customer Name from CustomerList
 		//System.out.println(customernameexl); // Customer name from Excel
-		String expectedCustomerName = customerData.get("Customer Name");
+		
 		Assert.assertEquals(customerPage.getCustomerNamefromlst().trim(), expectedCustomerName, "Customer Not Found");
 		
 		ReportManager.pass("Customer is found in Customer List");

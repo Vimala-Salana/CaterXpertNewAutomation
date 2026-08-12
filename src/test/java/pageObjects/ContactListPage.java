@@ -17,16 +17,19 @@ public class ContactListPage extends BasePage{
 	{
 		super(driver);
 	}
-	@FindBy(xpath = "//span[normalize-space(text())='Contact List']") WebElement hdrContactList;
-	@FindBy(xpath = "//button[text()=' New Contact ']") WebElement btnNewContact;
+	
+	//@FindBy(xpath = "//span[normalize-space(text())='Contact List']") WebElement hdrContactList;
+	private final By hdrContactList = By.xpath("//span[normalize-space(text())='Contact List']");
+	//@FindBy(xpath = "//button[text()=' New Contact ']") WebElement btnNewContact;
+	private final By btnNewContact = By.xpath("//button[text()=' New Contact ']");
 	
 	public String getContactListHeader()
 	{
-		return hdrContactList.getText();
+		return elementUtil.getText(hdrContactList);
 	}
 	public void clickNewContact()
 	{
-		btnNewContact.click();
+		elementUtil.click(btnNewContact);
 	}
 	
 	private final By txtSearchCustomer = By.xpath("//input[contains(@placeholder,'Contact Search')]");
