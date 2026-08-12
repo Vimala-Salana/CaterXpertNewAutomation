@@ -1,110 +1,164 @@
 package utilities;
-import java.math.BigInteger;
-import java.security.SecureRandom;
-import java.util.Locale;
-import java.util.UUID;
 
-import org.testng.annotations.Test;
+import java.io.File;
+import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.LinkedHashMap;
+import java.util.Map;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import net.datafaker.Faker;
+
 public class DataGenerator {
 
-	private DataGenerator() {
-		super();
+	private final Faker faker;
+	private final ObjectMapper objectMapper;
+
+	public DataGenerator() {
+		faker = new Faker();
+		objectMapper = new ObjectMapper();
 	}
 
-	private static final String AB = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
-	private static SecureRandom random = new SecureRandom();
+	/**
+	 * Generates random values based on the field data types provided in the screen JSON file.
+	 */
+	public Map<String, String> generate(Map<String, String> fieldDataTypes, String testName) {
 
-	private static final ThreadLocal<Faker> faker = ThreadLocal.withInitial(() -> new Faker(new Locale("en-US")));
+		Map<String, String> generatedFieldData = new LinkedHashMap<>();
 
-	public static Faker getFaker() {
-		return faker.get();
-	}
+		for (Map.Entry<String, String> entry : fieldDataTypes.entrySet()) {
 
-	public static void setFaker(Faker newFaker) {
-		faker.set(newFaker);
-	}
+			String fieldLabel = entry.getKey();
+			String fieldDataType = entry.getValue();
 
-	public static void setLocale(String localeName) {
-		faker.set(new Faker(new Locale(localeName)));
-	}
+			String generatedValue = generateValue(fieldDataType);
 
-	public static String randomString(int length) {
-		StringBuilder sb = new StringBuilder(length);
-		for (int i = 0; i < length; i++) {
-			sb.append(AB.charAt(random.nextInt(AB.length())));
+			generatedFieldData.put(fieldLabel, generatedValue);
 		}
-		return sb.toString();
+
+		// Save the exact values used during execution
+		saveGeneratedData(testName, generatedFieldData);
+
+		return generatedFieldData;
 	}
 
-	public static String randomStringHexToken(int byteLength) {
-		byte[] token = new byte[byteLength];
-		random.nextBytes(token);
-		return new BigInteger(1, token).toString(16);
+	/**
+	 * Generates a value based on the field data type.
+	 */
+	private String generateValue(String fieldValue) {
+		
+		 if (!fieldValue.startsWith("@")) {
+		        return fieldValue;
+		    }
+
+		    String dataType = fieldValue.substring(1); //Removes @ from the fieldValue ex: @firstName becomes firstName
+
+		switch (dataType) {
+
+		case "firstName":
+			return faker.name().firstName();
+
+		case "lastName":
+			return faker.name().lastName();
+
+		case "fullName":
+			return faker.name().fullName();
+			
+		case "title":
+		    return faker.name().title();
+
+		case "email":
+			return faker.internet().emailAddress();
+
+		case "phone":
+			return faker.phoneNumber().cellPhone();
+
+		case "company":
+			return faker.company().name();
+
+		case "fullAddress":
+			return faker.address().fullAddress();
+			
+		case "buildingName":
+		    return faker.address().streetName() + " " +
+		           faker.options().option("Apartments", "Towers", "Plaza", "Heights", "Court");
+		    
+		case "street":
+			return faker.address().streetName();
+			
+		case "suite":
+			return "Suite " + faker.number().numberBetween(100, 999);
+
+		case "city":
+			return faker.address().city();
+			
+		case "zip+4":
+			return faker.number().digits(4);
+
+		case "state":
+			return faker.address().state();
+
+		case "country":
+			return faker.address().country();
+
+		case "zipCode":
+			return faker.address().zipCode();
+		
+		case "twoDigitNumber":
+			return faker.number().digits(2);
+			
+		case "oneDigitNumber":
+			return faker.number().digit();
+			
+		case "accountingId":
+			return faker.name().firstName() + faker.number().digits(4);
+
+		case "sentence":
+			return faker.lorem().sentence();
+
+		case "eventName":
+			return faker.lorem().sentence(3);
+
+		/*
+		 * MandatoryLabelsUtil expects a date offset.
+		 * Example: "15" means today + 15 days.
+		 */
+		case "futureDate":
+			return String.valueOf(faker.number().numberBetween(1, 30));
+			
+		case "pastDate":
+		    return String.valueOf(-faker.number().numberBetween(1, 30));
+
+		default:
+			throw new IllegalArgumentException("Unsupported field Value: " + fieldValue);
+		}
 	}
 
-	public static String randomStringUUID() {
-		return UUID.randomUUID().toString();
-	}
+	/**
+	 * Saves the generated field values so we can see exactly what data was used after execution.
+	 */
+	private void saveGeneratedData(String testName, Map<String, String> generatedFieldData) {
 
-	public static int randomNumberIntFromTo(int from, int to) {
-		return (int) Math.floor(Math.random() * (to - from + 1) + from);
-	}
+		try {
 
-	public static String randomFirstName() {
-		return getFaker().name().firstName();
-	}
+			File outputDirectory = new File("test-output/execution-data");
 
-	public static String randomLastName() {
-		return getFaker().name().lastName();
-	}
+			if (!outputDirectory.exists() && !outputDirectory.mkdirs()) {
+				throw new IOException("Unable to create output directory: " + outputDirectory.getAbsolutePath());
+			}
 
-	public static String randomPhoneNumber() {
-		return getFaker().phoneNumber().phoneNumber();
-	}
+			String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss_SSS"));
+			String fileName = testName + "_" + timestamp + ".json";
+			File outputFile = new File(outputDirectory, fileName);
 
-	public static String randomCountry() {
-		return getFaker().address().country();
-	}
+			objectMapper.writerWithDefaultPrettyPrinter().writeValue(outputFile, generatedFieldData);
 
-	public static String randomZipCode() {
-		return getFaker().address().zipCode();
-	}
+			System.out.println("Generated test data saved to: " + outputFile.getAbsolutePath());
 
-	public static String randomAddress() {
-		return getFaker().address().fullAddress();
-	}
-
-	public static String randomCity() {
-		return getFaker().address().cityName();
-	}
-
-	public static String randomState() {
-		return getFaker().address().state();
-	}
-
-	public static String randomUSCounty() {
-		return getFaker().address().stateAbbr();    // e.g., "CA"
-	}
-
-	public static String randomStreetName() {
-		return getFaker().address().streetName();
-	}
-
-	@Test
-	public void testDataGeneration() {
-		System.out.println("First Name: " + randomFirstName());
-		System.out.println("Last Name: " + randomLastName());
-		System.out.println("Phone Number: " + randomPhoneNumber());
-		System.out.println("Address: " + randomAddress());
-		//  System.out.println("Country: " + randomCountry());
-		System.out.println("Zip Code: " + randomZipCode());
-		System.out.println("State: " + randomState());
-		System.out.println("County: " + randomUSCounty());
-		System.out.println("City: " + randomCity());
-		System.out.println("Street: " + randomStreetName());
+		} catch (IOException e) {
+			throw new RuntimeException("Unable to save generated test data for: " + testName, e);
+		}
 	}
 }
-
-

@@ -14,6 +14,7 @@ import pageObjects.CreateCustomerPage;
 import pageObjects.CustomerOrPotentialCustomerListPage;
 import pageObjects.HambergerMenuPage;
 import testBase.BaseClass;
+import utilities.DataGenerator;
 import utilities.ExcelUtility;
 import utilities.JsonUtil;
 import utilities.ReportManager;
@@ -23,9 +24,7 @@ import workFlows.ContactFlow;
 public class CreateContactTest extends BaseClass{
 
 	ExcelUtility excelUtil;
-	private CreateContactPage contactPage;
 	private BasetoSalesNavigationPage basePage; 
-	private HambergerMenuPage hamburgerMenuPage;
 	private ContactListPage contactListpage;
 	private ContactFlow contactFlow;
 	Map<String, String> data;
@@ -33,7 +32,7 @@ public class CreateContactTest extends BaseClass{
 	private String sheetname;
 	
 	@BeforeMethod
-	public void setup() throws IOException
+	public void setup()
 	{
 		basePage = new BasetoSalesNavigationPage(DriverFactory.getDriver());
 		contactFlow = new ContactFlow();
@@ -46,7 +45,9 @@ public class CreateContactTest extends BaseClass{
 		sheetname = "Create Contact";
 		data = excelUtil.getMandatoryFieldData(sheetname);
 		JsonUtil jsonUtil = new JsonUtil("src/test/resources/TestData/Contact.json");
-		contactData = jsonUtil.getData();
+		DataGenerator dataGenerator = new DataGenerator();
+		contactData = dataGenerator.generate(jsonUtil.getData(), "ContactTest");
+		
 		contactFlow.navigatetoCreateContact();
 	}
 	
@@ -57,11 +58,14 @@ public class CreateContactTest extends BaseClass{
 		//Assert.assertEquals(contactPage.getContacthdr(), "Create Contact");
 		contactFlow.createContact(contactData);
 	
-		String contactfirstnamexl = excelUtil.getCellValue(sheetname, 1, 0);
-		String contactlastnamexl = excelUtil.getCellValue(sheetname, 1, 1);
+		
+		//String contactfirstnamexl = excelUtil.getCellValue(sheetname, 1, 0);
+		//String contactlastnamexl = excelUtil.getCellValue(sheetname, 1, 1);
+		String expectedFirstName = contactData.get("First Name");
+		String expectedLastName = contactData.get("Last Name");
 
-		String contactnamexl = contactlastnamexl+", "+contactfirstnamexl;
-		System.out.println(contactnamexl);
+		String contactname = expectedLastName+", "+expectedFirstName;
+		System.out.println(contactname);
 		
 		//System.out.println(contactPage.getContactNamefromList()+" "+contactPage.getContactNamefromList().size());
 		//DriverFactory.getDriver().findElement(By.xpath("//span[text()=' event ']")).click();
@@ -77,9 +81,9 @@ public class CreateContactTest extends BaseClass{
 				System.out.println("Contact name not found");
 		} */
 		
-		contactListpage.searchContactName(contactnamexl);
+		contactListpage.searchContactName(contactname);
 		
-		Assert.assertEquals(contactListpage.getContactNamefromlst().trim(), contactnamexl,"Contact Name not found");
+		Assert.assertEquals(contactListpage.getContactNamefromlst().trim(), contactname,"Contact Name not found");
 		
 		ReportManager.pass("Contact Created Successfully...");
 	}

@@ -7,6 +7,7 @@ import factory.DriverFactory;
 import pageObjects.BasetoSalesNavigationPage;
 import pageObjects.CreateEventPage;
 import testBase.BaseClass;
+import utilities.DataGenerator;
 import utilities.ExcelUtility;
 import utilities.JsonUtil;
 import workFlows.EventFlow;
@@ -33,7 +34,8 @@ public class CreateEventTest extends BaseClass{
 		sheetname = "Create Event";
 		
 		JsonUtil jsonUtil = new JsonUtil("src/test/resources/TestData/Event.json");
-		eventData = jsonUtil.getData();
+		DataGenerator dataGenerator = new DataGenerator();
+		eventData = dataGenerator.generate(jsonUtil.getData(), "ContactTest");
 		data = excelUtil.getMandatoryFieldData(sheetname);
 	}
 	 

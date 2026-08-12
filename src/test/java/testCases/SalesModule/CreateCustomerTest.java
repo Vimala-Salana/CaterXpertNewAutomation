@@ -13,6 +13,7 @@ import pageObjects.CreateCustomerPage;
 import pageObjects.CustomerOrPotentialCustomerListPage;
 import pageObjects.HambergerMenuPage;
 import testBase.BaseClass;
+import utilities.DataGenerator;
 import utilities.ExcelUtility;
 import utilities.JsonUtil;
 import utilities.ReportManager;
@@ -44,7 +45,8 @@ public class CreateCustomerTest extends BaseClass {
 		data = excelUtil.getMandatoryFieldData(sheetname);
 		
 		jsonUtil = new JsonUtil("src/test/resources/TestData/Customer.json");
-		customerData = jsonUtil.getData();
+		DataGenerator dataGenerator = new DataGenerator();
+		customerData = dataGenerator.generate(jsonUtil.getData(),"CustomerTest");
 		
 		customerFlow.navigateToCreateCustomer();
 		
@@ -69,8 +71,8 @@ public class CreateCustomerTest extends BaseClass {
 		customerPage.enterCustomerNameinSearch(customernameexl);
 		//System.out.println(customerPage.getCustomerNamefromlst()); // Customer Name from CustomerList
 		//System.out.println(customernameexl); // Customer name from Excel
-		
-		Assert.assertEquals(customerPage.getCustomerNamefromlst().trim(), customernameexl, "Customer Not Found");
+		String expectedCustomerName = customerData.get("Customer Name");
+		Assert.assertEquals(customerPage.getCustomerNamefromlst().trim(), expectedCustomerName, "Customer Not Found");
 		
 		ReportManager.pass("Customer is found in Customer List");
 		/*
