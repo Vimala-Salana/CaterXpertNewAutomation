@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.StaleElementReferenceException;
+import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -30,16 +32,6 @@ public class CreateEventPage extends BasePage{
 	public String eventNo;
 	WebDriverWait shortWait;
 
-	public CreateEventPage(WebDriver driver, String filepath,String sheetname)
-	{
-		super(driver);
-		this.filepath = filepath;
-		this.sheetname = sheetname;
-		PageFactory.initElements(driver, this);
-		serviceutil = new ServiceUtil(driver);
-		shortWait = new WebDriverWait(driver, Duration.ofSeconds(1));
-	}
-
 	public CreateEventPage(WebDriver driver)
 	{
 		super(driver);
@@ -47,6 +39,7 @@ public class CreateEventPage extends BasePage{
 		waitutil = new WaitUtils(driver);
 		wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 		serviceutil = new ServiceUtil(driver);
+		shortWait = new WebDriverWait(driver, Duration.ofSeconds(2));
 	}
 
 	@FindBy(xpath = "//span[normalize-space(text())='Create Event']") WebElement hdrCreateEvent;
@@ -68,20 +61,20 @@ public class CreateEventPage extends BasePage{
 		elementUtil.click(btnCreate);
 	}
 
-	private final By txtTaxExpiryPopUp = By.xpath("The Customer Tax Exempt Certificate is Expired. Do you want to continue?");
+	private final By txtTaxExpiryPopUp = By.xpath("//div[contains(text(),'Tax Exempt Certificate')]");
 	private final By alertYes = By.xpath("//button[text()='Yes']");
 	public void clickYesInTaxExpiryPopupifExists()
 	{
-		try {
-			List<WebElement> taxExpiry = wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(txtTaxExpiryPopUp));
-			System.out.println(!taxExpiry.isEmpty());
-			if(!taxExpiry.isEmpty())
-			{
-				elementUtil.click(alertYes);
-			}
+		try
+		{
+			wait.until(ExpectedConditions.invisibilityOfElementLocated(By.cssSelector("div.overlay")));
+			//waitutil.waitForOverlay();
+			shortWait.until(ExpectedConditions.visibilityOfElementLocated(txtTaxExpiryPopUp));
+			elementUtil.click(alertYes);
 		}
-		catch (Exception e) {
-			LoggerManager.info("Tax Expiry Popup is not displayed");
+		catch (TimeoutException | StaleElementReferenceException e)
+		{
+			System.out.println("Tax Exipry popup not displayed");
 		}
 	}
 

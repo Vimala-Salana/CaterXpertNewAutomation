@@ -1,8 +1,8 @@
 
   {
-  "Begin Time": "1,07:00 PM",
+  "Begin Time": "3,07:00 PM",
   "County": "@county",
-  "End Time": "2,07:00 PM",
+  "End Time": "3,10:00 PM",
   "Event Name": "@eventName",
   "Discount Percentage": "@twoDigitNumber",
   "Adult Count": "@twoDigitNumber",

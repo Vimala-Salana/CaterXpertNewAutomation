@@ -86,14 +86,15 @@ public class SmokeTest extends BaseClass{
 		
 		salesNaviagationPage.salesNewNavigation();
 		
-		customerFlow.navigateToCreateCustomer();
-		
-		customerData =  dataGenerator.generate(customerJsonPath, "SmokeCustomerTest");
-		customerFlow.createCustomer(customerData);
-		
-		contactData =  dataGenerator.generate(contactJsonPath, "SmokeContactTest");
-		contactFlow.createContact(contactData);
-		
+		/*
+		 * customerFlow.navigateToCreateCustomer();
+		 * 
+		 * customerData = dataGenerator.generate(customerJsonPath, "SmokeCustomerTest");
+		 * customerFlow.createCustomer(customerData);
+		 * 
+		 * contactData = dataGenerator.generate(contactJsonPath, "SmokeContactTest");
+		 * contactFlow.createContact(contactData);
+		 */
 		eventFlow.navigateToCreateEvent();
 		eventData =  dataGenerator.generate(eventJsonPath, "SmokeEventTest");
 		eventNo = eventFlow.createEvent(eventData);

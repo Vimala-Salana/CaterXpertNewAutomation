@@ -2,6 +2,8 @@ package apis;
 
 import static io.restassured.RestAssured.given;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import org.testng.annotations.Test;
@@ -31,6 +33,9 @@ public class ServicesLevelNewEventApi {
 		List<Map<String, Object>> events = response.jsonPath().getList("$");
 
 		String cisNumber = null;
+		
+		List<String> matchingEvents = new ArrayList<>();
+		
 		for (Map<String, Object> event : events) {
 
 			// Get service names
@@ -55,11 +60,12 @@ public class ServicesLevelNewEventApi {
 						&& !cisNumber.trim().matches(".*\\s+[MT]\\d*$"))
 				{
 					System.out.println(cisNumber);
-					return cisNumber;
+					matchingEvents.add(cisNumber);
 				}
 			}
 
 		}
-		return null;
+		Collections.shuffle(matchingEvents);
+		return matchingEvents.isEmpty() ? null : matchingEvents.get(0);
 	}
 }

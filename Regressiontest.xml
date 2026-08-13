@@ -7,13 +7,13 @@
 	<test name="ChromeTest" preserve-order="true">
 		<parameter name="browser" value="chrome" />
 		<classes>
-			<!--<class name="testCases.SalesModule.LoginTest" />
+	<!--		<class name="testCases.SalesModule.LoginTest" />
 			<class name="testCases.SalesModule.CreateCustomerTest" />
-			<class name="testCases.SalesModule.CreateContactTest" />-->
+			<class name="testCases.SalesModule.CreateContactTest" />
 			<class name="testCases.SalesModule.CreateEventTest" />
 			<class name="testCases.SalesModule.MenuServiceTest" />
 			<class name="testCases.SalesModule.BeverageServiceTest" />
-			<class name="testCases.SalesModule.EstimatesTest" />
+			<class name="testCases.SalesModule.EstimatesTest" />-->
 			<class name="testCases.SalesModule.SmokeTest" />
 		</classes>
 	</test> <!--

@@ -3,6 +3,8 @@ package apis;
 import static io.restassured.RestAssured.*;
 
 import java.io.ObjectInputFilter.Config;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -35,6 +37,8 @@ public class EventListApi {
 
 		String cisNumber = null;
 
+		List<String> matchingEvents = new ArrayList<>();
+		
 		for (Map<String, Object> event : events) {
 
 			// Get service statuses
@@ -43,15 +47,16 @@ public class EventListApi {
 			cisNumber = (String) event.get("cisnumber");
 
 			// Find requested service with New status
-			if (serviceStatuses.stream().anyMatch(status->status.toString().trim().equalsIgnoreCase("New")) 
+			if (serviceStatuses.stream().allMatch(status->status.toString().trim().equalsIgnoreCase("New")) 
 					&& !cisNumber.trim().matches(".*\\s+[MT]\\d*$"))
 			{
 				System.out.println(cisNumber); 	 	
-				return cisNumber;
+				matchingEvents.add(cisNumber);
 			}
 
 		}
-		return null;
+		Collections.shuffle(matchingEvents);
+		return matchingEvents.isEmpty() ? null : matchingEvents.get(0);
 	}
 }
 
