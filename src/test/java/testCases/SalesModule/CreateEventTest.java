@@ -1,6 +1,7 @@
 package testCases.SalesModule;
 import java.util.Map;
 import org.testng.ITestContext;
+import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import factory.DriverFactory;
@@ -24,11 +25,7 @@ public class CreateEventTest extends BaseClass{
 	@BeforeMethod
 	public void setup()
 	{
-		baseNavPage = new BasetoSalesNavigationPage(DriverFactory.getDriver());
 		eventFlow =  new EventFlow(DriverFactory.getDriver());
-		
-		basicLogin();
-		baseNavPage.salesNewNavigation();
 		
 		excelUtil = new ExcelUtility(filepath);
 		sheetname = "Create Event";
@@ -39,12 +36,17 @@ public class CreateEventTest extends BaseClass{
 	}
 	 
 	@Test(groups = {"Regression", "All"})
-	public void createEventFromEventPage(ITestContext context) throws Exception
+	public void createEventFromEventPage() throws Exception
 	{
 		eventPage = new CreateEventPage(DriverFactory.getDriver());
 		
 		String eventNo = eventFlow.createEventfromEventPage(eventData);
-		context.setAttribute("eventNo", eventNo);   //To use Event Number in other classes
+		//context.setAttribute("eventNo", eventNo);   //To use Event Number in other classes
 	}
+	
+	@AfterMethod(alwaysRun = true)
+    public void tearDown() {
+        DriverFactory.quitDriver();
+    }
 			
 }

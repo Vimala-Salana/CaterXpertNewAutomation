@@ -15,7 +15,7 @@ public class DriverFactory {
 
         if (browser.equalsIgnoreCase("chrome")) {
         	  ChromeOptions options = new ChromeOptions();
-        	  options.addArguments( "user-data-dir=C:\\AutomationProfile"); 
+        	 // options.addArguments( "user-data-dir=C:\\AutomationProfile"); 
     		webDriver = new ChromeDriver(options);
             //webDriver = new ChromeDriver();
         

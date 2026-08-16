@@ -3,6 +3,7 @@ package testCases.SalesModule;
 import java.util.List;
 
 import org.testng.Assert;
+import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
@@ -22,7 +23,6 @@ public class StaffingServiceTest extends BaseClass
 	ServicesWorkFlows servicesFlow;
 	ServicesLevelNewEventApi serviceEventApi;
 	List<String> service;
-	String loginId;
 
 	@BeforeMethod
 	public void setup()
@@ -32,8 +32,6 @@ public class StaffingServiceTest extends BaseClass
 		servicesFlow = new ServicesWorkFlows(DriverFactory.getDriver());
 		serviceEventApi = new ServicesLevelNewEventApi();
 		service = List.of("Personnel","Staffing","Scheduling");
-		basicLogin();
-		loginId = baseNavPage.salesNewNavigation();
 
 	}
 
@@ -50,5 +48,10 @@ public class StaffingServiceTest extends BaseClass
 		staffingServicePage.staffingInfo();
 		servicesFlow.finalizeService(eventNo, service);
 	}
+	
+	@AfterMethod(alwaysRun = true)
+    public void tearDown() {
+        DriverFactory.quitDriver();
+    }
 }
 

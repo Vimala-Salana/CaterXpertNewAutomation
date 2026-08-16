@@ -6,12 +6,13 @@ import java.util.Map;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-
+import org.testng.annotations.AfterMethod;
 import factory.DriverFactory;
 import pageObjects.BasetoSalesNavigationPage;
 import pageObjects.CreateCustomerPage;
 import pageObjects.CustomerOrPotentialCustomerListPage;
 import pageObjects.HambergerMenuPage;
+
 import testBase.BaseClass;
 import utilities.DataGenerator;
 import utilities.ExcelUtility;
@@ -32,12 +33,8 @@ public class CreateCustomerTest extends BaseClass {
 	@BeforeMethod
 	public void setup()
 	{
-		basePage = new BasetoSalesNavigationPage(DriverFactory.getDriver());
 		customerFlow = new CustomerFlow(DriverFactory.getDriver());
 		customerPage = new CreateCustomerPage(DriverFactory.getDriver());
-		basicLogin();
-		
-		basePage.salesNewNavigation();
 		
 		excelUtil = new ExcelUtility(filepath);
 		sheetname = "Create Customer";
@@ -82,4 +79,9 @@ public class CreateCustomerTest extends BaseClass {
 		 * customerPage.clickContactstab();
 		 */
 	}
+	
+	@AfterMethod(alwaysRun = true)
+    public void tearDown() {
+        DriverFactory.quitDriver();
+    }
 }

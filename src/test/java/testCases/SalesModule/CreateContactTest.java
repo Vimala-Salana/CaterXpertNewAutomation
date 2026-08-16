@@ -3,6 +3,7 @@ import java.io.IOException;
 import java.util.Map;
 
 import org.testng.Assert;
+import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
@@ -34,12 +35,8 @@ public class CreateContactTest extends BaseClass{
 	@BeforeMethod
 	public void setup()
 	{
-		basePage = new BasetoSalesNavigationPage(DriverFactory.getDriver());
 		contactFlow = new ContactFlow();
 		contactListpage = new ContactListPage(DriverFactory.getDriver());
-		basicLogin();
-		
-		basePage.salesNewNavigation();
 		
 		excelUtil = new ExcelUtility(filepath);
 		sheetname = "Create Contact";
@@ -86,4 +83,9 @@ public class CreateContactTest extends BaseClass{
 		
 		ReportManager.pass("Contact Created Successfully...");
 	}
+	
+	@AfterMethod(alwaysRun = true)
+    public void tearDown() {
+        DriverFactory.quitDriver();
+    }
 }

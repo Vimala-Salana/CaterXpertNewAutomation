@@ -3,6 +3,7 @@ package testCases.SalesModule;
 import java.util.List;
 
 import org.testng.Assert;
+import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
@@ -23,20 +24,16 @@ public class EstimatesTest extends BaseClass{
 	EventListApi eventListApi;
 	List<String> service;
 	List<String> iconLabel;
-	String loginId;
 	
 	@BeforeMethod
 	public void setup()
 	{
-		baseNavPage = new BasetoSalesNavigationPage(DriverFactory.getDriver());
 		estimatesPage = new EstimatesPage(DriverFactory.getDriver());
 		dashboardPage = new EventDashboardPage(DriverFactory.getDriver());
 		servicesFlow = new ServicesWorkFlows(DriverFactory.getDriver());
 		eventListApi = new EventListApi();
 		service = List.of("Estimates");
 		iconLabel = List.of("Estimates Lite","Estimates");
-		basicLogin();
-		loginId = baseNavPage.salesNewNavigation();
 
 	}
 	
@@ -66,4 +63,8 @@ public class EstimatesTest extends BaseClass{
 		}
 	}
 
+	@AfterMethod(alwaysRun = true)
+    public void tearDown() {
+        DriverFactory.quitDriver();
+    }
 }

@@ -5,6 +5,7 @@ import java.util.List;
 import org.checkerframework.checker.units.qual.s;
 import org.testng.Assert;
 import org.testng.ITestContext;
+import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
@@ -16,16 +17,16 @@ import pageObjects.ServicesPage;
 import testBase.BaseClass;
 import workFlows.ServicesWorkFlows;
 
+
 public class BeverageServiceTest extends BaseClass{
-	
+
 	BasetoSalesNavigationPage baseNavPage;
 	BeverageServicePage beverageServicePage;
 	ServicesPage servicesPage;
 	ServicesWorkFlows servicesFlow;
 	ServicesLevelNewEventApi servicesNewApi;
 	List<String> service;
-	String loginId;
-	
+
 	@BeforeMethod
 	public void setup()
 	{
@@ -35,40 +36,43 @@ public class BeverageServiceTest extends BaseClass{
 		servicesPage = new ServicesPage(DriverFactory.getDriver());
 		servicesFlow = new ServicesWorkFlows(DriverFactory.getDriver());
 		service = List.of("Beverage","Non Alc Bev", "Soft Beverages");
-		basicLogin();
-		loginId = baseNavPage.salesNewNavigation();
 
 	}
 
 	@Test(groups = {"Regression", "All"})
 	public void beveageservice()
 	{
-		   String eventNo = servicesNewApi.newServiceEventId(loginId, service);
-			servicesFlow.openServiceRequestFromEventListing(eventNo , service);
-	
-			Assert.assertTrue(service.stream().anyMatch(s -> servicesPage.getServiceHdr().contains(s)),
-					"BeverageService not Mapped/Service not present in the Service list.");
-			servicesPage.clickSearchAndAddbtn();
-			servicesPage.uncheckIfOutsourcedOrNotRequired();
-			beverageServicePage.showMappedItems();
-			
-			beverageServicePage.enterQuantity();
-			servicesPage.clickListSave();
+		String eventNo = servicesNewApi.newServiceEventId(loginId, service);
+		servicesFlow.openServiceRequestFromEventListing(eventNo , service);
+
+		Assert.assertTrue(service.stream().anyMatch(s -> servicesPage.getServiceHdr().contains(s)),
+				"BeverageService not Mapped/Service not present in the Service list.");
+		servicesPage.clickSearchAndAddbtn();
+		servicesPage.uncheckIfOutsourcedOrNotRequired();
+		beverageServicePage.showMappedItems();
+
+		beverageServicePage.enterQuantity();
+		servicesPage.clickListSave();
+		beverageServicePage.closeInventoryPopupIfPresent();
+		servicesPage.clickListClose();
+
+
+		if(beverageServicePage.clickReserveIfPresent())
+		{
+			System.out.println("Reserved Qty");
 			beverageServicePage.closeInventoryPopupIfPresent();
-			servicesPage.clickListClose();
-			
-
-			if(beverageServicePage.clickReserveIfPresent())
-			{
-				System.out.println("Reserved Qty");
-				beverageServicePage.closeInventoryPopupIfPresent();
-			}
-			
-			else
-				System.out.println("No Reserve Button Available");
-			beverageServicePage.validateItems();
-			
-			servicesFlow.finalizeService(eventNo, service);
-
 		}
+
+		else
+			System.out.println("No Reserve Button Available");
+		beverageServicePage.validateItems();
+
+		servicesFlow.finalizeService(eventNo, service);
+
 	}
+
+	@AfterMethod(alwaysRun = true)
+	public void tearDown() {
+		DriverFactory.quitDriver();
+	}
+}
