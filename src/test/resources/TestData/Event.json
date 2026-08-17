@@ -3,7 +3,7 @@
   "Begin Time": "1,07:00 PM",
   "County": "@county",
   "End Time": "1,10:00 PM",
-  "Event Name": "@eventName",
+  "Event Name": "Wedding",
   "Discount Percentage": "@twoDigitNumber",
   "Adult Count": "@twoDigitNumber",
   "Staff Count": "@oneDigitNumber",

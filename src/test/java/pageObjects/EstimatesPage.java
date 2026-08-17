@@ -48,7 +48,7 @@ public class EstimatesPage extends BasePage{
 	By estimateSectionList = By.xpath("//div[@class='d-flex mt-1 ng-star-inserted']//span[2]");
 	By suggestedPriceBy = By.xpath("(//input[@name='totalActCost'])[1]");
 	@FindBy(xpath = "(//label[text()=' Menu Number '])[1]") List<WebElement> menuNumber;
-	@FindBy(xpath = "(//input[@name='estimatedTotal'])[1]") WebElement subTotal;
+	@FindBy(xpath = "(//label[contains(normalize-space(),'Subtotal')])[1]/following::input[1][@type='text']") WebElement subTotal;
 	@FindBy(xpath = "(//*[self::span or self::button][normalize-space()='Save'])[1]") WebElement estimatesSave;
 	@FindBy(xpath = "(//label[text()=' Total ' or text()=' Section Total ']//following::input)[1]") WebElement serviceTotaltxt;
 
@@ -98,6 +98,13 @@ public class EstimatesPage extends BasePage{
 			if(subTotalAmt != null)  
 			{
 				//System.out.println(subTotalAmt);
+				
+				((JavascriptExecutor) driver).executeScript(
+					    "arguments[0].style.border='4px solid red';" +
+					    "arguments[0].style.backgroundColor='yellow';",
+					    subTotal
+					);
+				
 				subTotal.clear();
 				subTotal.sendKeys(subTotalAmt);
 				serviceTotaltxt.click();
@@ -112,6 +119,7 @@ public class EstimatesPage extends BasePage{
 				//System.out.println("Discount of "+serviceName +" is "+discount);
 				totalServiceAmount = totalServiceAmount.add(serviceAmount);
 				estimatesSave.click();
+				waitutil.waitForSwalPopup();
 				waitutil.waitForOverlay();
 			}
 		}

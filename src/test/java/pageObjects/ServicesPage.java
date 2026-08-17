@@ -66,6 +66,7 @@ public class ServicesPage extends BasePage {
 	}
 
 	public void clickListClose() {
+		waitutil.waitForSwalPopup();
 		elementUtil.click(searchAndAddClose);
 	}
 
@@ -73,7 +74,6 @@ public class ServicesPage extends BasePage {
 
 	public void clickFinalize() {
 		elementUtil.click(btnFinalize);
-		// waitutil.waitForOverlay();
 	}
 
 	public boolean hasServiceConstraints() {
@@ -96,6 +96,7 @@ public class ServicesPage extends BasePage {
 	public void clickServiceSave() {
 		elementUtil.click(btnServiceSave);
 		fillInfo();
+		waitutil.waitForSwalPopup();
 	}
 
 	public void approveServiceConstraints(String eventNo) {

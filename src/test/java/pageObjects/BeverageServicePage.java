@@ -68,20 +68,23 @@ public class BeverageServicePage extends BasePage {
 			System.out.println("No Items Exist");
 	}
 
-	@FindBy(xpath = "//button[text()='Ok']")
-	List<WebElement> okBtn;
-
+	private final  By btnInventoryOk= By.xpath("//button[text()='Ok']");
+	
 	public void closeInventoryPopupIfPresent() {
-		if (!okBtn.isEmpty()) {
-			wait.until(ExpectedConditions.elementToBeClickable(okBtn.get(0)));
-			JavascriptExecutor js = (JavascriptExecutor) driver;
-
-			js.executeScript("arguments[0].click();", okBtn.get(0));
-
-		} else {
-
-			System.out.println("Inventory alert not displayed");
-		}
+		/*
+		 * if (!okBtn.isEmpty()) {
+		 * wait.until(ExpectedConditions.elementToBeClickable(okBtn.get(0)));
+		 * JavascriptExecutor js = (JavascriptExecutor) driver;
+		 * 
+		 * js.executeScript("arguments[0].click();", okBtn.get(0));
+		 * 
+		 * } else {
+		 * 
+		 * System.out.println("Inventory alert not displayed"); }
+		 */
+		
+		
+		elementUtil.clickIfPresent(btnInventoryOk);
 	}
 
 	public Map<String, String> getItemDetails(WebElement row, List<WebElement> headers) {

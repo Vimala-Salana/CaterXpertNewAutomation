@@ -7,6 +7,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class WaitUtils {
@@ -58,8 +59,9 @@ public class WaitUtils {
 		wait.until(d ->
 		driver.findElements(By.cssSelector(".ng-animating")).isEmpty());
 	}
-	public void waitForApplication()
+	public void waitForSwalPopup()
 	{
-		
+		 wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".swal2-container")));
+		wait.until(ExpectedConditions.invisibilityOfElementLocated(By.cssSelector(".swal2-container")));
 	}
 }
