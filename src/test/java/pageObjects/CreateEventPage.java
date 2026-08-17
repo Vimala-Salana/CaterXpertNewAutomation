@@ -1,8 +1,6 @@
 package pageObjects;
 
-
 import java.time.Duration;
-import java.util.List;
 import java.util.Map;
 
 import org.openqa.selenium.By;
@@ -16,15 +14,12 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import testBase.BasePage;
-import utilities.ElementInteractionUtil;
-import utilities.ExcelUtility;
-import utilities.LoggerManager;
 import utilities.MandatoryLabelsUtil;
 import utilities.ServiceUtil;
 import utilities.WaitUtils;
 import workFlows.ServicesWorkFlows;
 
-public class CreateEventPage extends BasePage{
+public class CreateEventPage extends BasePage {
 
 	String filepath;
 	String sheetname;
@@ -32,8 +27,7 @@ public class CreateEventPage extends BasePage{
 	public String eventNo;
 	WebDriverWait shortWait;
 
-	public CreateEventPage(WebDriver driver)
-	{
+	public CreateEventPage(WebDriver driver) {
 		super(driver);
 		PageFactory.initElements(driver, this);
 		waitutil = new WaitUtils(driver);
@@ -42,70 +36,65 @@ public class CreateEventPage extends BasePage{
 		shortWait = new WebDriverWait(driver, Duration.ofSeconds(2));
 	}
 
-	@FindBy(xpath = "//span[normalize-space(text())='Create Event']") WebElement hdrCreateEvent;
+	@FindBy(xpath = "//span[normalize-space(text())='Create Event']")
+	WebElement hdrCreateEvent;
 
-	public String getCreateEventhdr()
-	{
+	public String getCreateEventhdr() {
 		waitutil.waitForOverlay();
 		return hdrCreateEvent.getText();
 	}
 
-	public void fillEventMandatoryfields(Map<String, String> data)
-	{
+	public void fillEventMandatoryfields(Map<String, String> data) {
 		MandatoryLabelsUtil.fillMandatoryFields(driver, data);
 	}
 
 	private final By btnCreate = By.xpath("//button[normalize-space()='Create']");
-	public void clickCreatebtn()
-	{
+
+	public void clickCreatebtn() {
 		elementUtil.click(btnCreate);
 	}
 
 	private final By txtTaxExpiryPopUp = By.xpath("//div[contains(text(),'Tax Exempt Certificate')]");
 	private final By alertYes = By.xpath("//button[text()='Yes']");
-	public void clickYesInTaxExpiryPopupifExists()
-	{
-		try
-		{
+
+	public void clickYesInTaxExpiryPopupifExists() {
+		try {
 			wait.until(ExpectedConditions.invisibilityOfElementLocated(By.cssSelector("div.overlay")));
-			//waitutil.waitForOverlay();
+			// waitutil.waitForOverlay();
 			shortWait.until(ExpectedConditions.visibilityOfElementLocated(txtTaxExpiryPopUp));
 			elementUtil.click(alertYes);
-		}
-		catch (TimeoutException | StaleElementReferenceException e)
-		{
+		} catch (TimeoutException | StaleElementReferenceException e) {
 			System.out.println("Tax Exipry popup not displayed");
 		}
 	}
 
-	@FindBy(xpath = "(//button[text()=' Close '])[2]") WebElement btnClose;
-	public void clickClosebtn()
-	{
+	@FindBy(xpath = "(//button[text()=' Close '])[2]")
+	WebElement btnClose;
+
+	public void clickClosebtn() {
 		wait.until(ExpectedConditions.invisibilityOfElementLocated(By.cssSelector("div.overlay")));
 		wait.until(ExpectedConditions.elementToBeClickable(btnClose)).click();
 	}
 
-	public boolean eventConstraints()
-	{
+	public boolean eventConstraints() {
 		waitutil.waitForOverlay();
 		return serviceutil.Constraints();
 	}
 
-	//@FindBy(xpath ="//label[text()=' Event # ']//following-sibling::label[2]") WebElement eventNumlocator;
+	// @FindBy(xpath ="//label[text()=' Event # ']//following-sibling::label[2]")
+	// WebElement eventNumlocator;
 	private final By eventNumlocator = By.xpath("//label[text()=' Event # ']//following-sibling::label[2]");
-	public String getEventNo()
-	{
-		//waitutil.waitForOverlay();
+
+	public String getEventNo() {
+		// waitutil.waitForOverlay();
 		eventNo = elementUtil.getText(eventNumlocator);
 		return eventNo;
 	}
 
-	public void ApproveEventConstraints(String eventNo)
-	{
+	public void ApproveEventConstraints(String eventNo) {
 		serviceutil.approveConstraints(eventNo);
 		ServicesWorkFlows servicesFlow = new ServicesWorkFlows(driver);
 		servicesFlow.navigateToEventDashboard(eventNo);
 	}
-
 
 }

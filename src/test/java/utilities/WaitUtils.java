@@ -27,9 +27,9 @@ public class WaitUtils {
 						driver.findElements(By.cssSelector(
 							    "div.overlay," +
 							    	    "div.spinner," +
-							    	    "div.ngx-spinner-overlay," +
-							    	    ".swal2-container," +
-							    	    ".swal2-title"
+							    	    "div.ngx-spinner-overlay"
+							    	   // ".swal2-container," +
+							    	   // ".swal2-title"
 							    	   // "mat-dialog-container," +
 							    	   // ".p-component-overlay," +
 							    	   // ".cdk-overlay-backdrop"

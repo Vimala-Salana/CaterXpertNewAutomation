@@ -2,9 +2,9 @@ package utilities;
 
 import java.time.Duration;
 
+import org.openqa.selenium.By;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.openqa.selenium.By;
 
 import io.qameta.allure.Allure;
 

@@ -7,36 +7,36 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 
 public class DriverFactory {
 
-    private static ThreadLocal<WebDriver> driver = new ThreadLocal<>();
+	private static ThreadLocal<WebDriver> driver = new ThreadLocal<>();
 
-    public static void initDriver(String browser) {
+	public static void initDriver(String browser) {
 
-        WebDriver webDriver;
+		WebDriver webDriver;
 
-        if (browser.equalsIgnoreCase("chrome")) {
-        	  ChromeOptions options = new ChromeOptions();
-        	 // options.addArguments( "user-data-dir=C:\\AutomationProfile"); 
-    		webDriver = new ChromeDriver(options);
-            //webDriver = new ChromeDriver();
-        
-        } else if (browser.equalsIgnoreCase("firefox")) {
-            webDriver = new FirefoxDriver();
-        } else {
-            throw new RuntimeException("Invalid browser: " + browser);
-        }
+		if (browser.equalsIgnoreCase("chrome")) {
+			ChromeOptions options = new ChromeOptions();
+			options.addArguments("user-data-dir=C:\\AutomationProfile");
+			webDriver = new ChromeDriver(options);
+			// webDriver = new ChromeDriver();
 
-        webDriver.manage().window().maximize();
-        driver.set(webDriver);
-    }
+		} else if (browser.equalsIgnoreCase("firefox")) {
+			webDriver = new FirefoxDriver();
+		} else {
+			throw new RuntimeException("Invalid browser: " + browser);
+		}
 
-    public static WebDriver getDriver() {
-        return driver.get();
-    }
+		webDriver.manage().window().maximize();
+		driver.set(webDriver);
+	}
 
-    public static void quitDriver() {
-        if (driver.get() != null) {
-            driver.get().quit();
-            driver.remove();
-        }
-    }
+	public static WebDriver getDriver() {
+		return driver.get();
+	}
+
+	public static void quitDriver() {
+		if (driver.get() != null) {
+			driver.get().quit();
+			driver.remove();
+		}
+	}
 }

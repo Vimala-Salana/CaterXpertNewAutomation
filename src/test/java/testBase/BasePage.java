@@ -1,13 +1,10 @@
 package testBase;
 
-import java.time.Duration;
-
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import factory.DriverFactory;
 import utilities.ConfigReader;
 import utilities.ElementInteractionUtil;
 import utilities.ServiceUtil;

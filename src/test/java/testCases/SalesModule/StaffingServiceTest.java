@@ -15,8 +15,7 @@ import pageObjects.StaffingServicePage;
 import testBase.BaseClass;
 import workFlows.ServicesWorkFlows;
 
-public class StaffingServiceTest extends BaseClass
-{
+public class StaffingServiceTest extends BaseClass {
 	BasetoSalesNavigationPage baseNavPage;
 	StaffingServicePage staffingServicePage;
 	ServicesPage servicesPage;
@@ -25,33 +24,28 @@ public class StaffingServiceTest extends BaseClass
 	List<String> service;
 
 	@BeforeMethod
-	public void setup()
-	{
-		baseNavPage = new BasetoSalesNavigationPage(DriverFactory.getDriver());
-		staffingServicePage =  new StaffingServicePage(DriverFactory.getDriver());
+	public void setup() {
+		staffingServicePage = new StaffingServicePage(DriverFactory.getDriver());
+		servicesPage = new ServicesPage(DriverFactory.getDriver());
 		servicesFlow = new ServicesWorkFlows(DriverFactory.getDriver());
 		serviceEventApi = new ServicesLevelNewEventApi();
-		service = List.of("Personnel","Staffing","Scheduling");
-
+		service = List.of("Personnel", "Staffing", "Scheduling");
 	}
 
-	@Test(groups = {"Regression", "All"})
-	public void staffingRequest()
-	{
-		String eventNo =  serviceEventApi.newServiceEventId(loginId, service);
+	@Test(groups = { "Regression", "All" })
+	public void staffingRequest() {
+		String eventNo = serviceEventApi.newServiceEventId(loginId, service);
 		servicesFlow.openServiceRequestFromEventListing(eventNo, service);
 		Assert.assertTrue(service.stream().anyMatch(s -> servicesPage.getServiceHdr().contains(s)),
 				"Staffing Service not present in the Service list.");
 
 		staffingServicePage.giveStaffQty();
-		staffingServicePage.clickSave();
-		staffingServicePage.staffingInfo();
+		servicesPage.clickServiceSave();
 		servicesFlow.finalizeService(eventNo, service);
 	}
-	
-	@AfterMethod(alwaysRun = true)
-    public void tearDown() {
-        DriverFactory.quitDriver();
-    }
-}
 
+	@AfterMethod()
+	public void quitDriver() {
+		DriverFactory.quitDriver();
+	}
+}

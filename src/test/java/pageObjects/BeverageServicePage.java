@@ -1,6 +1,5 @@
 package pageObjects;
 
-import java.time.Duration;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -11,42 +10,31 @@ import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 
-import io.qameta.allure.Allure;
-import utilities.LoggerManager;
+import testBase.BasePage;
 import utilities.ReportManager;
-import utilities.WaitUtils;
 
-public class BeverageServicePage {
-	public WebDriver driver;
-	String filepath;
-	String sheetname;
-	WaitUtils waitutil;
-	WebDriverWait wait;
-	public BeverageServicePage(WebDriver driver)
-	{
-		this.driver = driver;
-		PageFactory.initElements(driver,this);
-		waitutil = new WaitUtils(driver);
-		wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+public class BeverageServicePage extends BasePage {
+
+	public BeverageServicePage(WebDriver driver) {
+		super(driver);
 
 	}
 
-	
+	@FindBy(xpath = "//p-tabpanel[@header='Item']/div[@role='tabpanel' and not(@hidden)]//following-sibling::p")
+	List<WebElement> noRecords;
+	@FindBy(xpath = "//span[@ptooltip='Filter']")
+	WebElement filterIcon;
+	@FindBy(xpath = "//div[@role='region']//div[@class = 'p-checkbox-box p-highlight']")
+	WebElement showMappedcheckBox;
+	@FindBy(xpath = "//button[normalize-space(text())='Go']")
+	WebElement filterGo;
 
-	@FindBy(xpath = "//p-tabpanel[@header='Item']/div[@role='tabpanel' and not(@hidden)]//following-sibling::p") List<WebElement> noRecords;
-	@FindBy(xpath = "//span[@ptooltip='Filter']") WebElement filterIcon;
-	@FindBy(xpath = "//div[@role='region']//div[@class = 'p-checkbox-box p-highlight']") WebElement showMappedcheckBox;
-	@FindBy(xpath = "//button[normalize-space(text())='Go']") WebElement filterGo;
-	public void showMappedItems()
-	{
+	public void showMappedItems() {
 		waitutil.waitForOverlay();
-		if(!noRecords.isEmpty() && noRecords.get(0).getText().equalsIgnoreCase("No records found"))
-		{
+		if (!noRecords.isEmpty() && noRecords.get(0).getText().equalsIgnoreCase("No records found")) {
 			waitutil.waitForOverlay();
 			wait.until(ExpectedConditions.elementToBeClickable(filterIcon));
 			filterIcon.click();
@@ -59,37 +47,36 @@ public class BeverageServicePage {
 		}
 	}
 
-	//@FindBy(xpath = "//input[contains(@id,'qty')]") List<WebElement> quantityfields;
+	// @FindBy(xpath = "//input[contains(@id,'qty')]") List<WebElement>
+	// quantityfields;
 	By quantityfields = By.xpath("//input[contains(@id,'qt')]");
 
-	public void enterQuantity()
-	{
-		/*int size = wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(quantityfields)).size();
-		//System.out.println(size);
-		for(int i=0;i<size;i++)
-		{
-			List<WebElement> qty = driver.findElements(quantityfields);
-			WebElement itemQty = qty.get(0);
-			itemQty.sendKeys(Keys.chord(Keys.CONTROL, "a"), Keys.DELETE, "10");
-			//itemQty.sendKeys("10");
-		}*/
-		
+	public void enterQuantity() {
+		/*
+		 * int size =
+		 * wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(quantityfields
+		 * )).size(); //System.out.println(size); for(int i=0;i<size;i++) {
+		 * List<WebElement> qty = driver.findElements(quantityfields); WebElement
+		 * itemQty = qty.get(0); itemQty.sendKeys(Keys.chord(Keys.CONTROL, "a"),
+		 * Keys.DELETE, "10"); //itemQty.sendKeys("10"); }
+		 */
+
 		List<WebElement> qty = driver.findElements(quantityfields);
-		if(!qty.isEmpty())
-		qty.get(0).sendKeys(Keys.chord(Keys.CONTROL, "a"), Keys.DELETE, "10");
+		if (!qty.isEmpty())
+			qty.get(0).sendKeys(Keys.chord(Keys.CONTROL, "a"), Keys.DELETE, "10");
 		else
 			System.out.println("No Items Exist");
 	}
 
-	@FindBy(xpath = "//button[text()='Ok']") List<WebElement> okBtn;
-	public void closeInventoryPopupIfPresent()
-	{
-		if(!okBtn.isEmpty())
-		{
+	@FindBy(xpath = "//button[text()='Ok']")
+	List<WebElement> okBtn;
+
+	public void closeInventoryPopupIfPresent() {
+		if (!okBtn.isEmpty()) {
 			wait.until(ExpectedConditions.elementToBeClickable(okBtn.get(0)));
 			JavascriptExecutor js = (JavascriptExecutor) driver;
 
-			js.executeScript("arguments[0].click();",okBtn.get(0));
+			js.executeScript("arguments[0].click();", okBtn.get(0));
 
 		} else {
 
@@ -97,7 +84,7 @@ public class BeverageServicePage {
 		}
 	}
 
-	public Map<String, String> getItemDetails(WebElement row,List<WebElement> headers) {
+	public Map<String, String> getItemDetails(WebElement row, List<WebElement> headers) {
 
 		List<WebElement> cells = row.findElements(By.xpath("./td[position()>1]"));
 
@@ -111,18 +98,14 @@ public class BeverageServicePage {
 
 			String value;
 
-			List<WebElement> input =
-					cell.findElements(By.tagName("input"));
+			List<WebElement> input = cell.findElements(By.tagName("input"));
 
 			if (!input.isEmpty()) {
 				value = input.get(0).getAttribute("value");
 			} else {
-				List<WebElement> span =
-						cell.findElements(By.tagName("span"));
+				List<WebElement> span = cell.findElements(By.tagName("span"));
 
-				value = !span.isEmpty()
-						? span.get(0).getText().trim()
-								: cell.getText().trim();
+				value = !span.isEmpty() ? span.get(0).getText().trim() : cell.getText().trim();
 			}
 
 			rowData.put(header, value);
@@ -134,11 +117,14 @@ public class BeverageServicePage {
 	public void validateItems() {
 
 		waitutil.waitForOverlay();
-		//div[@role='tabpanel'and @aria-hidden='false']//thead[@class='thead-dark']//th[position()>1]
+		// div[@role='tabpanel'and
+		// @aria-hidden='false']//thead[@class='thead-dark']//th[position()>1]
 		String itemsTableXpath = "//div[@class='service-header']//following::thead[1][@class='thead-dark']";
-		List<WebElement> headers = wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.xpath(itemsTableXpath+"//th[position()>1]")));
+		List<WebElement> headers = wait.until(
+				ExpectedConditions.visibilityOfAllElementsLocatedBy(By.xpath(itemsTableXpath + "//th[position()>1]")));
 
-		List<WebElement> rows = driver.findElements( By.xpath(itemsTableXpath+"//following-sibling::tbody//tr[count(td)>1]"));
+		List<WebElement> rows = driver
+				.findElements(By.xpath(itemsTableXpath + "//following-sibling::tbody//tr[count(td)>1]"));
 
 		System.out.println("No of items: " + rows.size());
 		boolean hasAvailable = false;
@@ -148,10 +134,9 @@ public class BeverageServicePage {
 				hasAvailable = true;
 			}
 		}
-		if(hasAvailable)
+		if (hasAvailable)
 			ReportManager.info("Available Qty and Reserved Qty are visible");
-		else
-		{
+		else {
 			ReportManager.info("Available Qty and Reserved Qty are not visible");
 		}
 
@@ -164,20 +149,19 @@ public class BeverageServicePage {
 
 			// 2. PRINT DATA
 			System.out.println("================================");
-			//rowData.forEach((header, value) ->
-			//  System.out.println(header + " : " + value));
+			// rowData.forEach((header, value) ->
+			// System.out.println(header + " : " + value));
 			System.out.println("ROW DATA: " + rowData);
 			String itemName = rowData.get("Item");
 			int expectedReservedQty = 0;
-			if(hasAvailable && rowData.get("Available Qty") != null)
-			{
+			if (hasAvailable && rowData.get("Available Qty") != null) {
 				int availableQty = Integer.parseInt(rowData.get("Available Qty"));
 				int qty = Integer.parseInt(rowData.get("Qty"));
 				expectedReservedQty = Math.min(qty, availableQty);
 				int expectedAvailbleQty = availableQty - expectedReservedQty;
 
 				System.out.println("Expected Reserved Qty: " + expectedReservedQty);
-				System.out.println("Expected Available Qty : "+expectedAvailbleQty);
+				System.out.println("Expected Available Qty : " + expectedAvailbleQty);
 			}
 
 			// 4. CLICK RESERVE
@@ -186,61 +170,47 @@ public class BeverageServicePage {
 			waitutil.waitForOverlay();
 
 			// 5. RE-READ AFTER ACTION
-			rows = driver.findElements(
-					By.xpath("//tbody//tr[count(td)>1]"));
+			rows = driver.findElements(By.xpath("//tbody//tr[count(td)>1]"));
 
 			row = rows.get(i);
 
-			Map<String, String> updatedRowData =
-					getItemDetails(row, headers);
+			Map<String, String> updatedRowData = getItemDetails(row, headers);
 			int actualReservedQty = 0;
-			if(hasAvailable && rowData.get("Reserved Qty") != null)
-			{
-				actualReservedQty =
-						Integer.parseInt(updatedRowData.get("Reserved Qty"));
+			if (hasAvailable && rowData.get("Reserved Qty") != null) {
+				actualReservedQty = Integer.parseInt(updatedRowData.get("Reserved Qty"));
 
 				System.out.println("Actual Reserved Qty: " + actualReservedQty);
 			}
 
 			// 6. COMPARE
-			Assert.assertEquals(
-					actualReservedQty,
-					expectedReservedQty,
-					"Mismatch for item: " + itemName);
+			Assert.assertEquals(actualReservedQty, expectedReservedQty, "Mismatch for item: " + itemName);
 		}
 
 	}
 
-	@FindBy(xpath = "//button[text()=' Reserve ']") List<WebElement> reserveBtn;
-	public boolean clickReserveIfPresent()
-	{
-		if(!reserveBtn.isEmpty())
-		{
-			wait.until(ExpectedConditions.elementToBeClickable(reserveBtn.get(0)));
-			reserveBtn.get(0).click();
-			return true;
-		}
-		return false;
+	private final By btnReserve = By.xpath("//button[text()=' Reserve ']");
+
+	public void clickReserveIfPresent() {
+		elementUtil.clickIfPresent(btnReserve);
 	}
 
-	@FindBy(xpath = "//button[text()=' Finalize ']") WebElement btnFinalize;
+	@FindBy(xpath = "//button[text()=' Finalize ']")
+	WebElement btnFinalize;
 
-	public void clickFinalize()
-	{
+	public void clickFinalize() {
 		waitutil.waitForOverlay();
 		wait.until(ExpectedConditions.elementToBeClickable(btnFinalize));
 		btnFinalize.click();
 		waitutil.waitForOverlay();
 	}
 
-	@FindBy(xpath = "//div[@role='tabpanel' and (@aria-hidden='false')]//button[.=' Close ']") WebElement staffclosebtn;
+	@FindBy(xpath = "//div[@role='tabpanel' and (@aria-hidden='false')]//button[.=' Close ']")
+	WebElement staffclosebtn;
 
-	public void clickBeverageServiceClose()
-	{
+	public void clickBeverageServiceClose() {
 		waitutil.waitForOverlay();
 		wait.until(ExpectedConditions.elementToBeClickable(staffclosebtn));
 		staffclosebtn.click();
 	}
-
 
 }

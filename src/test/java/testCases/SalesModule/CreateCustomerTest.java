@@ -1,22 +1,18 @@
 package testCases.SalesModule;
 
-import java.io.IOException;
 import java.util.Map;
 
 import org.testng.Assert;
+import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-import org.testng.annotations.AfterMethod;
+
 import factory.DriverFactory;
 import pageObjects.BasetoSalesNavigationPage;
 import pageObjects.CreateCustomerPage;
-import pageObjects.CustomerOrPotentialCustomerListPage;
-import pageObjects.HambergerMenuPage;
-
 import testBase.BaseClass;
 import utilities.DataGenerator;
 import utilities.ExcelUtility;
-import utilities.JsonUtil;
 import utilities.ReportManager;
 import workFlows.CustomerFlow;
 

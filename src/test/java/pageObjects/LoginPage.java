@@ -4,7 +4,6 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
 import testBase.BasePage;
-import utilities.ElementInteractionUtil;
 
 public class LoginPage extends BasePage{
 

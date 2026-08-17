@@ -6,9 +6,8 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.ElementClickInterceptedException;
 import org.openqa.selenium.ElementNotInteractableException;
 import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.NoSuchElementException;
-
+import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -33,7 +32,6 @@ public class ElementInteractionUtil {
 		js = (JavascriptExecutor) driver;
 	}
 
-
 	public void click(By locator) {
 
 		long startTime = System.nanoTime();
@@ -48,43 +46,38 @@ public class ElementInteractionUtil {
 					// Native Click Retry
 					nativeClick(locator);
 
-					LoggerManager.logActionSuccess(locator, startTime,  "Native Click", attempt);		
+					LoggerManager.logActionSuccess(locator, startTime, "Native Click", attempt);
 					return;
 
-				} catch(ElementNotInteractableException  exception) {
-					LoggerManager.warn("Attempt "+ attempt+ "/"+ MAX_CLICK_ATTEMPTS+ " | Native click failed for "+ locator+ ". Reason: "
-							+ exception.getMessage()
-							+ ". Trying Actions click.");
+				} catch (ElementNotInteractableException exception) {
+					LoggerManager.warn("Attempt " + attempt + "/" + MAX_CLICK_ATTEMPTS + " | Native click failed for "
+							+ locator + ". Reason: " + exception.getMessage() + ". Trying Actions click.");
 				}
 
 				try {
 					actionsClick(locator);
 
-					LoggerManager.logActionSuccess(locator, startTime,  "Actions Click", attempt);
+					LoggerManager.logActionSuccess(locator, startTime, "Actions Click", attempt);
 
 					return;
 
-				} catch(ElementNotInteractableException  exception) {
+				} catch (ElementNotInteractableException exception) {
 
-					LoggerManager.warn("Attempt "+ attempt+ "/"+ MAX_CLICK_ATTEMPTS+ " | Actions click failed for "+ locator+ ". Reason: "
-							+ exception.getMessage()
-							+ ". Trying JavaScript click.");
+					LoggerManager.warn("Attempt " + attempt + "/" + MAX_CLICK_ATTEMPTS + " | Actions click failed for "
+							+ locator + ". Reason: " + exception.getMessage() + ". Trying JavaScript click.");
 				}
 				javascriptClick(locator);
-				LoggerManager.logActionSuccess(locator, startTime,  "Java Script Click", attempt);			
+				LoggerManager.logActionSuccess(locator, startTime, "Java Script Click", attempt);
 				return;
-				
-			}
-			catch (ElementClickInterceptedException e) {
-			    lastException = e;
-			    LoggerManager.warn("Click intercepted. Retrying...");
-			}
-			catch(StaleElementReferenceException | NoSuchElementException | TimeoutException exception){                                                                    
-				lastException = exception;	
-				LoggerManager.logActionFailure(locator, startTime, "Click", exception,attempt);
 
-			}
-			catch (Exception exception) {
+			} catch (ElementClickInterceptedException e) {
+				lastException = e;
+				LoggerManager.warn("Click intercepted. Retrying...");
+			} catch (StaleElementReferenceException | NoSuchElementException | TimeoutException exception) {
+				lastException = exception;
+				LoggerManager.logActionFailure(locator, startTime, "Click", exception, attempt);
+
+			} catch (Exception exception) {
 
 				lastException = exception;
 				break;
@@ -93,7 +86,7 @@ public class ElementInteractionUtil {
 
 		long duration = Duration.ofNanos(System.nanoTime() - startTime).toMillis();
 
-		String message = String.format("Unable to click [%s]. Duration: %d ms.  Reason: %s", locator, duration, 
+		String message = String.format("Unable to click [%s]. Duration: %d ms.  Reason: %s", locator, duration,
 				lastException != null ? lastException.getMessage() : "Unknown");
 
 		LoggerManager.error(message, lastException);
@@ -102,9 +95,8 @@ public class ElementInteractionUtil {
 		throw new RuntimeException(message, lastException);
 	}
 
-	//Reusable method for Normal Click
-	public void nativeClick(By locator)
-	{
+	// Reusable method for Normal Click
+	public void nativeClick(By locator) {
 		waitUtils.waitForOverlay();
 		WebElement element = wait.until(ExpectedConditions.elementToBeClickable(locator));
 		js.executeScript("arguments[0].scrollIntoView({block:'center'});", element);
@@ -112,32 +104,27 @@ public class ElementInteractionUtil {
 		element.click();
 	}
 
-	//Reusable method for Actions Click
+	// Reusable method for Actions Click
 	public void actionsClick(By locator) {
 
 		waitUtils.waitForOverlay();
-		WebElement element = wait.until(ExpectedConditions.elementToBeClickable(locator));	
-		new Actions(driver)
-		.moveToElement(element)
-		.click()
-		.perform();
-
+		WebElement element = wait.until(ExpectedConditions.elementToBeClickable(locator));
+		new Actions(driver).moveToElement(element).click().perform();
 
 	}
 
-	//Reusable method for JavaScript Click
+	// Reusable method for JavaScript Click
 	public void javascriptClick(By locator) {
 
 		WebElement element = wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
 
-		js.executeScript("arguments[0].scrollIntoView({block:'center'});",element);
+		js.executeScript("arguments[0].scrollIntoView({block:'center'});", element);
 
-		js.executeScript("arguments[0].click();",element);
-
+		js.executeScript("arguments[0].click();", element);
 
 	}
 
-	//Click Element only if present - Use it for dynamic Elements/Icons
+	// Click Element only if present - Use it for dynamic Elements/Icons
 	public boolean clickIfPresent(By locator) {
 
 		if (driver.findElements(locator).isEmpty()) {
@@ -151,7 +138,7 @@ public class ElementInteractionUtil {
 		return true;
 	}
 
-	//Reusable method for SendKeys
+	// Reusable method for SendKeys
 	public void typeText(By locator, CharSequence... keys) {
 		waitUtils.waitForOverlay();
 		long startTime = System.nanoTime();
@@ -160,48 +147,51 @@ public class ElementInteractionUtil {
 		try {
 			WebElement element = wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
 			wait.until(ExpectedConditions.elementToBeClickable(locator));
-			//clear
+			// clear
 			element.clear();
-			element.sendKeys(keys); //Enter value
+			element.sendKeys(keys); // Enter value
 			LoggerManager.logActionSuccess(locator, startTime, "Type Text", null);
-		} catch(Exception e) {
+		} catch (Exception e) {
 			LoggerManager.logActionFailure(locator, startTime, "SendKeys", e, null);
 		}
 
 	}
 
-	//Reusable method for getText
+	// Reusable method for getText
 	public String getText(By locator) {
 		long startTime = System.nanoTime();
 		try {
-			WebElement element = wait.until(ExpectedConditions.presenceOfElementLocated(locator));
+			String text = wait.until(d -> {
+				String value = d.findElement(locator).getText();
+				return value.isBlank() ? null : value;
+			});
 			LoggerManager.logActionSuccess(locator, startTime, "Get Text", null);
-			return element.getText();
-		} catch(Exception e) {
+			return text;
+		} catch (Exception e) {
 			LoggerManager.logActionFailure(locator, startTime, "Get Text", e, null);
 			throw e;
 		}
 	}
 
-	//Reusable method for getAttribute
+	// Reusable method for getAttribute
 	public String getAttribute(By locator, String attributeName) {
-	    long startTime = System.nanoTime();
-	    try {
-	    	WebElement element = wait.until(ExpectedConditions.presenceOfElementLocated(locator));
-	        LoggerManager.logActionSuccess(locator, startTime, "Get Attrubute", null);
+		long startTime = System.nanoTime();
+		try {
+			WebElement element = wait.until(ExpectedConditions.presenceOfElementLocated(locator));
+			LoggerManager.logActionSuccess(locator, startTime, "Get Attrubute", null);
 			return element.getAttribute(attributeName);
-	    } catch(Exception e) {
+		} catch (Exception e) {
 			LoggerManager.logActionFailure(locator, startTime, "Get Attribute", e, null);
 			throw e;
-	    }
-		
+		}
+
 	}
 
-	//Reusable method for getAttribute of Value
+	// Reusable method for getAttribute of Value
 
 	public String getValue(By locator) {
 
-		return getAttribute(locator,"value");
+		return getAttribute(locator, "value");
 	}
 
 }

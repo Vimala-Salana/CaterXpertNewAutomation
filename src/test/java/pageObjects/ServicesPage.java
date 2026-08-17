@@ -11,43 +11,37 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import testBase.BasePage;
 import workFlows.ServicesWorkFlows;
 
-public class ServicesPage extends BasePage{
-	
-	public ServicesPage(WebDriver driver)
-	{
+public class ServicesPage extends BasePage {
+
+	public ServicesPage(WebDriver driver) {
 		super(driver);
 	}
-	
+
 	private final By btnSearchAndAdd = By.xpath("//button[text()=' Search & Add ']");
 	private final By iconFilter = By.xpath("//span[@ptooltip='Filter']");
 	private final By btnFilterGo = By.xpath("//button[normalize-space(text())='Go']");
-	
-	
+
 	private final By hdrService = By.xpath("//span[contains(text(),'Event Services')]");
-	public String getServiceHdr()
-	{
+
+	public String getServiceHdr() {
 		waitutil.waitForOverlay();
 		return elementUtil.getText(hdrService);
 	}
 
-	public void clickSearchAndAddbtn()
-	{
+	public void clickSearchAndAddbtn() {
 		elementUtil.click(btnSearchAndAdd);
 	}
-	
-	@FindBy(xpath = "//div[contains(@class,'d-flex me-2')]//div[contains(@class,'p-checkbox-box')]") 
+
+	@FindBy(xpath = "//div[contains(@class,'d-flex me-2')]//div[contains(@class,'p-checkbox-box')]")
 	List<WebElement> outSourcedOrRequired;
-	
-	public void uncheckIfOutsourcedOrNotRequired()
-	{
+
+	public void uncheckIfOutsourcedOrNotRequired() {
 		waitutil.waitForOverlay();
 
-		for (WebElement checkbox : outSourcedOrRequired) 
-		{
+		for (WebElement checkbox : outSourcedOrRequired) {
 			WebElement input = checkbox.findElement(By.xpath("./ancestor::p-checkbox//input"));
 
-			if (checkbox.isDisplayed() && "true".equalsIgnoreCase(input.getAttribute("aria-checked"))) 
-			{
+			if (checkbox.isDisplayed() && "true".equalsIgnoreCase(input.getAttribute("aria-checked"))) {
 				WebElement box = wait.until(ExpectedConditions.elementToBeClickable(checkbox));
 				box.click();
 				clickServiceSave();
@@ -55,65 +49,56 @@ public class ServicesPage extends BasePage{
 			}
 		}
 	}
-	
-	public void clickFilterIcon()
-	{
+
+	public void clickFilterIcon() {
 		elementUtil.click(iconFilter);
 	}
 
-	public void clickFilterGo()
-	{
+	public void clickFilterGo() {
 		elementUtil.click(btnFilterGo);
 	}
-	
+
 	private final By searchAndAddSave = By.xpath("(//app-search-add//button[text()=' Save '])[1]");
 	private final By searchAndAddClose = By.xpath("(//app-search-add//button[text()=' Close '])[1]");
-	
-	public void clickListSave()
-	{
+
+	public void clickListSave() {
 		elementUtil.click(searchAndAddSave);
 	}
-	
-	public void clickListClose()
-	{
+
+	public void clickListClose() {
 		elementUtil.click(searchAndAddClose);
 	}
 
 	private final By btnFinalize = By.xpath("//button[text()=' Finalize ']");
-	public void clickFinalize()
-	{
+
+	public void clickFinalize() {
 		elementUtil.click(btnFinalize);
-		//waitutil.waitForOverlay();
+		// waitutil.waitForOverlay();
 	}
 
-	public boolean hasServiceConstraints()
-	{
+	public boolean hasServiceConstraints() {
 		return serviceUtil.Constraints();
 	}
 
-	public void fillInfo()
-	{
+	public void fillInfo() {
 		serviceUtil.Info();
 
 	}
 
-	private final By btnServiceClose = By.xpath(
-			"//div[@aria-hidden='false']//div[@class='p-tabview-panels']//button[normalize-space()='Close']");
-	public void clickServiceClose()
-	{
+	private final By btnServiceClose = By.xpath("//div[@aria-hidden='false']//button[normalize-space()='Close']");
+
+	public void clickServiceClose() {
 		elementUtil.click(btnServiceClose);
 	}
 
-	private final By btnServiceSave = By.xpath(
-			"//div[@aria-hidden='false']//div[@class='p-tabview-panels']//button[normalize-space()='Save']");
-	public void clickServiceSave()
-	{
+	private final By btnServiceSave = By.xpath("//div[@aria-hidden='false']//button[normalize-space()='Save']");
+
+	public void clickServiceSave() {
 		elementUtil.click(btnServiceSave);
 		fillInfo();
 	}
-	
-	public void approveServiceConstraints(String eventNo)
-	{
+
+	public void approveServiceConstraints(String eventNo) {
 		serviceUtil.approveConstraints(eventNo);
 		ServicesWorkFlows servicesFlow = new ServicesWorkFlows(driver);
 		servicesFlow.navigateToEventDashboard(eventNo);

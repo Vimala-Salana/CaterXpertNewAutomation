@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import org.testng.annotations.Test;
+
 import io.restassured.response.Response;
 import utilities.ConfigReader;
 
@@ -18,24 +18,20 @@ public class ServicesLevelNewEventApi {
 
 		String url = config.getUrl();
 		String caterId = config.getCaterId();
-		
-		Response response = given()
-				.pathParam("patch", "CaterXpertSales2026_0802")
-				.pathParam("module", "sales")
+
+		Response response = given().pathParam("patch", "CaterXpertSales2026_0802").pathParam("module", "sales")
 				.pathParam("screen", "getSalesEventsList")
-				.queryParams("loginId", loginId ,"catererId", caterId,"lowerBound", 1,
-						"upperBound", 200,"deptId", 2)
-				.when()
-				.get(url + "/{patch}/{module}/{screen}");
+				.queryParams("loginId", loginId, "catererId", caterId, "lowerBound", 1, "upperBound", 200, "deptId", 2)
+				.when().get(url + "/{patch}/{module}/{screen}");
 
 		response.then().statusCode(200);
 
 		List<Map<String, Object>> events = response.jsonPath().getList("$");
 
 		String cisNumber = null;
-		
+
 		List<String> matchingEvents = new ArrayList<>();
-		
+
 		for (Map<String, Object> event : events) {
 
 			// Get service names
@@ -45,8 +41,8 @@ public class ServicesLevelNewEventApi {
 			List<?> serviceStatuses = (List<?>) event.get("serviceStatusValues");
 
 			cisNumber = (String) event.get("cisnumber");
-			
-			if(serviceStatuses == null || serviceNames == null || cisNumber == null)
+
+			if (serviceStatuses == null || serviceNames == null || cisNumber == null)
 				continue;
 
 			for (int i = 0; i < serviceNames.size(); i++) {
@@ -56,9 +52,7 @@ public class ServicesLevelNewEventApi {
 
 				// Find requested service with New status
 				if (service.stream().anyMatch(s -> s.trim().equalsIgnoreCase(serviceName.trim()))
-						&& "New".equalsIgnoreCase(status)
-						&& !cisNumber.trim().matches(".*\\s+[MT]\\d*$"))
-				{
+						&& "New".equalsIgnoreCase(status) && !cisNumber.trim().matches(".*\\s+[MT]\\d*$")) {
 					System.out.println(cisNumber);
 					matchingEvents.add(cisNumber);
 				}

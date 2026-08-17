@@ -1,10 +1,6 @@
 package testBase;
 
-import java.time.Duration;
-
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.Parameters;
@@ -17,87 +13,67 @@ import utilities.ExcelUtility;
 
 public class BaseClass {
 
-    public String filepath = "src/test/resources/TestData/SalesTestData.xlsx";
+	public String filepath = "src/test/resources/TestData/SalesTestData.xlsx";
 
-    public String customerJsonPath = "src/test/resources/TestData/Customer.json";
-    public String contactJsonPath = "src/test/resources/TestData/Contact.json";
-    public String eventJsonPath = "src/test/resources/TestData/Event.json";
-    
-    public static String currentUrl;
-    public static String loginId;
-    WebDriver driver;
+	public String customerJsonPath = "src/test/resources/TestData/Customer.json";
+	public String contactJsonPath = "src/test/resources/TestData/Contact.json";
+	public String eventJsonPath = "src/test/resources/TestData/Event.json";
 
-    public ConfigReader config = new ConfigReader();
-    ExcelUtility excel;
+	public static String currentUrl;
+	public static String loginId;
+	WebDriver driver;
 
-    protected LoginPage loginPage;
-    
+	public ConfigReader config = new ConfigReader();
+	ExcelUtility excel;
 
-    /**
-     * Login ONCE for the entire TestNG suite.
-     * @throws InterruptedException 
-     */
-    @BeforeSuite(alwaysRun = true)
-    @Parameters("browser")
-    public void loginOnce(String browser) throws InterruptedException {
+	protected LoginPage loginPage;
 
-        System.out.println("========== SUITE LOGIN START ==========");
+	/**
+	 * Login ONCE for the entire TestNG suite.
+	 * 
+	 * @throws InterruptedException
+	 */
+	@BeforeSuite(alwaysRun = true)
+	@Parameters("browser")
+	public void loginOnce(String browser) throws InterruptedException {
 
-        DriverFactory.initDriver(browser);
-    	driver = DriverFactory.getDriver();
+		System.out.println("========== SUITE LOGIN START ==========");
 
-        driver.get(config.getUrl());
+		DriverFactory.initDriver(browser);
+		driver = DriverFactory.getDriver();
 
-        LoginPage login = new LoginPage(driver);
+		driver.get(config.getUrl());
 
-        login.login(
-            config.getCaterId(),
-            config.getUserId(),
-            config.getPassword()
-        );
+		LoginPage login = new LoginPage(driver);
 
-        WebDriverWait wait = new WebDriverWait(
-            driver,
-            Duration.ofSeconds(10)
-        );
+		login.login(config.getCaterId(), config.getUserId(), config.getPassword());
 
-     // Navigate to Sales New
-        BasetoSalesNavigationPage bp = new BasetoSalesNavigationPage(driver);
+		// Navigate to Sales New
+		BasetoSalesNavigationPage bp = new BasetoSalesNavigationPage(driver);
 
-        loginId = bp.salesNewNavigation();
-        currentUrl =  bp.getSalesUrl();
+		loginId = bp.salesNewNavigation();
+		currentUrl = bp.getSalesUrl();
 
-        System.out.println("Current URL: " + currentUrl);
-        
-        DriverFactory.quitDriver();
+		System.out.println("Current URL: " + currentUrl);
 
-    }
+		DriverFactory.quitDriver();
 
+	}
 
-    /**
-     * Create a new browser for every test
-     * and restore the authenticated cookies.
-     */
-    @BeforeMethod(alwaysRun = true)
-    @Parameters("browser")
-    public void setUpTest(String browser) {
+	/**
+	 * Create a new browser for every test and restore the authenticated cookies.
+	 */
+	@BeforeMethod(alwaysRun = true)
+	@Parameters("browser")
+	public void setUpTest(String browser) {
 
-    	DriverFactory.initDriver(browser);
-    	driver = DriverFactory.getDriver();
-    	
-        System.out.println(currentUrl);
+		DriverFactory.initDriver(browser);
+		driver = DriverFactory.getDriver();
 
-        driver.get(currentUrl);
+		System.out.println(currentUrl);
 
-        System.out.println(
-            "URL after launching captured URL = "
-            + driver.getCurrentUrl()
-        );
-    }
+		driver.get(currentUrl);
 
-
-   // @AfterMethod(alwaysRun = true)
-    public void tearDown() {
-        DriverFactory.quitDriver();
-    }
+		System.out.println("URL after launching captured URL = " + driver.getCurrentUrl());
+	}
 }

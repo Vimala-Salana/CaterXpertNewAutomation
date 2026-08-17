@@ -5,7 +5,6 @@ import org.testng.annotations.Test;
 
 import factory.DriverFactory;
 import pageObjects.ContactListPage;
-import pageObjects.HambergerMenuPage;
 import testBase.BaseClass;
 
 public class ContactListTest extends BaseClass{

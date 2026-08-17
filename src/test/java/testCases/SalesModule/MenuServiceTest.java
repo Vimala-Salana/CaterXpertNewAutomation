@@ -3,13 +3,10 @@ package testCases.SalesModule;
 import java.util.List;
 
 import org.testng.Assert;
-import org.testng.ITestContext;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-import org.testng.asserts.SoftAssert;
 
-import apis.EventListApi;
 import apis.ServicesLevelNewEventApi;
 import factory.DriverFactory;
 import pageObjects.BasetoSalesNavigationPage;
