@@ -15,7 +15,7 @@
   "Entrance": "@twoDigitNumber",
   "Comments": "@sentence",
   "Directions": "@sentence",
-  "Accounting ID": "twoDigitNumber",
+  "Accounting ID": "@twoDigitNumber",
   "Bill Contact Name": "@fullName",
   "Post Code": "@zipCode",
   "Discount Percentage": "@twoDigitNumber",

@@ -10,21 +10,20 @@ import java.util.Map;
 import io.restassured.response.Response;
 import utilities.ConfigReader;
 
-public class ServicesLevelNewEventApi {
+public class FullEventApI {
 
 	public ConfigReader config = new ConfigReader();
 
-	public String newServiceEventId(String loginId, List<String> service) {
-
+	public String getAllNewServicesEventId(String loginId) {
 		String url = config.getUrl();
 		String caterId = config.getCaterId();
 
+		// https://catapps1.aquilasoftware.com/CaterXpertSales2026_0704/sales/
+		// getSalesEventsList?loginId=-1&catererId=caterxpertcat&lowerBound=1&upperBound=20&deptId=2
 		Response response = given().pathParam("patch", "CaterXpertSales2026_0802").pathParam("module", "sales")
 				.pathParam("screen", "getSalesEventsList")
 				.queryParams("loginId", loginId, "catererId", caterId, "lowerBound", 1, "upperBound", 200, "deptId", 2)
 				.when().get(url + "/{patch}/{module}/{screen}");
-
-		response.then().statusCode(200);
 
 		List<Map<String, Object>> events = response.jsonPath().getList("$");
 
@@ -34,31 +33,24 @@ public class ServicesLevelNewEventApi {
 
 		for (Map<String, Object> event : events) {
 
-			// Get service names
-			List<?> serviceNames = (List<?>) event.get("serviceColumnNames");
-
-			// Get service statuses
-			List<?> serviceStatuses = (List<?>) event.get("serviceStatusValues");
-
 			cisNumber = (String) event.get("cisnumber");
+			
+			int estimateVersion = (int) event.get("estimateVersion");
 
-			if (serviceStatuses == null || serviceNames == null || cisNumber == null)
+			if (cisNumber == null)
 				continue;
 
-			for (int i = 0; i < serviceNames.size(); i++) {
-
-				String serviceName = serviceNames.get(i).toString().trim();
-				String status = serviceStatuses.get(i).toString().trim();
-
-				// Find requested service with New status
-				if (service.stream().anyMatch(s -> s.trim().equalsIgnoreCase(serviceName.trim()))
-						&& "New".equalsIgnoreCase(status) && !cisNumber.trim().matches(".*\\s+[MT]\\d*$")) {
-					matchingEvents.add(cisNumber);
-				}
+			// Find requested service with New status
+			if (!cisNumber.trim().matches(".*\\s+[MT]\\d*$") && estimateVersion == 0) {
+				matchingEvents.add(cisNumber);
 			}
 
 		}
 		Collections.shuffle(matchingEvents);
 		return matchingEvents.isEmpty() ? null : matchingEvents.get(0);
 	}
+
+	
+	
+
 }

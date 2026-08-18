@@ -12,6 +12,7 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 
+import groovyjarjarantlr4.v4.parse.ANTLRParser.finallyClause_return;
 import testBase.BasePage;
 
 public class EstimatesPage extends BasePage {
@@ -30,11 +31,13 @@ public class EstimatesPage extends BasePage {
 
 	@FindBy(xpath = "//button[text()=' Save ']")
 	WebElement liteSavebtn;
-
+	private final By estimateLiteSelectAllChk = By.xpath("//p-checkbox[@name='checkRec']");
 	public void clickEstimateLiteSave() {
 		waitutil.waitForOverlay();
+		elementUtil.click(estimateLiteSelectAllChk);
 		wait.until(ExpectedConditions.elementToBeClickable(liteSavebtn));
 		liteSavebtn.click();
+		
 	}
 
 	@FindBy(xpath = "//button[text()=' Close ']")
@@ -42,6 +45,7 @@ public class EstimatesPage extends BasePage {
 
 	public void clickEstimateLiteClose() {
 		waitutil.waitForOverlay();
+		waitutil.waitForSwalPopup();
 		wait.until(ExpectedConditions.elementToBeClickable(liteClosebtn));
 		liteClosebtn.click();
 	}
@@ -75,7 +79,7 @@ public class EstimatesPage extends BasePage {
 
 			List<WebElement> serviceName = wait
 					.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(estimateSectionList));
-
+			waitutil.waitForSwalPopup();
 			serviceName.get(i).click();
 			wait.until(ExpectedConditions.visibilityOfElementLocated(suggestedPriceBy));
 
@@ -101,10 +105,6 @@ public class EstimatesPage extends BasePage {
 			if (subTotalAmt != null) {
 				// System.out.println(subTotalAmt);
 
-				((JavascriptExecutor) driver).executeScript(
-						"arguments[0].style.border='4px solid red';" + "arguments[0].style.backgroundColor='yellow';",
-						subTotal);
-
 				subTotal.clear();
 				subTotal.sendKeys(subTotalAmt);
 				serviceTotaltxt.click();
@@ -114,7 +114,7 @@ public class EstimatesPage extends BasePage {
 				BigDecimal serviceAmount = new BigDecimal(serviceTotal);
 
 				System.out.println(
-						"Service Total of " + serviceName + " is " + serviceAmount.setScale(2, RoundingMode.HALF_UP));
+						"Service Total of " + serviceName.get(i).getText() + " is " + serviceAmount.setScale(2, RoundingMode.HALF_UP));
 				// discount = finalAmount.subtract(serviceAmount).setScale(2,
 				// RoundingMode.HALF_UP); //discount=finalAmount-ServiceAmount
 
@@ -139,7 +139,7 @@ public class EstimatesPage extends BasePage {
 		selectTotalEstimateOptions();
 
 		Assert.assertEquals(getEstimatesTotals(), getActualTotal(), "Actual and Calculated Totals are not Same");
-		saveTotalEstimates();
+		clickTotalEstimatesSave();
 		closeTotalEstimates();
 	}
 
@@ -186,9 +186,12 @@ public class EstimatesPage extends BasePage {
 		System.out.println("Actual Total is - " + actualTotal);
 		return Double.parseDouble(actualTotal);
 	}
-
-	@FindBy(xpath = "//span[text()='Save']")
-	WebElement totalEstimatesSaveBtn;
+	
+	private final By btnTotalEstimateSave = By.xpath("//span[text()='Save']");
+	public void clickTotalEstimatesSave()
+	{
+		elementUtil.click(btnTotalEstimateSave);
+	}
 
 	private final By btnClose = By.xpath("//button[normalize-space(text())='Close']");
 

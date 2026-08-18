@@ -105,15 +105,15 @@ public class MandatoryLabelsUtil extends BaseClass{
 				String labelText = label.getText().replace("*", "").trim();
 
 				System.out.println(labelText);
-				String excelValue = fieldData.get(labelText);
-				System.out.println(excelValue);
+				String testDataValue = fieldData.get(labelText);
+				System.out.println(testDataValue);
 
 				if(label.getText().toLowerCase().startsWith("business unit"))
 				{
 					System.out.println("BU Skipped");
 				}
 
-				else if(!label.findElements(By.xpath(MandatoryFieldsXpaths.TEXT_INPUT)).isEmpty() && excelValue!=null) 
+				else if(!label.findElements(By.xpath(MandatoryFieldsXpaths.TEXT_INPUT)).isEmpty() && testDataValue!=null) 
 				{
 					WebElement input = label.findElement(By.xpath(MandatoryFieldsXpaths.TEXT_INPUT));
 					String tag = input.getTagName().toLowerCase();
@@ -126,7 +126,7 @@ public class MandatoryLabelsUtil extends BaseClass{
 							wait.until(ExpectedConditions.elementToBeClickable(input)).click();
 							// CTRL+A + BACKSPACE instead of .clear() for better event triggering
 							input.sendKeys(org.openqa.selenium.Keys.chord(org.openqa.selenium.Keys.CONTROL, "a"), org.openqa.selenium.Keys.BACK_SPACE);
-							input.sendKeys(excelValue);
+							input.sendKeys(testDataValue);
 						}
 						else 
 						{
@@ -144,10 +144,19 @@ public class MandatoryLabelsUtil extends BaseClass{
 						js.executeScript("arguments[0].scrollIntoView({block:'center'});", dropdown);
 						js.executeScript("arguments[0].click();", dropdown);
 						List<WebElement> list = driver.findElements(By.xpath(MandatoryFieldsXpaths.MULTISELECT_LIST));
-						wait.until(ExpectedConditions.elementToBeClickable(list.get(0)));
-						list.get(0).click();
-						dropdown.click();
-						waitutil.waitForOverlay();
+
+						if(testDataValue!=null && !testDataValue.isEmpty()) {
+
+							list.stream().filter(element ->testDataValue.equalsIgnoreCase(element.getText().trim()))
+							.findFirst().ifPresent(WebElement::click);
+						}
+						else {
+							LoggerManager.info("Multiselect Option not found in Test Data clicking first Option");
+							wait.until(ExpectedConditions.elementToBeClickable(list.get(0)));
+							list.get(0).click();
+							dropdown.click();
+							waitutil.waitForOverlay();
+						}
 
 					}
 					else if(classAttr.contains("p-dropdown-trigger-icon") && dropdown.isEnabled())
@@ -161,17 +170,24 @@ public class MandatoryLabelsUtil extends BaseClass{
 							waitutil.waitForOverlay();
 							js.executeScript("arguments[0].scrollIntoView({block:'center'});", dropdown);
 							wait.until(ExpectedConditions.elementToBeClickable(dropdown));
-		
+
 							((JavascriptExecutor) driver).executeScript("arguments[0].click();", dropdown);
 							wait.until(ExpectedConditions.invisibilityOfElementLocated(By.cssSelector("div.overlay")));
 							List<WebElement> drpoptions = driver.findElements(By.xpath(MandatoryFieldsXpaths.DROPDOWN_LIST));
-							wait.until(ExpectedConditions.elementToBeClickable(drpoptions.get(0)));
-							if (!drpoptions.isEmpty()) {
+
+							if(testDataValue!=null && !testDataValue.isEmpty()) {
+
+								drpoptions.stream().filter(element ->testDataValue.equalsIgnoreCase(element.getText().trim()))
+								.findFirst().ifPresent(WebElement::click);
+							}
+							else {
+								LoggerManager.info("Dropdown Option not found in Test Data clicking first Option");
+								wait.until(ExpectedConditions.elementToBeClickable(drpoptions.get(0)));
 
 								//WebElement option = driver.findElement(By.xpath("(//ul[contains(@class,'p-dropdown-items')]//li)[1]"));
 								By optFirst = By.xpath("(//ul[contains(@class,'p-dropdown-items')]//li)[1]");
 								elementutil.click(optFirst);
-								
+
 								waitutil.waitForOverlay();
 								//wait.until(ExpectedConditions.elementToBeClickable(firstOption)).click();
 								// wait.until(ExpectedConditions.refreshed(ExpectedConditions.elementToBeClickable(firstOption))).click();
@@ -189,7 +205,7 @@ public class MandatoryLabelsUtil extends BaseClass{
 					{
 						input.click();
 
-						String[] parts = excelValue.split(",");
+						String[] parts = testDataValue.split(",");
 						int dateOffset = Integer.parseInt(parts[0].trim());
 						String time = parts.length > 1 ? parts[1].trim() : null;
 
@@ -200,7 +216,7 @@ public class MandatoryLabelsUtil extends BaseClass{
 						{
 							WebElement timeIcon = label.findElement(By.xpath(MandatoryFieldsXpaths.TIME_FIELD));
 							timeIcon.click();
-							
+
 							dp.selectTime(driver, time);
 						}
 					}

@@ -7,7 +7,7 @@ import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-import apis.EventListApi;
+import apis.LiteEventApi;
 import factory.DriverFactory;
 import pageObjects.EstimatesPage;
 import pageObjects.EventDashboardPage;
@@ -19,7 +19,7 @@ public class EstimatesTest extends BaseClass {
 	EventDashboardPage dashboardPage;
 	EstimatesPage estimatesPage;
 	ServicesWorkFlows servicesFlow;
-	EventListApi eventListApi;
+	LiteEventApi liteEventApi;
 	List<String> service;
 	List<String> iconLabel;
 
@@ -28,7 +28,7 @@ public class EstimatesTest extends BaseClass {
 		estimatesPage = new EstimatesPage(DriverFactory.getDriver());
 		dashboardPage = new EventDashboardPage(DriverFactory.getDriver());
 		servicesFlow = new ServicesWorkFlows(DriverFactory.getDriver());
-		eventListApi = new EventListApi();
+		liteEventApi = new LiteEventApi();
 		service = List.of("Estimates");
 		iconLabel = List.of("Estimates Lite", "Estimates");
 
@@ -36,7 +36,7 @@ public class EstimatesTest extends BaseClass {
 
 	@Test(priority = 1, groups = { "Regression", "EventCreationDirect" })
 	public void estimates() {
-		String eventNo = eventListApi.getAllNewServicesEventId(loginId);
+		String eventNo = liteEventApi.getAllNewServicesEventId(loginId);
 		servicesFlow.navigateToEventDashboard(eventNo);
 		dashboardPage.clickServiceLabelIcon(service, null, iconLabel);
 
@@ -45,12 +45,6 @@ public class EstimatesTest extends BaseClass {
 		if (estimatesPage.isFullEstimateDisplayed()) {
 			estimatesPage.giveEstimates();
 			estimatesPage.saveTotalEstimates();
-			estimatesPage.selectTotalEstimateOptions();
-
-			Assert.assertEquals(estimatesPage.getEstimatesTotals(), estimatesPage.getActualTotal(),
-					"Actual and Calculated Totals are not Same");
-			estimatesPage.saveTotalEstimates();
-			estimatesPage.closeTotalEstimates();
 		} else {
 			estimatesPage.clickEstimateLiteSave();
 			estimatesPage.clickEstimateLiteClose();

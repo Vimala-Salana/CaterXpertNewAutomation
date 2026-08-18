@@ -35,6 +35,7 @@ public class ServicesWorkFlows {
 		boolean isServicePresent = eventDashboardPage.clickServiceLabelIcon(serviceName, status, iconlabel);
 		if (!isServicePresent) {
 			LoggerManager.info(serviceName + " is not Mapped to the Event Business Unit.");
+			return;
 		}
 	}
 

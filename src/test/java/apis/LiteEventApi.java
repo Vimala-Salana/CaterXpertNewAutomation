@@ -10,7 +10,7 @@ import java.util.Map;
 import io.restassured.response.Response;
 import utilities.ConfigReader;
 
-public class EventListApi {
+public class LiteEventApi {
 
 	public ConfigReader config = new ConfigReader();
 
@@ -33,22 +33,20 @@ public class EventListApi {
 
 		for (Map<String, Object> event : events) {
 
-			// Get service statuses
-			List<?> serviceStatuses = (List<?>) event.get("serviceStatusValues");
-
 			cisNumber = (String) event.get("cisnumber");
+			
+			int estimateVersion = (int) event.get("estimateVersion");
 
-			if (serviceStatuses == null || cisNumber == null)
+			if (cisNumber == null)
 				continue;
 
-			// Find requested service with New status
-			if (serviceStatuses.stream().allMatch(status -> status.toString().trim().equalsIgnoreCase("New"))
-					&& !cisNumber.trim().matches(".*\\s+[MT]\\d*$")) {
-				System.out.println(cisNumber);
+			// Find Estimate Lite Event
+			if (!cisNumber.trim().matches(".*\\s+[MT]\\d*$") && estimateVersion == 1) {
+				
 				matchingEvents.add(cisNumber);
 			}
-
 		}
+		//Getting Random event no matching the Condition
 		Collections.shuffle(matchingEvents);
 		return matchingEvents.isEmpty() ? null : matchingEvents.get(0);
 	}

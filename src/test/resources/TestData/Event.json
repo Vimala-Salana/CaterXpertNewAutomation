@@ -1,8 +1,9 @@
 
   {
   "Begin Time": "1,07:00 PM",
-  "County": "@county",
   "End Time": "1,10:00 PM",
+  "Event Type": "Anniversary",
+  "Status": "Definite",
   "Event Name": "Wedding",
   "Discount Percentage": "@twoDigitNumber",
   "Adult Count": "@twoDigitNumber",
@@ -26,6 +27,5 @@
   "Fax": "@phone",
   "Contact Information_Name": "@firstName",
   "Comments": "@sentence",
-  "Delivery Charges": "@twoDigitNumber",
-  "Name": "@fullName"
-}
+  "Delivery Charges": "@twoDigitNumber"
+  }
