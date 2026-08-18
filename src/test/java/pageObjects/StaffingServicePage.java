@@ -12,8 +12,13 @@ import workFlows.ServicesWorkFlows;
 
 public class StaffingServicePage extends BasePage {
 
+	private ServicesPage servicesPage;
+	private ServicesWorkFlows servicesFlow;
+
 	public StaffingServicePage(WebDriver driver) {
 		super(driver);
+		servicesPage = new ServicesPage(driver);
+		servicesFlow = new ServicesWorkFlows(driver);
 	}
 
 	@FindBy(xpath = "//span[contains(normalize-space(text()),'Event Services')]")
@@ -26,7 +31,7 @@ public class StaffingServicePage extends BasePage {
 	@FindBy(xpath = "//input[@maxlength='5']")
 	List<WebElement> staffQty;
 
-	public void giveStaffQty() {
+	public void addStaffPositions() {
 		waitutil.waitForOverlay();
 		wait.until(ExpectedConditions.visibilityOfAllElements(staffQty));
 		int count = 1;
@@ -38,6 +43,9 @@ public class StaffingServicePage extends BasePage {
 				count++;
 			}
 		}
+		servicesPage.clickServiceSave();
+		waitutil.waitForSwalPopup();
+
 	}
 
 	@FindBy(xpath = "//div[@role='tabpanel' and (@aria-hidden='false')]//button[text()=' Save ']")
@@ -77,9 +85,8 @@ public class StaffingServicePage extends BasePage {
 		staffclosebtn.click();
 	}
 
-	public void approveStaffingConstraints(String eventNo) throws InterruptedException {
+	public void approveStaffingConstraints(String eventNo) {
 		serviceUtil.approveConstraints(eventNo);
-		ServicesWorkFlows servicesFlow = new ServicesWorkFlows(driver);
 		servicesFlow.navigateToEventDashboard(eventNo);
 	}
 }

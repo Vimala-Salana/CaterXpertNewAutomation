@@ -143,6 +143,8 @@ public class ServiceUtil {
 		if (!infoHdr.isEmpty()) {
 			fillInfoMandatoryFields();
 			elementUtil.click(infoSave);
+			waitutil.waitForSwalPopup();
+			waitutil.waitForOverlay();
 		} else {
 			System.out.println("Info is not displayed");
 		}

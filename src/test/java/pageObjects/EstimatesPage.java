@@ -10,64 +10,72 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.testng.Assert;
 
 import testBase.BasePage;
 
-public class EstimatesPage extends BasePage{
+public class EstimatesPage extends BasePage {
 
-	public EstimatesPage(WebDriver driver)
-	{
+	public EstimatesPage(WebDriver driver) {
 		super(driver);
 	}
 
-	@FindBy(xpath = "//span[text()=' Estimate Sections ']") WebElement estimatesFullHdr;
-	public boolean getEstimateshdr()
-	{
+	@FindBy(xpath = "//span[text()=' Estimate Sections ']")
+	WebElement estimatesFullHdr;
+
+	public boolean isFullEstimateDisplayed() {
 		waitutil.waitForOverlay();
 		return !driver.findElements(By.xpath("//span[normalize-space()='Estimate Sections']")).isEmpty();
 	}
 
-	@FindBy(xpath = "//button[text()=' Save ']") WebElement liteSavebtn;
-	public void clickEstimateLiteSave()
-	{
+	@FindBy(xpath = "//button[text()=' Save ']")
+	WebElement liteSavebtn;
+
+	public void clickEstimateLiteSave() {
 		waitutil.waitForOverlay();
 		wait.until(ExpectedConditions.elementToBeClickable(liteSavebtn));
 		liteSavebtn.click();
 	}
 
-	@FindBy(xpath = "//button[text()=' Close ']") WebElement liteClosebtn;
-	public void clickEstimateLiteClose()
-	{
+	@FindBy(xpath = "//button[text()=' Close ']")
+	WebElement liteClosebtn;
+
+	public void clickEstimateLiteClose() {
 		waitutil.waitForOverlay();
 		wait.until(ExpectedConditions.elementToBeClickable(liteClosebtn));
 		liteClosebtn.click();
 	}
 
-
-	//@FindBy(xpath = "//span[text()=' description ']//following-sibling::span[1]") List<WebElement> estimateSectionsList;
+	// @FindBy(xpath = "//span[text()=' description ']//following-sibling::span[1]")
+	// List<WebElement> estimateSectionsList;
 	By estimateSectionList = By.xpath("//div[@class='d-flex mt-1 ng-star-inserted']//span[2]");
 	By suggestedPriceBy = By.xpath("(//input[@name='totalActCost'])[1]");
-	@FindBy(xpath = "(//label[text()=' Menu Number '])[1]") List<WebElement> menuNumber;
-	@FindBy(xpath = "(//label[contains(normalize-space(),'Subtotal')])[1]/following::input[1][@type='text']") WebElement subTotal;
-	@FindBy(xpath = "(//*[self::span or self::button][normalize-space()='Save'])[1]") WebElement estimatesSave;
-	@FindBy(xpath = "(//label[text()=' Total ' or text()=' Section Total ']//following::input)[1]") WebElement serviceTotaltxt;
+	@FindBy(xpath = "(//label[text()=' Menu Number '])[1]")
+	List<WebElement> menuNumber;
+	@FindBy(xpath = "(//label[contains(normalize-space(),'Subtotal')])[1]/following::input[1][@type='text']")
+	WebElement subTotal;
+	@FindBy(xpath = "(//*[self::span or self::button][normalize-space()='Save'])[1]")
+	WebElement estimatesSave;
+	@FindBy(xpath = "(//label[text()=' Total ' or text()=' Section Total ']//following::input)[1]")
+	WebElement serviceTotaltxt;
 
-	@FindBy(xpath = "//th[text()=' Personnel ']") List<WebElement> personnelEstimate;
+	@FindBy(xpath = "//th[text()=' Personnel ']")
+	List<WebElement> personnelEstimate;
 
 	String serviceTotal;
 	BigDecimal discount;
 	BigDecimal totalServiceAmount = BigDecimal.ZERO;
-	public void giveEstimates() 
-	{
+
+	public void giveEstimates() {
 		int estimatesSize = driver.findElements(estimateSectionList).size();
-		//System.out.println("Estimates size - "+estimateSize);
-		//for(WebElement estimateSection : estimateSections)
-		for(int i=0;i<estimatesSize;i++)
-		{
+		// System.out.println("Estimates size - "+estimateSize);
+		// for(WebElement estimateSection : estimateSections)
+		for (int i = 0; i < estimatesSize; i++) {
 			waitutil.waitForOverlay();
 
-			List<WebElement> serviceName = wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(estimateSectionList));
-			
+			List<WebElement> serviceName = wait
+					.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(estimateSectionList));
+
 			serviceName.get(i).click();
 			wait.until(ExpectedConditions.visibilityOfElementLocated(suggestedPriceBy));
 
@@ -75,78 +83,77 @@ public class EstimatesPage extends BasePage{
 
 			String suggestedprice = driver.findElement(suggestedPriceBy).getAttribute("value");
 			double price = Double.parseDouble(suggestedprice);
-			String subTotalAmt= null;
-			//System.out.println(price);
-			if(!menuNumber.isEmpty())
-			{
+			String subTotalAmt = null;
+			// System.out.println(price);
+			if (!menuNumber.isEmpty()) {
 				System.out.println("Menu Estimate Found");
 				subTotalAmt = (price > 0) ? suggestedprice : "100";
 
-			}
-			else if(!personnelEstimate.isEmpty())
-			{
+			} else if (!personnelEstimate.isEmpty()) {
 				System.out.println("Personnel Estimate Found");
 
 				subTotalAmt = (price > 0) ? suggestedprice : "100";
-			}
-			else if(price>0)
-			{
-				subTotalAmt = suggestedprice; 	//for warehouse estimates
+			} else if (price > 0) {
+				subTotalAmt = suggestedprice; // for warehouse estimates
 
 			}
 
-			if(subTotalAmt != null)  
-			{
-				//System.out.println(subTotalAmt);
-				
+			if (subTotalAmt != null) {
+				// System.out.println(subTotalAmt);
+
 				((JavascriptExecutor) driver).executeScript(
-					    "arguments[0].style.border='4px solid red';" +
-					    "arguments[0].style.backgroundColor='yellow';",
-					    subTotal
-					);
-				
+						"arguments[0].style.border='4px solid red';" + "arguments[0].style.backgroundColor='yellow';",
+						subTotal);
+
 				subTotal.clear();
 				subTotal.sendKeys(subTotalAmt);
 				serviceTotaltxt.click();
-				serviceTotal = serviceTotaltxt.getAttribute("value");	
+				serviceTotal = serviceTotaltxt.getAttribute("value");
 
-				//BigDecimal finalAmount = new BigDecimal(subTotalAmt);
+				// BigDecimal finalAmount = new BigDecimal(subTotalAmt);
 				BigDecimal serviceAmount = new BigDecimal(serviceTotal);
 
-				System.out.println("Service Total of "+serviceName +" is "+ serviceAmount.setScale(2, RoundingMode.HALF_UP));
-				//discount = finalAmount.subtract(serviceAmount).setScale(2, RoundingMode.HALF_UP);   //discount=finalAmount-ServiceAmount
+				System.out.println(
+						"Service Total of " + serviceName + " is " + serviceAmount.setScale(2, RoundingMode.HALF_UP));
+				// discount = finalAmount.subtract(serviceAmount).setScale(2,
+				// RoundingMode.HALF_UP); //discount=finalAmount-ServiceAmount
 
-				//System.out.println("Discount of "+serviceName +" is "+discount);
+				// System.out.println("Discount of "+serviceName +" is "+discount);
 				totalServiceAmount = totalServiceAmount.add(serviceAmount);
 				estimatesSave.click();
 				waitutil.waitForSwalPopup();
 				waitutil.waitForOverlay();
 			}
 		}
-		System.out.println("All Services Total Amount - "+totalServiceAmount);
+		System.out.println("All Services Total Amount - " + totalServiceAmount);
 	}
-	@FindBy (xpath = "//button[normalize-space(text())='Total Estimate']") WebElement totalEstimatesBtn;
-	public void clickTotalEstimates()
-	{
+
+	@FindBy(xpath = "//button[normalize-space(text())='Total Estimate']")
+	WebElement totalEstimatesBtn;
+
+	public void saveTotalEstimates() {
 		waitutil.waitForOverlay();
 		wait.until(ExpectedConditions.elementToBeClickable(totalEstimatesBtn));
 		totalEstimatesBtn.click();
 		waitutil.waitForOverlay();
+		selectTotalEstimateOptions();
+
+		Assert.assertEquals(getEstimatesTotals(), getActualTotal(), "Actual and Calculated Totals are not Same");
+		saveTotalEstimates();
+		closeTotalEstimates();
 	}
 
 	By estimateServicesList = By.xpath("//tr[position()>1]/td[2]//span[contains(text(),'Select')]");
-	@FindBy (xpath = "//ul[contains(@role,'listbox')]//li[1]") WebElement options;
+	@FindBy(xpath = "//ul[contains(@role,'listbox')]//li[1]")
+	WebElement options;
 
-	public void selectTotalEstimateOptions()
-	{
+	public void selectTotalEstimateOptions() {
 		waitutil.waitForOverlay();
 		List<WebElement> estimateServices = driver.findElements(estimateServicesList);
-		
-		if(!estimateServices.isEmpty())
-		{
-			 wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(estimateServicesList));
-			for(WebElement service : estimateServices)
-			{
+
+		if (!estimateServices.isEmpty()) {
+			wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(estimateServicesList));
+			for (WebElement service : estimateServices) {
 				waitutil.waitForOverlay();
 				service.click();
 				((JavascriptExecutor) driver).executeScript("arguments[0].click();", options);
@@ -154,45 +161,38 @@ public class EstimatesPage extends BasePage{
 			}
 		}
 	}
-	
-	@FindBy(xpath = "//label[text()=' Tax ']//following::input[@name ='tax'][1]") WebElement estimatesTax;
 
-	public double getEstimatesTotals()
-	{
+	@FindBy(xpath = "//label[text()=' Tax ']//following::input[@name ='tax'][1]")
+	WebElement estimatesTax;
+
+	public double getEstimatesTotals() {
 		String taxTotal = estimatesTax.getAttribute("value");
-		System.out.println("Total tax amount is - "+taxTotal);
-		
+		System.out.println("Total tax amount is - " + taxTotal);
+
 		Double calcualtedTotal = Double.parseDouble(taxTotal) + totalServiceAmount.doubleValue();
-		
+
 		calcualtedTotal = BigDecimal.valueOf(calcualtedTotal).setScale(2, RoundingMode.HALF_UP).doubleValue();
-		System.out.println("Calculated Total is - "+calcualtedTotal);
-	
+		System.out.println("Calculated Total is - " + calcualtedTotal);
+
 		return calcualtedTotal;
-		
-		
+
 	}
-	
-	@FindBy(xpath = "//label[text()=' Total Price ']//following::input[@name ='total'][1]") WebElement estimatesTotal;
-	public double getActualTotal()
-	{
+
+	@FindBy(xpath = "//label[text()=' Total Price ']//following::input[@name ='total'][1]")
+	WebElement estimatesTotal;
+
+	public double getActualTotal() {
 		String actualTotal = estimatesTotal.getAttribute("value");
-		System.out.println("Actual Total is - "+actualTotal);
+		System.out.println("Actual Total is - " + actualTotal);
 		return Double.parseDouble(actualTotal);
 	}
 
-	@FindBy(xpath = "//span[text()='Save']") WebElement totalEstimatesSaveBtn;
+	@FindBy(xpath = "//span[text()='Save']")
+	WebElement totalEstimatesSaveBtn;
 
-	public void saveTotalEstimates()
-	{
-		waitutil.waitForOverlay();
-		wait.until(ExpectedConditions.elementToBeClickable(totalEstimatesSaveBtn));
-		totalEstimatesSaveBtn.click();
-		System.out.println("Saved Total Estimates");
-	}
-	
 	private final By btnClose = By.xpath("//button[normalize-space(text())='Close']");
-	public void closeTotalEstimates()
-	{
+
+	public void closeTotalEstimates() {
 		elementUtil.click(btnClose);
 	}
 

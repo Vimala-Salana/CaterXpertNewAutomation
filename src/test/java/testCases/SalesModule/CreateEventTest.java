@@ -7,7 +7,6 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import factory.DriverFactory;
-import pageObjects.BasetoSalesNavigationPage;
 import pageObjects.CreateEventPage;
 import testBase.BaseClass;
 import utilities.DataGenerator;
@@ -16,7 +15,6 @@ import workFlows.EventFlow;
 
 public class CreateEventTest extends BaseClass {
 
-	BasetoSalesNavigationPage baseNavPage;
 	EventFlow eventFlow;
 	ExcelUtility excelUtil;
 	String sheetname;

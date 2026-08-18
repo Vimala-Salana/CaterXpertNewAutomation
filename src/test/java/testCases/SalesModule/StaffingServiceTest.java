@@ -9,14 +9,13 @@ import org.testng.annotations.Test;
 
 import apis.ServicesLevelNewEventApi;
 import factory.DriverFactory;
-import pageObjects.BasetoSalesNavigationPage;
 import pageObjects.ServicesPage;
 import pageObjects.StaffingServicePage;
 import testBase.BaseClass;
 import workFlows.ServicesWorkFlows;
 
 public class StaffingServiceTest extends BaseClass {
-	BasetoSalesNavigationPage baseNavPage;
+
 	StaffingServicePage staffingServicePage;
 	ServicesPage servicesPage;
 	ServicesWorkFlows servicesFlow;
@@ -39,8 +38,7 @@ public class StaffingServiceTest extends BaseClass {
 		Assert.assertTrue(service.stream().anyMatch(s -> servicesPage.getServiceHdr().contains(s)),
 				"Staffing Service not present in the Service list.");
 
-		staffingServicePage.giveStaffQty();
-		servicesPage.clickServiceSave();
+		staffingServicePage.addStaffPositions();
 		servicesFlow.finalizeService(eventNo, service);
 	}
 

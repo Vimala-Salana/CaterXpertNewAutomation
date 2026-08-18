@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -17,10 +16,11 @@ import testBase.BasePage;
 import utilities.ReportManager;
 
 public class BeverageServicePage extends BasePage {
+	private ServicesPage servicesPage;
 
 	public BeverageServicePage(WebDriver driver) {
 		super(driver);
-
+		servicesPage = new ServicesPage(driver);
 	}
 
 	@FindBy(xpath = "//p-tabpanel[@header='Item']/div[@role='tabpanel' and not(@hidden)]//following-sibling::p")
@@ -51,7 +51,11 @@ public class BeverageServicePage extends BasePage {
 	// quantityfields;
 	By quantityfields = By.xpath("//input[contains(@id,'qt')]");
 
-	public void enterQuantity() {
+	public void addBeverageItems() {
+
+		servicesPage.clickSearchAndAddbtn();
+		servicesPage.uncheckIfOutsourcedOrNotRequired();
+		showMappedItems();
 		/*
 		 * int size =
 		 * wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(quantityfields
@@ -62,14 +66,24 @@ public class BeverageServicePage extends BasePage {
 		 */
 
 		List<WebElement> qty = driver.findElements(quantityfields);
-		if (!qty.isEmpty())
+
+		if (!qty.isEmpty()) {
+
 			qty.get(0).sendKeys(Keys.chord(Keys.CONTROL, "a"), Keys.DELETE, "10");
-		else
+
+			servicesPage.clickListSave();
+
+			closeInventoryPopupIfPresent();
+
+			waitutil.waitForSwalPopup();
+
+			servicesPage.clickListClose();
+		} else
 			System.out.println("No Items Exist");
 	}
 
-	private final  By btnInventoryOk= By.xpath("//button[text()='Ok']");
-	
+	private final By btnInventoryOk = By.xpath("//button[text()='Ok']");
+
 	public void closeInventoryPopupIfPresent() {
 		/*
 		 * if (!okBtn.isEmpty()) {
@@ -82,9 +96,9 @@ public class BeverageServicePage extends BasePage {
 		 * 
 		 * System.out.println("Inventory alert not displayed"); }
 		 */
-		
-		
+
 		elementUtil.clickIfPresent(btnInventoryOk);
+		waitutil.waitForSwalPopup();
 	}
 
 	public Map<String, String> getItemDetails(WebElement row, List<WebElement> headers) {
@@ -195,6 +209,9 @@ public class BeverageServicePage extends BasePage {
 
 	public void clickReserveIfPresent() {
 		elementUtil.clickIfPresent(btnReserve);
+		closeInventoryPopupIfPresent();
+		waitutil.waitForSwalPopup();
+
 	}
 
 	@FindBy(xpath = "//button[text()=' Finalize ']")

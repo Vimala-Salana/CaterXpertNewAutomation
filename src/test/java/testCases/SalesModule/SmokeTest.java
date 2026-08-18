@@ -2,14 +2,12 @@ package testCases.SalesModule;
 
 import java.util.List;
 import java.util.Map;
-
-import org.testng.Assert;
+import org.openqa.selenium.WebDriver;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import factory.DriverFactory;
-import pageObjects.BasetoSalesNavigationPage;
 import pageObjects.BeverageServicePage;
 import pageObjects.EstimatesPage;
 import pageObjects.EventDashboardPage;
@@ -25,26 +23,18 @@ import workFlows.ServicesWorkFlows;
 
 public class SmokeTest extends BaseClass {
 
-	BasetoSalesNavigationPage salesNaviagationPage;
+	WebDriver driver;
 	ServicesWorkFlows servicesFlow;
 	CustomerFlow customerFlow;
 	ContactFlow contactFlow;
+	EventFlow eventFlow;
 	DataGenerator dataGenerator;
 
-	Map<String, String> customerData;
-
-	Map<String, String> contactData;
-
-	EventFlow eventFlow;
-	Map<String, String> eventData;
-
 	String eventNo;
-	List<String> menuService;
-	List<String> staffingService;
-	List<String> beverageService;
-	List<String> estimateService;
-	List<String> estimatesIcon;
-
+	Map<String, String> eventData;
+	Map<String, String> customerData;
+	Map<String, String> contactData;
+	
 	MenuServicePage menuServicePage;
 	StaffingServicePage staffingServicePage;
 	BeverageServicePage beverageServicePage;
@@ -52,14 +42,19 @@ public class SmokeTest extends BaseClass {
 	EstimatesPage estimatesPage;
 	EventDashboardPage dashboardPage;
 
-	@BeforeMethod
+	List<String> menuService;
+	List<String> staffingService;
+	List<String> beverageService;
+	List<String> estimateService;
+	List<String> estimatesIcon;
 
+	@BeforeMethod
 	public void setUp() {
-		salesNaviagationPage = new BasetoSalesNavigationPage(DriverFactory.getDriver());
-		servicesFlow = new ServicesWorkFlows(DriverFactory.getDriver());
-		customerFlow = new CustomerFlow(DriverFactory.getDriver());
+		driver = DriverFactory.getDriver();
+		servicesFlow = new ServicesWorkFlows(driver);
+		customerFlow = new CustomerFlow(driver);
 		contactFlow = new ContactFlow();
-		eventFlow = new EventFlow(DriverFactory.getDriver());
+		eventFlow = new EventFlow(driver);
 
 		dataGenerator = new DataGenerator();
 		menuService = List.of("Menu");
@@ -68,14 +63,14 @@ public class SmokeTest extends BaseClass {
 		estimateService = List.of("Estimates");
 		estimatesIcon = List.of("Estimates Lite", "Estimates");
 
-		menuServicePage = new MenuServicePage(DriverFactory.getDriver());
-		staffingServicePage = new StaffingServicePage(DriverFactory.getDriver());
-		beverageServicePage = new BeverageServicePage(DriverFactory.getDriver());
+		menuServicePage = new MenuServicePage(driver);
+		staffingServicePage = new StaffingServicePage(driver);
+		beverageServicePage = new BeverageServicePage(driver);
 
-		servicesPage = new ServicesPage(DriverFactory.getDriver());
-		estimatesPage = new EstimatesPage(DriverFactory.getDriver());
+		servicesPage = new ServicesPage(driver);
+		estimatesPage = new EstimatesPage(driver);
 
-		dashboardPage = new EventDashboardPage(DriverFactory.getDriver());
+		dashboardPage = new EventDashboardPage(driver);
 	}
 
 	@Test
@@ -101,41 +96,23 @@ public class SmokeTest extends BaseClass {
 
 		/* Staffing Service */
 		servicesFlow.openServiceRequestFromEventDashboard(staffingService);
-		staffingServicePage.giveStaffQty();
-		servicesPage.clickServiceSave();
+		staffingServicePage.addStaffPositions();
 		servicesFlow.finalizeService(eventNo, staffingService);
 
 		/* Beverage Service */
 		servicesFlow.openServiceRequestFromEventDashboard(beverageService);
 
-		servicesPage.clickSearchAndAddbtn();
-		servicesPage.uncheckIfOutsourcedOrNotRequired();
-		beverageServicePage.showMappedItems();
-
-		beverageServicePage.enterQuantity();
-		servicesPage.clickListSave();
-		beverageServicePage.closeInventoryPopupIfPresent();
-		servicesPage.clickListClose();
+		beverageServicePage.addBeverageItems();
 
 		beverageServicePage.clickReserveIfPresent();
-
-		beverageServicePage.closeInventoryPopupIfPresent();
-
-		beverageServicePage.validateItems();
 
 		servicesFlow.finalizeService(eventNo, beverageService);
 
 		/* Estimates */
 		dashboardPage.clickServiceLabelIcon(estimateService, null, estimatesIcon);
-		if (estimatesPage.getEstimateshdr()) {
+		if (estimatesPage.isFullEstimateDisplayed()) {
 			estimatesPage.giveEstimates();
-			estimatesPage.clickTotalEstimates();
-			estimatesPage.selectTotalEstimateOptions();
-
-			Assert.assertEquals(estimatesPage.getEstimatesTotals(), estimatesPage.getActualTotal(),
-					"Actual and Calculated Totals are not Same");
 			estimatesPage.saveTotalEstimates();
-			estimatesPage.closeTotalEstimates();
 		} else {
 			estimatesPage.clickEstimateLiteSave();
 			estimatesPage.clickEstimateLiteClose();

@@ -6,7 +6,7 @@ import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.Parameters;
 
 import factory.DriverFactory;
-import pageObjects.BasetoSalesNavigationPage;
+import pageObjects.BaseToSalesNavigationPage;
 import pageObjects.LoginPage;
 import utilities.ConfigReader;
 import utilities.ExcelUtility;
@@ -30,14 +30,10 @@ public class BaseClass {
 
 	/**
 	 * Login ONCE for the entire TestNG suite.
-	 * 
-	 * @throws InterruptedException
 	 */
 	@BeforeSuite(alwaysRun = true)
 	@Parameters("browser")
-	public void loginOnce(String browser) throws InterruptedException {
-
-		System.out.println("========== SUITE LOGIN START ==========");
+	public void loginOnce(String browser) {
 
 		DriverFactory.initDriver(browser);
 		driver = DriverFactory.getDriver();
@@ -49,7 +45,7 @@ public class BaseClass {
 		login.login(config.getCaterId(), config.getUserId(), config.getPassword());
 
 		// Navigate to Sales New
-		BasetoSalesNavigationPage bp = new BasetoSalesNavigationPage(driver);
+		BaseToSalesNavigationPage bp = new BaseToSalesNavigationPage(driver);
 
 		loginId = bp.salesNewNavigation();
 		currentUrl = bp.getSalesUrl();

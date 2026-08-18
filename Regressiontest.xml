@@ -9,9 +9,9 @@
 
 		<classes>
 			<!--<class name="testCases.SalesModule.LoginTest" />-->
-			<!--<class name="testCases.SalesModule.CreateCustomerTest" />
+			<class name="testCases.SalesModule.CreateCustomerTest" />
 			<class name="testCases.SalesModule.CreateContactTest" />
-			<class name="testCases.SalesModule.CreateEventTest" />-->
+			<class name="testCases.SalesModule.CreateEventTest" />
 			<class name="testCases.SalesModule.MenuServiceTest" />
 			<class name="testCases.SalesModule.StaffingServiceTest" />
 			<class name="testCases.SalesModule.BeverageServiceTest" />

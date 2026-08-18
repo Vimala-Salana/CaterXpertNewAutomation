@@ -9,7 +9,6 @@ import org.testng.annotations.Test;
 
 import apis.ServicesLevelNewEventApi;
 import factory.DriverFactory;
-import pageObjects.BasetoSalesNavigationPage;
 import pageObjects.BeverageServicePage;
 import pageObjects.ServicesPage;
 import testBase.BaseClass;
@@ -17,7 +16,6 @@ import workFlows.ServicesWorkFlows;
 
 public class BeverageServiceTest extends BaseClass {
 
-	BasetoSalesNavigationPage baseNavPage;
 	BeverageServicePage beverageServicePage;
 	ServicesPage servicesPage;
 	ServicesWorkFlows servicesFlow;
@@ -27,7 +25,6 @@ public class BeverageServiceTest extends BaseClass {
 	@BeforeMethod
 	public void setup() {
 		servicesNewApi = new ServicesLevelNewEventApi();
-		baseNavPage = new BasetoSalesNavigationPage(DriverFactory.getDriver());
 		beverageServicePage = new BeverageServicePage(DriverFactory.getDriver());
 		servicesPage = new ServicesPage(DriverFactory.getDriver());
 		servicesFlow = new ServicesWorkFlows(DriverFactory.getDriver());
@@ -42,17 +39,8 @@ public class BeverageServiceTest extends BaseClass {
 
 		Assert.assertTrue(service.stream().anyMatch(s -> servicesPage.getServiceHdr().contains(s)),
 				"BeverageService not Mapped/Service not present in the Service list.");
-		servicesPage.clickSearchAndAddbtn();
-		servicesPage.uncheckIfOutsourcedOrNotRequired();
-		beverageServicePage.showMappedItems();
 
-		beverageServicePage.enterQuantity();
-		servicesPage.clickListSave();
-		beverageServicePage.closeInventoryPopupIfPresent();
-		servicesPage.clickListClose();
-
-		beverageServicePage.clickReserveIfPresent();
-		beverageServicePage.closeInventoryPopupIfPresent();
+		beverageServicePage.addBeverageItems();
 
 		beverageServicePage.validateItems();
 

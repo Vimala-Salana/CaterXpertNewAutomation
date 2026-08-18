@@ -11,20 +11,20 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import testBase.BasePage;
-import workFlows.ServicesWorkFlows;
+import utilities.LoggerManager;
 
-public class MenuServicePage extends BasePage{
+public class MenuServicePage extends BasePage {
 
-	public MenuServicePage(WebDriver driver)
-	{
+	public MenuServicePage(WebDriver driver) {
 		super(driver);
 
 	}
 
-	//@FindBy(xpath = "//span[normalize-space(text())='Event Services - Menu']") WebElement menuServicehdr;
+	// @FindBy(xpath = "//span[normalize-space(text())='Event Services - Menu']")
+	// WebElement menuServicehdr;
 	private final By hdrMenuService = By.xpath("//span[contains(text(),'Event Services')]");
-	public String getmenuServiceHdr()
-	{
+
+	public String getmenuServiceHdr() {
 		waitutil.waitForOverlay();
 		return elementUtil.getText(hdrMenuService);
 	}
@@ -33,8 +33,7 @@ public class MenuServicePage extends BasePage{
 	private final By iconFilter = By.xpath("//span[@ptooltip='Filter']");
 	private final By btnFilterGo = By.xpath("//button[normalize-space(text())='Go']");
 
-	public void clickSearchAndAddbtn()
-	{
+	public void clickSearchAndAddbtn() {
 		/*
 		 * waitutil.waitForOverlay();
 		 * wait.until(ExpectedConditions.elementToBeClickable(btnsearchAndAdd));
@@ -51,28 +50,27 @@ public class MenuServicePage extends BasePage{
 	}
 
 	By noRecordsTxt = By.xpath("//p[normalize-space()='No records found']");
+
 	public boolean isNoRecordsFoundDisplayed() {
-		return driver.findElements(noRecordsTxt)
-				.stream()
-				.anyMatch(WebElement::isDisplayed);
-	} 
+		return driver.findElements(noRecordsTxt).stream().anyMatch(WebElement::isDisplayed);
+	}
 
-
-	//@FindBy(xpath = "//p-checkbox[@ptooltip='Select Item']") List <WebElement> itemsCheckBox;
+	// @FindBy(xpath = "//p-checkbox[@ptooltip='Select Item']") List <WebElement>
+	// itemsCheckBox;
 
 	private final By chkItems = By.xpath("//p-tabpanel[@header='Item']//p-checkbox[@ptooltip='Select Item']");
 
-	//private final By itemsCheckBoxLoc = By.xpath("//p-checkbox[@ptooltip='Select Item']");
+	// private final By itemsCheckBoxLoc = By.xpath("//p-checkbox[@ptooltip='Select
+	// Item']");
 	private final By menuNames = By.xpath("//p-tabpanel[@header='Item']//span[contains(text(),'Select')]");
 	private final By list = By.xpath("//li[@role='option']");
-	private final By checkboxLoc = By.xpath("//p-checkbox[@ptooltip='Select Item']//div[contains(@class,'p-checkbox-box')]");
+	private final By checkboxLoc = By
+			.xpath("//p-checkbox[@ptooltip='Select Item']//div[contains(@class,'p-checkbox-box')]");
 
 	private final By searchAndAddSave = By.xpath("(//app-search-add//button[text()=' Save '])[1]");
 	private final By searchAndAddClose = By.xpath("(//app-search-add//button[text()=' Close '])[1]");
 
-
-	public void enterMenuItemsQty()
-	{	
+	public void addMenuItemsQty() {
 
 		wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(chkItems));
 		List<WebElement> elements = driver.findElements(chkItems);
@@ -82,7 +80,7 @@ public class MenuServicePage extends BasePage{
 			try {
 				WebElement el = driver.findElements(checkboxLoc).get(i);
 
-				//wait.until(ExpectedConditions.elementToBeClickable(el));
+				// wait.until(ExpectedConditions.elementToBeClickable(el));
 
 				((JavascriptExecutor) driver).executeScript("arguments[0].click();", el);
 
@@ -101,8 +99,10 @@ public class MenuServicePage extends BasePage{
 
 			// Wait and click the first dropdown using JS
 			wait.until(ExpectedConditions.refreshed(ExpectedConditions.elementToBeClickable(menuNames)));
-			//((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView({block:'center'});", dropdown);
-			//wait.until(ExpectedConditions.elementToBeClickable(dropdown)).click();
+			// ((JavascriptExecutor)
+			// driver).executeScript("arguments[0].scrollIntoView({block:'center'});",
+			// dropdown);
+			// wait.until(ExpectedConditions.elementToBeClickable(dropdown)).click();
 			elementUtil.click(menuNames);
 
 			List<WebElement> options = driver.findElements(list);
@@ -110,60 +110,54 @@ public class MenuServicePage extends BasePage{
 			wait.until(ExpectedConditions.elementToBeClickable(options.get(0)));
 			options.get(0).click(); // click the first option
 
-		}	
-		System.out.println("Added Menu Items");
+		}
+		LoggerManager.info("Added Menu Items");
 
-		elementUtil.click(searchAndAddSave);
-		elementUtil.click(searchAndAddClose);
+		clickListSave();
+		waitutil.waitForSwalPopup();
+		clickListClose();
 
 	}
 
-	public void addMenuItems()
-	{
+	public void addMenuItems() {
 		clickSearchAndAddbtn();
-		enterMenuItemsQty();			
+		addMenuItemsQty();
 	}
 
-	public void clickListSave()
-	{
+	public void clickListSave() {
 		elementUtil.click(searchAndAddSave);
+		waitutil.waitForSwalPopup();
 	}
 
-	public void  clickListClose()
-	{
+	public void clickListClose() {
 		elementUtil.click(searchAndAddClose);
 	}
 
 	private final By btnFinalize = By.xpath("//button[text()=' Finalize ']");
-	public void clickFinalize()
-	{
+
+	public void clickFinalize() {
 		elementUtil.click(btnFinalize);
 	}
 
-	public boolean  menuServiceConstraints()
-	{
+	public boolean menuServiceConstraints() {
 		return serviceUtil.Constraints();
 	}
 
-	public void fillMenuInfo()
-	{
+	public void fillMenuInfo() {
 		serviceUtil.Info();
 
 	}
 
-	@FindBy(xpath = "(//button[text()=' Close '])[1]") WebElement menuClose;
-	public void menuServiceClose()
-	{
+	@FindBy(xpath = "(//button[text()=' Close '])[1]")
+	WebElement menuClose;
+
+	public void menuServiceClose() {
 		waitutil.waitForOverlay();
 		menuClose.click();
 	}
 
-	public void approveMenuserviceConstraints(String eventNo)
-	{
+	public void approveMenuserviceConstraints(String eventNo) {
 		serviceUtil.approveConstraints(eventNo);
-		ServicesWorkFlows servicesFlow = new ServicesWorkFlows(driver);
-		servicesFlow.navigateToEventDashboard(eventNo);
 	}
-
 
 }

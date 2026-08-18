@@ -74,6 +74,7 @@ public class ServicesPage extends BasePage {
 
 	public void clickFinalize() {
 		elementUtil.click(btnFinalize);
+		waitutil.waitForSwalPopup();
 	}
 
 	public boolean hasServiceConstraints() {
@@ -88,6 +89,7 @@ public class ServicesPage extends BasePage {
 	private final By btnServiceClose = By.xpath("//div[@aria-hidden='false']//button[normalize-space()='Close']");
 
 	public void clickServiceClose() {
+		waitutil.waitForSwalPopup();
 		elementUtil.click(btnServiceClose);
 	}
 
