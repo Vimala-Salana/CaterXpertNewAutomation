@@ -12,7 +12,6 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 
-import groovyjarjarantlr4.v4.parse.ANTLRParser.finallyClause_return;
 import testBase.BasePage;
 
 public class EstimatesPage extends BasePage {
@@ -32,12 +31,13 @@ public class EstimatesPage extends BasePage {
 	@FindBy(xpath = "//button[text()=' Save ']")
 	WebElement liteSavebtn;
 	private final By estimateLiteSelectAllChk = By.xpath("//p-checkbox[@name='checkRec']");
+
 	public void clickEstimateLiteSave() {
 		waitutil.waitForOverlay();
 		elementUtil.click(estimateLiteSelectAllChk);
 		wait.until(ExpectedConditions.elementToBeClickable(liteSavebtn));
 		liteSavebtn.click();
-		
+
 	}
 
 	@FindBy(xpath = "//button[text()=' Close ']")
@@ -47,6 +47,7 @@ public class EstimatesPage extends BasePage {
 		waitutil.waitForOverlay();
 		waitutil.waitForSwalPopup();
 		wait.until(ExpectedConditions.elementToBeClickable(liteClosebtn));
+		waitutil.waitForOverlay();
 		liteClosebtn.click();
 	}
 
@@ -113,8 +114,8 @@ public class EstimatesPage extends BasePage {
 				// BigDecimal finalAmount = new BigDecimal(subTotalAmt);
 				BigDecimal serviceAmount = new BigDecimal(serviceTotal);
 
-				System.out.println(
-						"Service Total of " + serviceName.get(i).getText() + " is " + serviceAmount.setScale(2, RoundingMode.HALF_UP));
+				System.out.println("Service Total of " + serviceName.get(i).getText() + " is "
+						+ serviceAmount.setScale(2, RoundingMode.HALF_UP));
 				// discount = finalAmount.subtract(serviceAmount).setScale(2,
 				// RoundingMode.HALF_UP); //discount=finalAmount-ServiceAmount
 
@@ -186,10 +187,10 @@ public class EstimatesPage extends BasePage {
 		System.out.println("Actual Total is - " + actualTotal);
 		return Double.parseDouble(actualTotal);
 	}
-	
+
 	private final By btnTotalEstimateSave = By.xpath("//span[text()='Save']");
-	public void clickTotalEstimatesSave()
-	{
+
+	public void clickTotalEstimatesSave() {
 		elementUtil.click(btnTotalEstimateSave);
 	}
 

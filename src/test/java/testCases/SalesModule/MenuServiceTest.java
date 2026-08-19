@@ -31,7 +31,7 @@ public class MenuServiceTest extends BaseClass {
 		service = List.of("Menu");
 	}
 
-	@Test(groups = { "Regression", "All" })
+	@Test(priority = 1, groups = { "Regression", "All" })
 	public void menuServiceRequest() {
 		String eventNo = serviceEventApi.newServiceEventId(loginId, service);
 		servicesFlow.openServiceRequestFromEventListing(eventNo, service);
@@ -39,6 +39,29 @@ public class MenuServiceTest extends BaseClass {
 				"Menu Service not Mapped/Service not present in the Service list.");
 		menuServicePage.addMenuItems();
 		servicesFlow.finalizeService(eventNo, service);
+	}
+
+	@Test(priority = 2, groups = { "Regression", "All" })
+
+	public void deleteMenuItem() {
+		String eventNo = serviceEventApi.newServiceEventId(loginId, service);
+		servicesFlow.openServiceRequestFromEventListing(eventNo, service);
+		Assert.assertTrue(service.stream().anyMatch(s -> servicesPage.getServiceHdr().contains(s)),
+				"Menu Service not Mapped/Service not present in the Service list.");
+		menuServicePage.addMenuItems();
+		menuServicePage.clickDeleteIcon();
+		menuServicePage.clickAlertYes();
+	}
+
+	@Test(priority = 3, groups = { "Regression", "All" })
+
+	public void editMenuItemQty() {
+		String eventNo = serviceEventApi.newServiceEventId(loginId, service);
+		servicesFlow.openServiceRequestFromEventListing(eventNo, service);
+		Assert.assertTrue(service.stream().anyMatch(s -> servicesPage.getServiceHdr().contains(s)),
+				"Menu Service not Mapped/Service not present in the Service list.");
+		menuServicePage.addMenuItems();
+		menuServicePage.editQuantity();
 	}
 
 	@AfterMethod(alwaysRun = true)

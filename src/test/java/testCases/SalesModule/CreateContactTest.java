@@ -39,31 +39,16 @@ public class CreateContactTest extends BaseClass {
 	}
 
 	@Test(groups = { "Regression", "All" })
-	public void createContact() throws Exception {
+	public void createContact() {
 
 		// Assert.assertEquals(contactPage.getContacthdr(), "Create Contact");
 		contactFlow.createContact(contactData);
 
-		// String contactfirstnamexl = excelUtil.getCellValue(sheetname, 1, 0);
-		// String contactlastnamexl = excelUtil.getCellValue(sheetname, 1, 1);
 		String expectedFirstName = contactData.get("First Name");
 		String expectedLastName = contactData.get("Last Name");
 
 		String contactname = expectedLastName + ", " + expectedFirstName;
 		System.out.println(contactname);
-
-		// System.out.println(contactPage.getContactNamefromList()+"
-		// "+contactPage.getContactNamefromList().size());
-		// DriverFactory.getDriver().findElement(By.xpath("//span[text()=' event
-		// ']")).click();
-
-		/*
-		 * for(String contactsName : contactPage.getContactNamefromList()) {
-		 * System.out.println(contactsName);
-		 * if(contactnamexl.equalsIgnoreCase(contactsName)) { Thread.sleep(1000);
-		 * contactPage.clickNewEventIcon(); } else
-		 * System.out.println("Contact name not found"); }
-		 */
 
 		contactListpage.searchContactName(contactname);
 

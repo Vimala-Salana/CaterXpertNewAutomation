@@ -126,7 +126,7 @@
 				<configuration>
 					<filesets>
 						<fileset>
-							<directory>azure-results</directory>
+							<directory>allure-results</directory>
 						</fileset>
 						<fileset>
 							<directory>logs</directory>

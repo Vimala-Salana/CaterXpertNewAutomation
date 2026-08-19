@@ -9,7 +9,10 @@ logs/
 test-output/
 
 # Allure Reports
-allure-results/
+/allure-results/
+/allure-report/
+/.allure/
+
 
 # Archives / binaries 	
 *.zip

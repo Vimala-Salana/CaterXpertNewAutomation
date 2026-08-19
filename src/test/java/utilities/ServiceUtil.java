@@ -159,7 +159,7 @@ public class ServiceUtil {
 		waitutil.waitForOverlay();
 
 		try {
-			WebDriverWait shortWait = new WebDriverWait(driver, Duration.ofSeconds(2));
+			WebDriverWait shortWait = new WebDriverWait(driver, Duration.ofSeconds(1));
 			shortWait.until(ExpectedConditions.visibilityOfElementLocated(constraintslocator));
 			// wait.until(ExpectedConditions.visibilityOfElementLocated(constraintslocator));
 

@@ -130,6 +130,7 @@ public class MenuServicePage extends BasePage {
 	}
 
 	public void clickListClose() {
+		waitutil.waitForSwalPopup();
 		elementUtil.click(searchAndAddClose);
 	}
 
@@ -154,6 +155,32 @@ public class MenuServicePage extends BasePage {
 	public void menuServiceClose() {
 		waitutil.waitForOverlay();
 		menuClose.click();
+	}
+
+	private final By iconDelete = By.xpath("(//span[normalize-space()='delete'])[1]");
+
+	public void clickDeleteIcon() {
+		elementUtil.click(iconDelete);
+	}
+
+	private final By btnYes = By.xpath("//button[text()='Yes']");
+
+	public void clickAlertYes() {
+		elementUtil.click(btnYes);
+	}
+
+	public void checkDeletedItem() {
+
+	}
+
+	private final By txtQuantity = By.xpath("(//input[@name='quantity'])[1]");
+
+	public void editQuantity() {
+		String prevQty = elementUtil.getValue(txtQuantity);
+		System.out.println(prevQty);
+		double newQty = Double.parseDouble(prevQty.trim()) + 10;
+		System.out.println(newQty);
+		elementUtil.typeText(txtQuantity, String.valueOf(newQty));
 	}
 
 	public void approveMenuserviceConstraints(String eventNo) {

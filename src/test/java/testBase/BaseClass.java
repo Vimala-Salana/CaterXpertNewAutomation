@@ -3,6 +3,7 @@ package testBase;
 import org.openqa.selenium.WebDriver;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeSuite;
+import org.testng.annotations.Optional;
 import org.testng.annotations.Parameters;
 
 import factory.DriverFactory;
@@ -33,7 +34,7 @@ public class BaseClass {
 	 */
 	@BeforeSuite(alwaysRun = true)
 	@Parameters("browser")
-	public void loginOnce(String browser) {
+	public void loginOnce(@Optional("chrome") String browser) {
 
 		DriverFactory.initDriver(browser);
 		driver = DriverFactory.getDriver();
@@ -61,7 +62,7 @@ public class BaseClass {
 	 */
 	@BeforeMethod(alwaysRun = true)
 	@Parameters("browser")
-	public void setUpTest(String browser) {
+	public void setUpTest(@Optional("chrome") String browser) {
 
 		DriverFactory.initDriver(browser);
 		driver = DriverFactory.getDriver();

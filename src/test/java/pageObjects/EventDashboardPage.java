@@ -54,6 +54,7 @@ public class EventDashboardPage extends BasePage {
 					// System.out.println(labelname.getText());
 					WebElement icon = labelname.findElement(By.xpath("..//i")); // icon
 					wait.until(ExpectedConditions.elementToBeClickable(icon)).click();
+					// LoggerManager.info("Icon Name" + icon.getText());
 					return true;
 				}
 			}
