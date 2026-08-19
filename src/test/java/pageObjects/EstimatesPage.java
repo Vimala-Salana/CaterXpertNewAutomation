@@ -28,27 +28,25 @@ public class EstimatesPage extends BasePage {
 		return !driver.findElements(By.xpath("//span[normalize-space()='Estimate Sections']")).isEmpty();
 	}
 
-	@FindBy(xpath = "//button[text()=' Save ']")
-	WebElement liteSavebtn;
+	private final By liteSavebtn = By.xpath("//button[text()=' Save ']");
 	private final By estimateLiteSelectAllChk = By.xpath("//p-checkbox[@name='checkRec']");
 
 	public void clickEstimateLiteSave() {
 		waitutil.waitForOverlay();
 		elementUtil.click(estimateLiteSelectAllChk);
 		wait.until(ExpectedConditions.elementToBeClickable(liteSavebtn));
-		liteSavebtn.click();
+		elementUtil.click(liteSavebtn);
 
 	}
 
-	@FindBy(xpath = "//button[text()=' Close ']")
-	WebElement liteClosebtn;
+	private final By liteClosebtn = By.xpath("//button[text()=' Close ']");
 
 	public void clickEstimateLiteClose() {
 		waitutil.waitForOverlay();
 		waitutil.waitForSwalPopup();
 		wait.until(ExpectedConditions.elementToBeClickable(liteClosebtn));
 		waitutil.waitForOverlay();
-		liteClosebtn.click();
+		elementUtil.click(liteClosebtn);
 	}
 
 	// @FindBy(xpath = "//span[text()=' description ']//following-sibling::span[1]")

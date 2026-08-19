@@ -167,20 +167,26 @@ public class MenuServicePage extends BasePage {
 
 	public void clickAlertYes() {
 		elementUtil.click(btnYes);
+		waitutil.waitForSwalPopup();
+		waitutil.waitForOverlay();
 	}
 
-	public void checkDeletedItem() {
-
+	private final By itemNames = By.xpath("//td[count(//th[.='Item Name ']/preceding-sibling::th)+1]//textarea");
+	public String getItemName() {
+		
+		wait.until(ExpectedConditions.visibilityOfElementLocated(itemNames));
+		String itemName = driver.findElement(itemNames).getAttribute("title");	
+		return itemName;
 	}
 
 	private final By txtQuantity = By.xpath("(//input[@name='quantity'])[1]");
 
 	public void editQuantity() {
 		String prevQty = elementUtil.getValue(txtQuantity);
-		System.out.println(prevQty);
 		double newQty = Double.parseDouble(prevQty.trim()) + 10;
-		System.out.println(newQty);
 		elementUtil.typeText(txtQuantity, String.valueOf(newQty));
+		LoggerManager.info("Item Quantity edited from "+prevQty +" to "+newQty);
+
 	}
 
 	public void approveMenuserviceConstraints(String eventNo) {

@@ -14,7 +14,7 @@ public class LiteEventApi {
 
 	public ConfigReader config = new ConfigReader();
 
-	public String getAllNewServicesEventId(String loginId) {
+	public String getLiteEstimateEventId(String loginId) {
 		String url = config.getUrl();
 		String caterId = config.getCaterId();
 

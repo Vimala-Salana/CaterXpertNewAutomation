@@ -12,6 +12,8 @@ import factory.DriverFactory;
 import pageObjects.MenuServicePage;
 import pageObjects.ServicesPage;
 import testBase.BaseClass;
+import utilities.LoggerManager;
+import utilities.WaitUtils;
 import workFlows.ServicesWorkFlows;
 
 public class MenuServiceTest extends BaseClass {
@@ -49,8 +51,11 @@ public class MenuServiceTest extends BaseClass {
 		Assert.assertTrue(service.stream().anyMatch(s -> servicesPage.getServiceHdr().contains(s)),
 				"Menu Service not Mapped/Service not present in the Service list.");
 		menuServicePage.addMenuItems();
+		String itemName = menuServicePage.getItemName();
 		menuServicePage.clickDeleteIcon();
 		menuServicePage.clickAlertYes();
+		System.out.println(itemName);
+		Assert.assertFalse(servicesPage.isItemPresent(itemName),"Item Not deleted");
 	}
 
 	@Test(priority = 3, groups = { "Regression", "All" })
@@ -62,6 +67,7 @@ public class MenuServiceTest extends BaseClass {
 				"Menu Service not Mapped/Service not present in the Service list.");
 		menuServicePage.addMenuItems();
 		menuServicePage.editQuantity();
+		servicesPage.clickServiceSave();
 	}
 
 	@AfterMethod(alwaysRun = true)

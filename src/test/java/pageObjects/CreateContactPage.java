@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -31,16 +32,18 @@ public class CreateContactPage extends BasePage{
 		MandatoryLabelsUtil.fillMandatoryFields(driver, data);
 	}
 
-	@FindBy(xpath = "//button[text()='Create ']") WebElement btnCreate;
+	private final By btnCreate  = By.xpath("//button[text()='Create ']");
 	public void clickCreatebtn()
 	{
-		btnCreate.click();
+		elementUtil.click(btnCreate);
+		waitutil.waitForSwalPopup();
 	}
 
 	@FindBy(xpath = "//span[text()=' event ']") WebElement iconNewEvent;
 
 	public void clickNewEventIcon() 
 	{
+		elementUtil.click(btnCreate);
 		wait.until(ExpectedConditions.elementToBeClickable(iconNewEvent)).click();
 	}
 

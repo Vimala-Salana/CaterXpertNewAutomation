@@ -73,6 +73,7 @@ public class ServicesPage extends BasePage {
 	private final By btnFinalize = By.xpath("//button[text()=' Finalize ']");
 
 	public void clickFinalize() {
+		waitutil.waitForSwalPopup();
 		elementUtil.click(btnFinalize);
 		waitutil.waitForSwalPopup();
 	}
@@ -97,6 +98,7 @@ public class ServicesPage extends BasePage {
 
 	public void clickServiceSave() {
 		elementUtil.click(btnServiceSave);
+		waitutil.waitForSwalPopup();
 		fillInfo();
 		waitutil.waitForSwalPopup();
 	}
@@ -105,6 +107,14 @@ public class ServicesPage extends BasePage {
 		serviceUtil.approveConstraints(eventNo);
 		ServicesWorkFlows servicesFlow = new ServicesWorkFlows(driver);
 		servicesFlow.navigateToEventDashboard(eventNo);
+	}
+
+	public boolean isItemPresent(String itemName) {
+
+		waitutil.waitForSwalPopup();
+		List<WebElement> item = driver.findElements(By.xpath("//textarea[@title='" + itemName + "']"));
+
+		return !item.isEmpty();
 	}
 
 }

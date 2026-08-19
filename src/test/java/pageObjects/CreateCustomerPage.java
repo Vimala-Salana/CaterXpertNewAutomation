@@ -33,11 +33,13 @@ public class CreateCustomerPage extends BasePage
 	public void clickCreatebtn()
 	{
 		elementUtil.click(btnCreate);
+		waitutil.waitForSwalPopup();
 	}
 	
 	private final By contactClose = By.xpath("//div[@aria-hidden='false']//button[normalize-space(text())='Close']");
 	public void clickContactClose()
 	{
+		waitutil.waitForSwalPopup();
 		elementUtil.click(contactClose);
 	}
 

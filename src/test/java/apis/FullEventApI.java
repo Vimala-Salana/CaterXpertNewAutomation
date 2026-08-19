@@ -14,7 +14,7 @@ public class FullEventApI {
 
 	public ConfigReader config = new ConfigReader();
 
-	public String getAllNewServicesEventId(String loginId) {
+	public String getFullEstimateEventId(String loginId) {
 		String url = config.getUrl();
 		String caterId = config.getCaterId();
 

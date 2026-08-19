@@ -7,6 +7,7 @@ import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+import apis.FullEventApI;
 import apis.LiteEventApi;
 import factory.DriverFactory;
 import pageObjects.EstimatesPage;
@@ -14,11 +15,12 @@ import pageObjects.EventDashboardPage;
 import testBase.BaseClass;
 import workFlows.ServicesWorkFlows;
 
-public class EstimatesTest extends BaseClass {
+public class EstimateFull extends BaseClass {
 
 	EventDashboardPage dashboardPage;
 	EstimatesPage estimatesPage;
 	ServicesWorkFlows servicesFlow;
+	FullEventApI fullEventApI;
 	LiteEventApi liteEventApi;
 	List<String> service;
 	List<String> iconLabel;
@@ -35,20 +37,25 @@ public class EstimatesTest extends BaseClass {
 	}
 
 	@Test(priority = 1, groups = { "Regression", "EventCreationDirect" })
-	public void estimates() {
-		String eventNo = liteEventApi.getAllNewServicesEventId(loginId);
-		servicesFlow.navigateToEventDashboard(eventNo);
+	public void estimateFull() {
+
+		String fullServiceEeventNo = fullEventApI.getFullEstimateEventId(loginId);
+		servicesFlow.navigateToEventDashboard(fullServiceEeventNo);
 		dashboardPage.clickServiceLabelIcon(service, null, iconLabel);
 
-		// System.out.println(estimates.getEstimateshdr());
+		Assert.assertTrue(estimatesPage.isFullEstimateDisplayed(), "Full Estimates not found");
+		estimatesPage.giveEstimates();
+		estimatesPage.saveTotalEstimates();
+	}
 
-		if (estimatesPage.isFullEstimateDisplayed()) {
-			estimatesPage.giveEstimates();
-			estimatesPage.saveTotalEstimates();
-		} else {
+	@Test(priority = 2, groups = { "Regression", "EventCreationDirect" })
+	public void estimateLite() {
+		String liteEventNo = liteEventApi.getLiteEstimateEventId(loginId);
+		servicesFlow.navigateToEventDashboard(liteEventNo);
+		dashboardPage.clickServiceLabelIcon(service, null, iconLabel);
+		
 			estimatesPage.clickEstimateLiteSave();
 			estimatesPage.clickEstimateLiteClose();
-		}
 	}
 
 	@AfterMethod(alwaysRun = true)
