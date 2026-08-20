@@ -13,73 +13,70 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import testBase.BasePage;
+import utilities.LoggerManager;
 
-public class EventListingPage extends BasePage{
+public class EventListingPage extends BasePage {
 
 	WebDriverWait shortWait;
-	public EventListingPage(WebDriver driver)
-	{
+
+	public EventListingPage(WebDriver driver) {
 		super(driver);
 		shortWait = new WebDriverWait(driver, Duration.ofSeconds(2));
 	}
 
-
-	//@FindBy(xpath = "//input[@placeholder='Event #']") WebElement searchEvent;
+	// @FindBy(xpath = "//input[@placeholder='Event #']") WebElement searchEvent;
 	By searchEvent = By.xpath("//input[@placeholder='Event #']");
 
-	public void enterEventNo(String eventNo)
-	{
-		//wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("div.overlay")));
+	public void enterEventNo(String eventNo) {
+		// wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("div.overlay")));
 
-		//wait.until(ExpectedConditions.invisibilityOfElementLocated(By.cssSelector("div.overlay")));
+		// wait.until(ExpectedConditions.invisibilityOfElementLocated(By.cssSelector("div.overlay")));
 		waitutil.waitForOverlay();
 
-		System.out.println("Event No : "+eventNo);
+		LoggerManager.info("Searched Event No : " + eventNo);
 		wait.until(ExpectedConditions.elementToBeClickable(searchEvent));
-		//searchEvent.sendKeys(eventNo);
+		// searchEvent.sendKeys(eventNo);
 		elementUtil.typeText(searchEvent, eventNo);
 		waitutil.waitForOverlay();
 	}
 
-	//@FindBy(xpath = "//span[text()=' dashboard ']") WebElement iconEventDashboard;
+	// @FindBy(xpath = "//span[text()=' dashboard ']") WebElement
+	// iconEventDashboard;
 	By iconEventDashboard = By.xpath("//span[text()=' dashboard ']");
 
-	public void clickEventDashboardIcon(String  eventNo) {
+	public void clickEventDashboardIcon(String eventNo) {
 
-		//elementUtil.click(iconEventDashboard);
-		
-		  By dashboardIcon = By.xpath("//tr[.//span[(normalize-space()='" +
-		  eventNo + "')]]//span[@ptooltip='Event Dashboard']");
-		  
-		  List<WebElement> dashboard =
-		  wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(dashboardIcon)); 
-		  dashboard.get(0).click();
-		 
+		// elementUtil.click(iconEventDashboard);
+
+		By dashboardIcon = By
+				.xpath("//tr[.//span[(normalize-space()='" + eventNo + "')]]//span[@ptooltip='Event Dashboard']");
+
+		List<WebElement> dashboard = wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(dashboardIcon));
+		dashboard.get(0).click();
+
 	}
 
-	@FindBy(xpath = "//span[text()='  Sent  ']") WebElement lnkServiceStatus;
+	@FindBy(xpath = "//span[text()='  Sent  ']")
+	WebElement lnkServiceStatus;
 
-	public void clickonServiceStatus()
-	{
+	public void clickonServiceStatus() {
 		lnkServiceStatus.click();
 	}
 
-	@FindBy(xpath = "//p[contains(normalize-space(),'Inventory Status Alert')]") List<WebElement> hdrInventoryAlert;
-	//@FindBy(xpath = "//button[.=' Close ']") WebElement inventoryAlertClose;
+	@FindBy(xpath = "//p[contains(normalize-space(),'Inventory Status Alert')]")
+	List<WebElement> hdrInventoryAlert;
+	// @FindBy(xpath = "//button[.=' Close ']") WebElement inventoryAlertClose;
 	private final By inventoryAlertClose = By.xpath("//button[.=' Close ']");
-	public void closeInventoryPopupIfPresent()
-	{
-		
-		try
-		{
+
+	public void closeInventoryPopupIfPresent() {
+
+		try {
 			wait.until(ExpectedConditions.invisibilityOfElementLocated(By.cssSelector("div.overlay")));
-			//waitutil.waitForOverlay();
+			// waitutil.waitForOverlay();
 			shortWait.until(ExpectedConditions.visibilityOfAllElements(hdrInventoryAlert));
 			elementUtil.click(inventoryAlertClose);
-		}
-		catch (TimeoutException | StaleElementReferenceException e)
-		{
-			System.out.println("Inventory popup not displayed");
+		} catch (TimeoutException | StaleElementReferenceException e) {
+			LoggerManager.info("Inventory popup not displayed");
 		}
 	}
 }

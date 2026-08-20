@@ -44,7 +44,6 @@ public class StaffingServicePage extends BasePage {
 			}
 		}
 		servicesPage.clickServiceSave();
-		waitutil.waitForSwalPopup();
 
 	}
 
@@ -55,6 +54,7 @@ public class StaffingServicePage extends BasePage {
 		waitutil.waitForOverlay();
 		wait.until(ExpectedConditions.elementToBeClickable(btnSave));
 		btnSave.click();
+		waitutil.waitForSwalPopup();
 
 	}
 

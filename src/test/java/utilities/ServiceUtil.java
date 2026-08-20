@@ -146,7 +146,7 @@ public class ServiceUtil {
 			waitutil.waitForSwalPopup();
 			waitutil.waitForOverlay();
 		} else {
-			System.out.println("Info is not displayed");
+			LoggerManager.info("Info is not displayed");
 		}
 	}
 
@@ -166,7 +166,7 @@ public class ServiceUtil {
 			List<WebElement> constraintNames = driver
 					.findElements(By.xpath("//label[text()=' Constraint ']//following-sibling::div"));
 
-			constraintNames.forEach(constraint -> System.out.println("Constraint Name : " + constraint.getText()));
+			constraintNames.forEach(constraint -> LoggerManager.info("Constraint Name : " + constraint.getText()));
 
 			elementUtil.click(constraintSave);
 
@@ -174,7 +174,7 @@ public class ServiceUtil {
 
 			return true;
 		} catch (TimeoutException e) {
-			System.out.println("No Constraints are displayed");
+			LoggerManager.info("No Constraints are displayed");
 			return false;
 		}
 	}
@@ -199,7 +199,7 @@ public class ServiceUtil {
 		waitutil.waitForOverlay();
 		// Thread.sleep(5000);
 		int size = driver.findElements(pendingConstraints).size();
-		System.out.println("Number of Pending Constraints : " + size);
+		// System.out.println("Number of Pending Constraints : " + size);
 		for (int i = 0; i < size; i++)
 		// for(WebElement pendConst : pendingConstraints)
 		{
@@ -213,6 +213,7 @@ public class ServiceUtil {
 			wait.until(ExpectedConditions.invisibilityOfElementLocated(By.cssSelector(".swal2-container")));
 
 		}
+		LoggerManager.info("Constraints Approved");
 		waitutil.waitForOverlay();
 		wait.until(ExpectedConditions.elementToBeClickable(approvalClose)).click();
 

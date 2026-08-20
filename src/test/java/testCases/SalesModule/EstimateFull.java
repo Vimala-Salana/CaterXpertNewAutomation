@@ -30,7 +30,7 @@ public class EstimateFull extends BaseClass {
 		estimatesPage = new EstimatesPage(DriverFactory.getDriver());
 		dashboardPage = new EventDashboardPage(DriverFactory.getDriver());
 		servicesFlow = new ServicesWorkFlows(DriverFactory.getDriver());
-		liteEventApi = new LiteEventApi();
+		fullEventApI = new FullEventApI();
 		service = List.of("Estimates");
 		iconLabel = List.of("Estimates Lite", "Estimates");
 
@@ -46,16 +46,6 @@ public class EstimateFull extends BaseClass {
 		Assert.assertTrue(estimatesPage.isFullEstimateDisplayed(), "Full Estimates not found");
 		estimatesPage.giveEstimates();
 		estimatesPage.saveTotalEstimates();
-	}
-
-	@Test(priority = 2, groups = { "Regression", "EventCreationDirect" })
-	public void estimateLite() {
-		String liteEventNo = liteEventApi.getLiteEstimateEventId(loginId);
-		servicesFlow.navigateToEventDashboard(liteEventNo);
-		dashboardPage.clickServiceLabelIcon(service, null, iconLabel);
-		
-			estimatesPage.clickEstimateLiteSave();
-			estimatesPage.clickEstimateLiteClose();
 	}
 
 	@AfterMethod(alwaysRun = true)

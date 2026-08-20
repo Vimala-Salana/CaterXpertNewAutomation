@@ -4,6 +4,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
 import testBase.BasePage;
+import utilities.LoggerManager;
 
 public class HamburgerMenuPage extends BasePage {
 
@@ -76,7 +77,7 @@ public class HamburgerMenuPage extends BasePage {
 			headerPage.clickhambergerMenu();
 			elementUtil.click(lnkEventListing);
 		} else {
-			System.out.println("Already in Event Listing Screen");
+			LoggerManager.info("Already in Event Listing Screen");
 		}
 	}
 

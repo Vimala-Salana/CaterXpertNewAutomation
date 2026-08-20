@@ -8,6 +8,7 @@ import org.testng.Assert;
 import components.HamburgerMenuPage;
 import components.HeaderPage;
 import pageObjects.CreateEventPage;
+import utilities.LoggerManager;
 
 public class EventFlow {
 
@@ -36,7 +37,7 @@ public class EventFlow {
 		boolean constraintExists = eventPage.eventConstraints();
 		String eventNo = eventPage.getEventNo();
 		eventPage.clickClosebtn();
-		System.out.println("Event No : " + eventNo);
+		LoggerManager.info("Event No : " + eventNo);
 		if (constraintExists) {
 			headerPage.clickhambergerMenu();
 			hambergerMenuPage.clickApprovals();

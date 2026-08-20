@@ -117,4 +117,10 @@ public class ServicesPage extends BasePage {
 		return !item.isEmpty();
 	}
 
+	private final By iconAddCircle = By.xpath("//span[normalize-space()='add_circle']");
+
+	public void openMenuBar() {
+		elementUtil.click(iconAddCircle);
+	}
+
 }

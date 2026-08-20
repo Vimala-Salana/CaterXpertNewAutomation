@@ -51,7 +51,7 @@ public class BaseClass {
 		loginId = bp.salesNewNavigation();
 		currentUrl = bp.getSalesUrl();
 
-		System.out.println("Current URL: " + currentUrl);
+		// System.out.println("Current URL: " + currentUrl);
 
 		DriverFactory.quitDriver();
 
@@ -67,10 +67,11 @@ public class BaseClass {
 		DriverFactory.initDriver(browser);
 		driver = DriverFactory.getDriver();
 
-		System.out.println(currentUrl);
+		// System.out.println(currentUrl);
 
 		driver.get(currentUrl);
 
-		System.out.println("URL after launching captured URL = " + driver.getCurrentUrl());
+		// System.out.println("URL after launching captured URL = " +
+		// driver.getCurrentUrl());
 	}
 }

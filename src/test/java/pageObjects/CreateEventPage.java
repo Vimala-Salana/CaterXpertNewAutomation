@@ -14,6 +14,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import testBase.BasePage;
+import utilities.LoggerManager;
 import utilities.MandatoryLabelsUtil;
 import utilities.ServiceUtil;
 import utilities.WaitUtils;
@@ -64,7 +65,7 @@ public class CreateEventPage extends BasePage {
 			shortWait.until(ExpectedConditions.visibilityOfElementLocated(txtTaxExpiryPopUp));
 			elementUtil.click(alertYes);
 		} catch (TimeoutException | StaleElementReferenceException e) {
-			System.out.println("Tax Exipry popup not displayed");
+			LoggerManager.info("Tax Exipry popup not displayed");
 		}
 	}
 

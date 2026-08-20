@@ -35,12 +35,10 @@ public class CreateEventTest extends BaseClass {
 	}
 
 	@Test(groups = { "Regression", "All" })
-	public void createEventFromEventPage() throws Exception {
+	public void createEventFromEventPage() {
 		eventPage = new CreateEventPage(DriverFactory.getDriver());
 
 		eventFlow.createEventfromEventPage(eventData);
-		// context.setAttribute("eventNo", eventNo); //To use Event Number in other
-		// classes
 	}
 
 	@AfterMethod(alwaysRun = true)

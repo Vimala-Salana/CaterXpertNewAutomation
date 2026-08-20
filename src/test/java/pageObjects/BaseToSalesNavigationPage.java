@@ -9,11 +9,11 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import testBase.BasePage;
+import utilities.LoggerManager;
 
 public class BaseToSalesNavigationPage extends BasePage {
 
-	public BaseToSalesNavigationPage(WebDriver driver)
-	{
+	public BaseToSalesNavigationPage(WebDriver driver) {
 		super(driver);
 	}
 
@@ -37,9 +37,9 @@ public class BaseToSalesNavigationPage extends BasePage {
 	public By userId = By.name("userid");
 
 	public String getLoggedInUserId() {
-		String value = elementUtil.getValue(userId);
-		System.out.println("UserId : " + value);
-		return value;
+		String userid = elementUtil.getValue(userId);
+		LoggerManager.info("Logged in User Id is : " + userid);
+		return userid;
 	}
 
 	public String url;
@@ -57,7 +57,7 @@ public class BaseToSalesNavigationPage extends BasePage {
 		url = elementUtil.getAttribute(lnkSalesNew, "onClick").split("'")[1];
 		elementUtil.click(lnkSalesNew);
 
-		System.out.println(url);
+		LoggerManager.info("Sales New navigation url is : " + url);
 		driver.switchTo().defaultContent();
 		return loginId;
 	}

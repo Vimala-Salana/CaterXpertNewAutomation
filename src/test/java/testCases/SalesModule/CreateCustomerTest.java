@@ -38,12 +38,6 @@ public class CreateCustomerTest extends BaseClass {
 
 		customerFlow.navigateToCreateCustomer();
 
-		// String hdrCustomerList =
-		// customerlistpage.getCustomerOrPotentialCustomerListhdr();
-		// Assert.assertEquals(hdrCustomerList, "Customer/Potential Customer
-		// List","header mismatch");
-		// Thread.sleep(1000);
-
 	}
 
 	@Test(priority = 1, groups = { "Regression", "All" })
@@ -53,27 +47,12 @@ public class CreateCustomerTest extends BaseClass {
 		customerFlow.createCustomer(customerData);
 		customerPage.clickContactClose();
 
-		// searching customer
-
-		String customernameexl = excelUtil.getCellValue(sheetname, 1, 1);
-		System.out.println(excelUtil.getCellValue(sheetname, 1, 1));
-
 		String expectedCustomerName = customerData.get("Customer Name");
 		customerPage.enterCustomerNameinSearch(expectedCustomerName);
-		// System.out.println(customerPage.getCustomerNamefromlst()); // Customer Name
-		// from CustomerList
-		// System.out.println(customernameexl); // Customer name from Excel
 
 		Assert.assertEquals(customerPage.getCustomerNamefromlst().trim(), expectedCustomerName, "Customer Not Found");
 
 		ReportManager.pass("Customer is found in Customer List");
-		/*
-		 * if (customerPage.getCustomerNamefromlst().trim().equalsIgnoreCase(
-		 * customernameexl)) // validating ListName and ExcelName {
-		 * customerPage.clickCustomerNamefromlst(); }
-		 * 
-		 * customerPage.clickContactstab();
-		 */
 	}
 
 	@AfterMethod(alwaysRun = true)

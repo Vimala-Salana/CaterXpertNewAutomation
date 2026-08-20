@@ -10,10 +10,10 @@ import org.testng.annotations.Test;
 import apis.ServicesLevelNewEventApi;
 import factory.DriverFactory;
 import pageObjects.MenuServicePage;
+import pageObjects.MenuViewPage;
 import pageObjects.ServicesPage;
 import testBase.BaseClass;
 import utilities.LoggerManager;
-import utilities.WaitUtils;
 import workFlows.ServicesWorkFlows;
 
 public class MenuServiceTest extends BaseClass {
@@ -23,12 +23,14 @@ public class MenuServiceTest extends BaseClass {
 	ServicesLevelNewEventApi serviceEventApi;
 	List<String> service;
 	List<String> finalizedStatus;
+	MenuViewPage menuViewPage;
 
 	@BeforeMethod
 	public void setup() {
 		menuServicePage = new MenuServicePage(DriverFactory.getDriver());
 		servicesPage = new ServicesPage(DriverFactory.getDriver());
 		servicesFlow = new ServicesWorkFlows(DriverFactory.getDriver());
+		menuViewPage = new MenuViewPage(DriverFactory.getDriver());
 		serviceEventApi = new ServicesLevelNewEventApi();
 		service = List.of("Menu");
 	}
@@ -54,8 +56,8 @@ public class MenuServiceTest extends BaseClass {
 		String itemName = menuServicePage.getItemName();
 		menuServicePage.clickDeleteIcon();
 		menuServicePage.clickAlertYes();
-		System.out.println(itemName);
-		Assert.assertFalse(servicesPage.isItemPresent(itemName),"Item Not deleted");
+		// System.out.println(itemName);
+		Assert.assertFalse(servicesPage.isItemPresent(itemName), "Item Not deleted");
 	}
 
 	@Test(priority = 3, groups = { "Regression", "All" })
@@ -70,8 +72,32 @@ public class MenuServiceTest extends BaseClass {
 		servicesPage.clickServiceSave();
 	}
 
+	@Test(priority = 3, groups = { "Regression", "All" })
+	public void validateMenuView() {
+		String eventNo = serviceEventApi.newServiceEventId(loginId, service);
+		servicesFlow.openServiceRequestFromEventListing(eventNo, service);
+		Assert.assertTrue(service.stream().anyMatch(s -> servicesPage.getServiceHdr().contains(s)),
+				"Menu Service not Mapped/Service not present in the Service list.");
+		menuServicePage.addMenuItems();
+
+		String menuOption = menuServicePage.getMenuOption();
+		String course = menuServicePage.getCourse();
+		String itemName = menuServicePage.getItemName();
+		System.out.println(menuOption + "," + course + "," + itemName);
+
+		servicesPage.openMenuBar();
+		menuServicePage.navigateToMenuView();
+
+		Assert.assertEquals(menuOption, menuViewPage.getMenuOption(), "Menu Option not found");
+		Assert.assertEquals(course, menuViewPage.getCourse(), "Menu Option not found");
+		Assert.assertEquals(itemName, menuViewPage.getMenuItem(), "Menu Option not found");
+		LoggerManager.info("Item validated sucessfully in Menu View ");
+
+	}
+
 	@AfterMethod(alwaysRun = true)
 	public void tearDown() {
 		DriverFactory.quitDriver();
 	}
+
 }

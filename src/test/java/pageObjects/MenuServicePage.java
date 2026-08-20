@@ -75,7 +75,7 @@ public class MenuServicePage extends BasePage {
 		wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(chkItems));
 		List<WebElement> elements = driver.findElements(chkItems);
 
-		for (int i = 0; i < elements.size(); i++) {
+		for (int i = 0; i < Math.min(elements.size(), 2); i++) {
 
 			try {
 				WebElement el = driver.findElements(checkboxLoc).get(i);
@@ -172,11 +172,11 @@ public class MenuServicePage extends BasePage {
 	}
 
 	private final By itemNames = By.xpath("//td[count(//th[.='Item Name ']/preceding-sibling::th)+1]//textarea");
+
 	public String getItemName() {
-		
+
 		wait.until(ExpectedConditions.visibilityOfElementLocated(itemNames));
-		String itemName = driver.findElement(itemNames).getAttribute("title");	
-		return itemName;
+		return driver.findElement(itemNames).getAttribute("title");
 	}
 
 	private final By txtQuantity = By.xpath("(//input[@name='quantity'])[1]");
@@ -185,8 +185,27 @@ public class MenuServicePage extends BasePage {
 		String prevQty = elementUtil.getValue(txtQuantity);
 		double newQty = Double.parseDouble(prevQty.trim()) + 10;
 		elementUtil.typeText(txtQuantity, String.valueOf(newQty));
-		LoggerManager.info("Item Quantity edited from "+prevQty +" to "+newQty);
+		LoggerManager.info("Item Quantity edited from " + prevQty + " to " + newQty);
 
+	}
+
+	private final By drpMenuOption = By.xpath("//td[count(//th[.='Menu']/preceding-sibling::th)+1]//span[(@id)]");
+
+	public String getMenuOption() {
+		return elementUtil.getText(drpMenuOption);
+	}
+
+	private final By drpCourse = By.xpath("//td[count(//th[.='Course ']/preceding-sibling::th)+1]//span[@id]");
+
+	public String getCourse() {
+		return elementUtil.getText(drpCourse);
+	}
+
+	private final By lnkMenuView = By.xpath("//span[text()='Menu View']");
+
+	public void navigateToMenuView() {
+		elementUtil.click(lnkMenuView);
+		waitutil.waitForOverlay();
 	}
 
 	public void approveMenuserviceConstraints(String eventNo) {

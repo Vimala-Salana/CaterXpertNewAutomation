@@ -46,7 +46,7 @@ public class EventDashboardPage extends BasePage {
 			String name = header.getText();
 			boolean statusMatch = (status == null || status.stream().anyMatch(name::contains));
 			if (service.stream().anyMatch(name::contains) && statusMatch) {
-				System.out.println("Service Status : " + name); // Matching header
+				LoggerManager.info("Service Status : " + name); // Matching header
 				WebElement labelname = header
 						.findElement(By.xpath("../following-sibling::div//*[contains(@class,'service-label')]"));
 				String labelText = labelname.getText();

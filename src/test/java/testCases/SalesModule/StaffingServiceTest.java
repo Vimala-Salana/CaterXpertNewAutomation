@@ -35,7 +35,8 @@ public class StaffingServiceTest extends BaseClass {
 	public void staffingRequest() {
 		String eventNo = serviceEventApi.newServiceEventId(loginId, service);
 		servicesFlow.openServiceRequestFromEventListing(eventNo, service);
-		Assert.assertTrue(service.stream().anyMatch(s -> servicesPage.getServiceHdr().contains(s)),
+		String serviceHeader = servicesPage.getServiceHdr();
+		Assert.assertTrue(service.stream().anyMatch(serviceHeader::contains),
 				"Staffing Service not present in the Service list.");
 
 		staffingServicePage.addStaffPositions();

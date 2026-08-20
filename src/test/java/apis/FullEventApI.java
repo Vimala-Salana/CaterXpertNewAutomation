@@ -34,7 +34,7 @@ public class FullEventApI {
 		for (Map<String, Object> event : events) {
 
 			cisNumber = (String) event.get("cisnumber");
-			
+
 			int estimateVersion = (int) event.get("estimateVersion");
 
 			if (cisNumber == null)
@@ -49,8 +49,5 @@ public class FullEventApI {
 		Collections.shuffle(matchingEvents);
 		return matchingEvents.isEmpty() ? null : matchingEvents.get(0);
 	}
-
-	
-	
 
 }

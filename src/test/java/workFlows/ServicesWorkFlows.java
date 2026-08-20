@@ -37,6 +37,16 @@ public class ServicesWorkFlows {
 			LoggerManager.info(serviceName + " is not Mapped to the Event Business Unit.");
 			return;
 		}
+
+		String serviceHeader = servicesPage.getServiceHdr();
+
+		boolean isServiceInList = serviceName.stream().anyMatch(serviceHeader::contains);
+
+		if (!isServiceInList) {
+			LoggerManager.info(serviceName + "Service not present in the Service list.");
+			return;
+		}
+
 	}
 
 	public void navigateToEventDashboard(String eventNo) {
