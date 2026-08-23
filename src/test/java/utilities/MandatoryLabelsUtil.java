@@ -215,6 +215,7 @@ public class MandatoryLabelsUtil extends BaseClass{
 						if(!label.findElements(By.xpath(MandatoryFieldsXpaths.TIME_FIELD)).isEmpty() && time != null && !time.isEmpty())
 						{
 							WebElement timeIcon = label.findElement(By.xpath(MandatoryFieldsXpaths.TIME_FIELD));
+							waitutil.waitForOverlay();
 							timeIcon.click();
 
 							dp.selectTime(driver, time);

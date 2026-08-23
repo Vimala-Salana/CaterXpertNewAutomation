@@ -42,20 +42,26 @@ public class EventDashboardPage extends BasePage {
 		waitutil.waitForOverlay();
 		wait.until(ExpectedConditions.visibilityOfAllElements(headersList));
 		// Looping through all the headers
-		for (WebElement header : headersList) {
+		for (int i = 0; i < headersList.size(); i++) {
+			WebElement header = headersList.get(i);
 			String name = header.getText();
+			//System.out.println(name);
 			boolean statusMatch = (status == null || status.stream().anyMatch(name::contains));
 			if (service.stream().anyMatch(name::contains) && statusMatch) {
 				LoggerManager.info("Service Status : " + name); // Matching header
-				WebElement labelname = header
-						.findElement(By.xpath("../following-sibling::div//*[contains(@class,'service-label')]"));
-				String labelText = labelname.getText();
-				if (iconLabel.stream().anyMatch(labelText::equalsIgnoreCase)) {
-					// System.out.println(labelname.getText());
-					WebElement icon = labelname.findElement(By.xpath("..//i")); // icon
-					wait.until(ExpectedConditions.elementToBeClickable(icon)).click();
-					// LoggerManager.info("Icon Name" + icon.getText());
-					return true;
+				List<WebElement> labelname = header
+						.findElements(By.xpath("../following-sibling::div//*[contains(@class,'service-label')]"));
+
+				for (WebElement label : labelname) {
+					String labelText = label.getText();
+
+					if (iconLabel.stream().anyMatch(labelText::equalsIgnoreCase)) {
+						//System.out.println(labelText);
+						WebElement icon = label.findElement(By.xpath("..//i")); // icon
+						wait.until(ExpectedConditions.elementToBeClickable(icon)).click();
+						// LoggerManager.info("Icon Name" + icon.getText());
+						return true;
+					}
 				}
 			}
 		}

@@ -105,8 +105,6 @@ public class ServicesPage extends BasePage {
 
 	public void approveServiceConstraints(String eventNo) {
 		serviceUtil.approveConstraints(eventNo);
-		ServicesWorkFlows servicesFlow = new ServicesWorkFlows(driver);
-		servicesFlow.navigateToEventDashboard(eventNo);
 	}
 
 	public boolean isItemPresent(String itemName) {

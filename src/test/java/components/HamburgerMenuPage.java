@@ -68,7 +68,7 @@ public class HamburgerMenuPage extends BasePage {
 	private final By lnkEventListing = By.xpath("//span[text()='Event Listing']");
 
 	public boolean isEventListingPresent() {
-
+		waitutil.waitForOverlay();
 		return !driver.findElements(hdrEventListing).isEmpty();
 	}
 

@@ -47,6 +47,7 @@ public class EventListingPage extends BasePage {
 	public void clickEventDashboardIcon(String eventNo) {
 
 		// elementUtil.click(iconEventDashboard);
+		waitutil.waitForOverlay();
 
 		By dashboardIcon = By
 				.xpath("//tr[.//span[(normalize-space()='" + eventNo + "')]]//span[@ptooltip='Event Dashboard']");

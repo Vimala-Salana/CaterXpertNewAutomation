@@ -42,6 +42,8 @@ public class BaseClass {
 		driver.get(config.getUrl());
 
 		LoginPage login = new LoginPage(driver);
+		
+		System.out.println(config.getCaterId()+"      "+ config.getUserId()+"         "+ config.getPassword());
 
 		login.login(config.getCaterId(), config.getUserId(), config.getPassword());
 
