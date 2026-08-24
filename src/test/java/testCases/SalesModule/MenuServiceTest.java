@@ -50,14 +50,14 @@ public class MenuServiceTest extends BaseClass {
 	public void deleteMenuItem() {
 		String eventNo = serviceEventApi.newServiceEventId(loginId, service);
 		servicesFlow.openServiceRequestFromEventListing(eventNo, service);
-		Assert.assertTrue(service.stream().anyMatch(s -> servicesPage.getServiceHdr().contains(s)),
-				"Menu Service not Mapped/Service not present in the Service list.");
+		LoggerManager.info(service.stream().anyMatch(s -> servicesPage.getServiceHdr().contains(s))
+				+ "Menu Service not Mapped/Service not present in the Service list.");
 		menuServicePage.addMenuItems();
-		String itemName = menuServicePage.getItemName();
+		String itemName = menuServicePage.getMenuItemName();
 		menuServicePage.clickDeleteIcon();
-		menuServicePage.clickAlertYes();
+		servicesPage.clickAlertYes();
 		// System.out.println(itemName);
-		Assert.assertFalse(servicesPage.isItemPresent(itemName), "Item Not deleted");
+		Assert.assertFalse(servicesPage.isItemPresent(itemName), "Item is Not deleted");
 	}
 
 	@Test(priority = 3, groups = { "Regression", "All" })
@@ -65,8 +65,8 @@ public class MenuServiceTest extends BaseClass {
 	public void editMenuItemQty() {
 		String eventNo = serviceEventApi.newServiceEventId(loginId, service);
 		servicesFlow.openServiceRequestFromEventListing(eventNo, service);
-		Assert.assertTrue(service.stream().anyMatch(s -> servicesPage.getServiceHdr().contains(s)),
-				"Menu Service not Mapped/Service not present in the Service list.");
+		LoggerManager.info(service.stream().anyMatch(s -> servicesPage.getServiceHdr().contains(s))
+				+ "Menu Service not Mapped/Service not present in the Service list.");
 		menuServicePage.addMenuItems();
 		menuServicePage.editQuantity();
 		servicesPage.clickServiceSave();
@@ -76,21 +76,21 @@ public class MenuServiceTest extends BaseClass {
 	public void validateMenuView() {
 		String eventNo = serviceEventApi.newServiceEventId(loginId, service);
 		servicesFlow.openServiceRequestFromEventListing(eventNo, service);
-		Assert.assertTrue(service.stream().anyMatch(s -> servicesPage.getServiceHdr().contains(s)),
-				"Menu Service not Mapped/Service not present in the Service list.");
+		LoggerManager.info(service.stream().anyMatch(s -> servicesPage.getServiceHdr().contains(s))
+				+ "Menu Service not Mapped/Service not present in the Service list.");
 		menuServicePage.addMenuItems();
 
 		String menuOption = menuServicePage.getMenuOption();
 		String course = menuServicePage.getCourse();
-		String itemName = menuServicePage.getItemName();
+		String itemName = menuServicePage.getMenuItemName();
 		System.out.println(menuOption + "," + course + "," + itemName);
 
 		servicesPage.openMenuBar();
 		menuServicePage.navigateToMenuView();
 
 		Assert.assertEquals(menuOption, menuViewPage.getMenuOption(), "Menu Option not found");
-		Assert.assertEquals(course, menuViewPage.getCourse(), "Menu Option not found");
-		Assert.assertEquals(itemName, menuViewPage.getMenuItem(), "Menu Option not found");
+		Assert.assertEquals(course, menuViewPage.getCourse(), "Menu Course not found");
+		Assert.assertEquals(itemName, menuViewPage.getMenuItem(), "Menu Item not found");
 		LoggerManager.info("Item validated sucessfully in Menu View ");
 
 	}

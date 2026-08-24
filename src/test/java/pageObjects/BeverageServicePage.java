@@ -13,6 +13,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 
 import testBase.BasePage;
+import utilities.LoggerManager;
 import utilities.ReportManager;
 
 public class BeverageServicePage extends BasePage {
@@ -85,17 +86,6 @@ public class BeverageServicePage extends BasePage {
 	private final By btnInventoryOk = By.xpath("//button[text()='Ok']");
 
 	public void closeInventoryPopupIfPresent() {
-		/*
-		 * if (!okBtn.isEmpty()) {
-		 * wait.until(ExpectedConditions.elementToBeClickable(okBtn.get(0)));
-		 * JavascriptExecutor js = (JavascriptExecutor) driver;
-		 * 
-		 * js.executeScript("arguments[0].click();", okBtn.get(0));
-		 * 
-		 * } else {
-		 * 
-		 * System.out.println("Inventory alert not displayed"); }
-		 */
 
 		elementUtil.clickIfPresent(btnInventoryOk);
 		waitutil.waitForSwalPopup();
@@ -233,4 +223,28 @@ public class BeverageServicePage extends BasePage {
 		staffclosebtn.click();
 	}
 
+	private final By txtItemName = By.xpath("//textarea[@name='itemName']");
+
+	public String getBeverageItemName() {
+		return elementUtil.getValue(txtItemName);
+	}
+
+	private final By txtQuantity = By.xpath(
+			"//td[count(//div[@aria-hidden='false']//th[text()=' Qty ']/preceding-sibling::th)+1]//input[@type='text']");
+
+	public void editQuantity() {
+
+		String prevQty = elementUtil.getValue(txtQuantity);
+		Double newQty = Double.parseDouble(prevQty.trim()) + 10;
+		elementUtil.typeText(txtQuantity, newQty.toString());
+		LoggerManager.info("Item Quantity edited from " + prevQty + " to " + newQty);
+	}
+
+	private final By chkselect = By.xpath("//p-checkbox[@ptooltip='Select Item']");
+	private final By btnDelete = By.xpath("//div[@aria-hidden='false']//button[normalize-space()='Delete']");
+
+	public void deleteItem() {
+		elementUtil.click(chkselect);
+		elementUtil.click(btnDelete);
+	}
 }

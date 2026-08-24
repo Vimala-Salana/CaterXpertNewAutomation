@@ -2,6 +2,7 @@ package pageObjects;
 
 import java.util.List;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -28,23 +29,17 @@ public class StaffingServicePage extends BasePage {
 		return staffinghdr.getText();
 	}
 
-	@FindBy(xpath = "//input[@maxlength='5']")
+	@FindBy(xpath = "//td[count(//th[text()='Qty']/preceding-sibling::th)+1]//input[@type='text']")
 	List<WebElement> staffQty;
 
 	public void addStaffPositions() {
 		waitutil.waitForOverlay();
-		wait.until(ExpectedConditions.visibilityOfAllElements(staffQty));
-		int count = 1;
-		for (WebElement qty : staffQty) {
-			if (count <= 5) {
-				wait.until(ExpectedConditions.elementToBeClickable(qty));
-				qty.clear();
-				qty.sendKeys("1");
-				count++;
-			}
+		for (int i = 0; i < Math.min(staffQty.size(), 5); i++) {
+			wait.until(ExpectedConditions.elementToBeClickable(staffQty.get(i)));
+			staffQty.get(i).clear();
+			staffQty.get(i).sendKeys("1");
 		}
 		servicesPage.clickServiceSave();
-
 	}
 
 	@FindBy(xpath = "//div[@role='tabpanel' and (@aria-hidden='false')]//button[text()=' Save ']")
@@ -88,5 +83,33 @@ public class StaffingServicePage extends BasePage {
 	public void approveStaffingConstraints(String eventNo) {
 		serviceUtil.approveConstraints(eventNo);
 		servicesFlow.navigateToEventDashboard(eventNo);
+	}
+
+	private final By txtAddRows = By.id("StaffRows");
+	private final By btnAddRows = By.xpath("//button[normalize-space()='Add Rows']");
+
+	public void addRows(String noOfRows) {
+		elementUtil.typeText(txtAddRows, noOfRows);
+		elementUtil.click(btnAddRows);
+	}
+
+	private final By drpPosition = By.xpath("//span[text()='-Select-']");
+	private final By lstPosition = By.xpath("(//li[@role='option'])");
+
+	public void addNewposition() {
+		List<WebElement> positions = driver.findElements(drpPosition);
+		for (int i = 0; i < positions.size(); i++) {
+			positions.get(i).click();
+			List<WebElement> positionslist = driver.findElements(lstPosition);
+			positionslist.get(i).click();
+		}
+		staffQty.get(staffQty.size() - 1).sendKeys("1");
+
+		/*
+		 * if (driver.findElements(lstPosition).size() > 5) { positions.get(5).click();
+		 * LoggerManager.info("Selected 6th Position"); } else {
+		 * positions.get(0).click(); LoggerManager.
+		 * info("Less than 6 positions available, So Selected 1st Position"); }
+		 */
 	}
 }

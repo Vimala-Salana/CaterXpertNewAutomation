@@ -9,7 +9,6 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import testBase.BasePage;
-import workFlows.ServicesWorkFlows;
 
 public class ServicesPage extends BasePage {
 
@@ -73,6 +72,7 @@ public class ServicesPage extends BasePage {
 	private final By btnFinalize = By.xpath("//button[text()=' Finalize ']");
 
 	public void clickFinalize() {
+		waitutil.waitForOverlay();
 		waitutil.waitForSwalPopup();
 		elementUtil.click(btnFinalize);
 		waitutil.waitForSwalPopup();
@@ -119,6 +119,22 @@ public class ServicesPage extends BasePage {
 
 	public void openMenuBar() {
 		elementUtil.click(iconAddCircle);
+	}
+
+	private final By btnYes = By.xpath("//button[text()='Yes']");
+
+	public void clickAlertYes() {
+		elementUtil.click(btnYes);
+		waitutil.waitForSwalPopup();
+		waitutil.waitForOverlay();
+	}
+
+	private final By btnOk = By.xpath("//button[text()='Ok']");
+
+	public void clickAlertOk() {
+		elementUtil.click(btnOk);
+		waitutil.waitForOverlay();
+		waitutil.waitForSwalPopup();
 	}
 
 }

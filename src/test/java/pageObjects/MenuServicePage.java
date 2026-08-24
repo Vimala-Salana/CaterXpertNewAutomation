@@ -20,8 +20,6 @@ public class MenuServicePage extends BasePage {
 
 	}
 
-	// @FindBy(xpath = "//span[normalize-space(text())='Event Services - Menu']")
-	// WebElement menuServicehdr;
 	private final By hdrMenuService = By.xpath("//span[contains(text(),'Event Services')]");
 
 	public String getmenuServiceHdr() {
@@ -34,15 +32,7 @@ public class MenuServicePage extends BasePage {
 	private final By btnFilterGo = By.xpath("//button[normalize-space(text())='Go']");
 
 	public void clickSearchAndAddbtn() {
-		/*
-		 * waitutil.waitForOverlay();
-		 * wait.until(ExpectedConditions.elementToBeClickable(btnsearchAndAdd));
-		 * ((JavascriptExecutor) driver).executeScript("arguments[0].click();",
-		 * btnsearchAndAdd);
-		 * wait.until(ExpectedConditions.elementToBeClickable(filterIcon)).click();
-		 * wait.until(ExpectedConditions.elementToBeClickable(filterGo));
-		 * filterGo.click();
-		 */
+
 		elementUtil.click(btnSearchAndAdd);
 		elementUtil.click(iconFilter);
 		elementUtil.click(btnFilterGo);
@@ -55,13 +45,7 @@ public class MenuServicePage extends BasePage {
 		return driver.findElements(noRecordsTxt).stream().anyMatch(WebElement::isDisplayed);
 	}
 
-	// @FindBy(xpath = "//p-checkbox[@ptooltip='Select Item']") List <WebElement>
-	// itemsCheckBox;
-
 	private final By chkItems = By.xpath("//p-tabpanel[@header='Item']//p-checkbox[@ptooltip='Select Item']");
-
-	// private final By itemsCheckBoxLoc = By.xpath("//p-checkbox[@ptooltip='Select
-	// Item']");
 	private final By menuNames = By.xpath("//p-tabpanel[@header='Item']//span[contains(text(),'Select')]");
 	private final By list = By.xpath("//li[@role='option']");
 	private final By checkboxLoc = By
@@ -97,12 +81,7 @@ public class MenuServicePage extends BasePage {
 				break;
 			}
 
-			// Wait and click the first dropdown using JS
 			wait.until(ExpectedConditions.refreshed(ExpectedConditions.elementToBeClickable(menuNames)));
-			// ((JavascriptExecutor)
-			// driver).executeScript("arguments[0].scrollIntoView({block:'center'});",
-			// dropdown);
-			// wait.until(ExpectedConditions.elementToBeClickable(dropdown)).click();
 			elementUtil.click(menuNames);
 
 			List<WebElement> options = driver.findElements(list);
@@ -163,17 +142,9 @@ public class MenuServicePage extends BasePage {
 		elementUtil.click(iconDelete);
 	}
 
-	private final By btnYes = By.xpath("//button[text()='Yes']");
-
-	public void clickAlertYes() {
-		elementUtil.click(btnYes);
-		waitutil.waitForSwalPopup();
-		waitutil.waitForOverlay();
-	}
-
 	private final By itemNames = By.xpath("//td[count(//th[.='Item Name ']/preceding-sibling::th)+1]//textarea");
 
-	public String getItemName() {
+	public String getMenuItemName() {
 
 		wait.until(ExpectedConditions.visibilityOfElementLocated(itemNames));
 		return driver.findElement(itemNames).getAttribute("title");

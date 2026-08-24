@@ -32,7 +32,7 @@ public class BeverageServiceTest extends BaseClass {
 
 	}
 
-	@Test(groups = { "Regression", "All" })
+	@Test(priority = 1, groups = { "Regression", "All" })
 	public void beveageservice() {
 		String eventNo = servicesNewApi.newServiceEventId(loginId, service);
 		servicesFlow.openServiceRequestFromEventListing(eventNo, service);
@@ -46,6 +46,35 @@ public class BeverageServiceTest extends BaseClass {
 
 		servicesFlow.finalizeService(eventNo, service);
 
+	}
+
+	@Test(priority = 2, groups = { "Regression", "All" })
+	public void editBeverageItem() {
+		String eventNo = servicesNewApi.newServiceEventId(loginId, service);
+		servicesFlow.openServiceRequestFromEventListing(eventNo, service);
+
+		Assert.assertTrue(service.stream().anyMatch(s -> servicesPage.getServiceHdr().contains(s)),
+				"BeverageService not Mapped/Service not present in the Service list.");
+
+		beverageServicePage.addBeverageItems();
+		beverageServicePage.editQuantity();
+		servicesPage.clickServiceSave();
+	}
+
+	@Test(priority = 3, groups = { "Regression", "All" })
+	public void deleteBeverageItem() {
+		String eventNo = servicesNewApi.newServiceEventId(loginId, service);
+		servicesFlow.openServiceRequestFromEventListing(eventNo, service);
+
+		Assert.assertTrue(service.stream().anyMatch(s -> servicesPage.getServiceHdr().contains(s)),
+				"BeverageService not Mapped/Service not present in the Service list.");
+
+		beverageServicePage.addBeverageItems();
+		String itemName = beverageServicePage.getBeverageItemName();
+		beverageServicePage.deleteItem();
+		servicesPage.clickAlertOk();
+
+		Assert.assertFalse(servicesPage.isItemPresent(itemName), "Item is Not deleted");
 	}
 
 	@AfterMethod(alwaysRun = true)

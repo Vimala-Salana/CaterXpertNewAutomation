@@ -31,16 +31,29 @@ public class StaffingServiceTest extends BaseClass {
 		service = List.of("Personnel", "Staffing", "Scheduling");
 	}
 
-	@Test(groups = { "Regression", "All" })
+	@Test(priority = 1, groups = { "Regression", "All" })
 	public void staffingRequest() {
 		String eventNo = serviceEventApi.newServiceEventId(loginId, service);
 		servicesFlow.openServiceRequestFromEventListing(eventNo, service);
 		String serviceHeader = servicesPage.getServiceHdr();
 		Assert.assertTrue(service.stream().anyMatch(serviceHeader::contains),
-				"Staffing Service not present in the Service list.");
+				" Staffing Service not present in the Service list.");
 
 		staffingServicePage.addStaffPositions();
 		servicesFlow.finalizeService(eventNo, service);
+	}
+
+	// @Test(priority = 2, groups = { "Regression", "All" })
+	public void addNewStaffPosition() {
+		String eventNo = serviceEventApi.newServiceEventId(loginId, service);
+		servicesFlow.openServiceRequestFromEventListing(eventNo, service);
+		String serviceHeader = servicesPage.getServiceHdr();
+		Assert.assertTrue(service.stream().anyMatch(serviceHeader::contains),
+				" Staffing Service not present in the Service list.");
+
+		staffingServicePage.addRows("1");
+		staffingServicePage.addNewposition();
+		servicesPage.clickServiceSave();
 	}
 
 	@AfterMethod()
