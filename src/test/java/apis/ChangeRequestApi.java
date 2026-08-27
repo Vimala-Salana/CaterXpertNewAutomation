@@ -11,7 +11,7 @@ import io.restassured.response.Response;
 import utilities.ConfigReader;
 
 public class ChangeRequestApi {
-	
+
 	public ConfigReader config = new ConfigReader();
 
 	public String changeRequestEvent(String loginId, List<String> service, List<String> statuses) {
@@ -21,7 +21,7 @@ public class ChangeRequestApi {
 
 		Response response = given().pathParam("patch", "CaterXpertSales2026_0802").pathParam("module", "sales")
 				.pathParam("screen", "getSalesEventsList")
-				.queryParams("loginId", loginId, "catererId", caterId, "lowerBound", 1, "upperBound", 200, "deptId", 2)
+				.queryParams("loginId", loginId, "catererId", caterId, "lowerBound", 1, "upperBound", 100, "deptId", 2)
 				.when().get(url + "/{patch}/{module}/{screen}");
 
 		response.then().statusCode(200);

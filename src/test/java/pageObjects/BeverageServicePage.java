@@ -195,6 +195,25 @@ public class BeverageServicePage extends BasePage {
 
 	}
 
+	private final By lnkExpandAll = By.xpath("//div[text()='Expand All']");
+	private final By chkkShowItemsUnMapped = By.xpath("//p-checkbox[@name='pending']");
+
+	public void clickExpandAll() {
+
+		if (!elementUtil.clickIfPresent(lnkExpandAll)) {
+			elementUtil.click(chkkShowItemsUnMapped);
+			elementUtil.click(lnkExpandAll);
+		}
+	}
+
+	private final By lnkFirstSubCategory = By.xpath("//div[@class='block-spans']//div[contains(@class,'editid')]");
+	private final By txtQty = By.xpath("//input[@name='item.qtysent']");
+
+	public void addItemsFromAdd(String itemQty) {
+		elementUtil.click(lnkFirstSubCategory);
+		elementUtil.typeText(txtQty, itemQty);
+	}
+
 	private final By btnReserve = By.xpath("//button[text()=' Reserve ']");
 
 	public void clickReserveIfPresent() {

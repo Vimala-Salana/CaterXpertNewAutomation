@@ -163,12 +163,23 @@ public class EstimatesPage extends BasePage {
 
 	@FindBy(xpath = "//label[text()=' Tax ']//following::input[@name ='tax'][1]")
 	WebElement estimatesTax;
+	private final By txtDeclaredTP = By
+			.xpath("//label[text()=' Declared Commission ']//following::input[@name ='thirdPartyCommTotal'][1]");
+	private final By txtDeclaredAddFee = By
+			.xpath("//label[text()=' Total Declared Fees ']//following::input[@name ='additionaFeetotal'][1]");
 
 	public double getEstimatesTotals() {
+		String declAdditionalFee = elementUtil.getValue(txtDeclaredAddFee);
+		System.out.println("Declared Additional Fee amount is - " + declAdditionalFee);
+
+		String declTP = elementUtil.getValue(txtDeclaredTP);
+		System.out.println("Declared TP amount is - " + declTP);
+
 		String taxTotal = estimatesTax.getAttribute("value");
 		System.out.println("Total tax amount is - " + taxTotal);
 
-		Double calcualtedTotal = Double.parseDouble(taxTotal) + totalServiceAmount.doubleValue();
+		Double calcualtedTotal = Double.parseDouble(declAdditionalFee) + Double.parseDouble(declTP)
+				+ Double.parseDouble(taxTotal) + totalServiceAmount.doubleValue();
 
 		calcualtedTotal = BigDecimal.valueOf(calcualtedTotal).setScale(2, RoundingMode.HALF_UP).doubleValue();
 		System.out.println("Calculated Total is - " + calcualtedTotal);

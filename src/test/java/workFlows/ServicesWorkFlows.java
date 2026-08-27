@@ -9,7 +9,7 @@ import components.HeaderPage;
 import pageObjects.EventDashboardPage;
 import pageObjects.EventListingPage;
 import pageObjects.ServicesPage;
-import utilities.LoggerManager;
+import utilities.ReportManager;
 
 public class ServicesWorkFlows {
 
@@ -30,23 +30,22 @@ public class ServicesWorkFlows {
 		headerPage = new HeaderPage(driver);
 	}
 
-	public void openServiceRequestFromEventDashboard(List<String> serviceName) {
-		// Navigating to Service Request from Event Dashboard
-		boolean isServicePresent = eventDashboardPage.clickServiceLabelIcon(serviceName, status, iconlabel);
-		if (!isServicePresent) {
-			LoggerManager.info(serviceName + " is not Mapped to the Event Business Unit.");
-			return;
+	public boolean openServiceRequestFromEventDashboard(List<String> serviceName) {
+		// Navigating to Service Request from Event Dash board
+		boolean isServiceMapped = eventDashboardPage.clickServiceLabelIcon(serviceName, status, iconlabel);
+
+		if (!isServiceMapped) {
+			ReportManager.info(serviceName + " is not mapped to the Event Business Unit.");
+			return false;
 		}
-
 		String serviceHeader = servicesPage.getServiceHdr();
-
 		boolean isServiceInList = serviceName.stream().anyMatch(serviceHeader::contains);
 
 		if (!isServiceInList) {
-			LoggerManager.info(serviceName + "Service not present in the Service list.");
-			return;
+			ReportManager.info(serviceName + " is not Present in Service List.");
+			return false;
 		}
-
+		return true;
 	}
 
 	public void navigateToEventDashboard(String eventNo) {
@@ -55,10 +54,10 @@ public class ServicesWorkFlows {
 		eventlistPage.clickEventDashboardIcon(eventNo);
 	}
 
-	public void openServiceRequestFromEventListing(String eventNo, List<String> serviceName) {
+	public boolean openServiceRequestFromEventListing(String eventNo, List<String> serviceName) {
 		hamburgerMenuPage.navigatetoEventListing();
 		navigateToEventDashboard(eventNo);
-		openServiceRequestFromEventDashboard(serviceName);
+		return openServiceRequestFromEventDashboard(serviceName);
 	}
 
 	public void finalizeService(String eventNo, List<String> serviceName) {

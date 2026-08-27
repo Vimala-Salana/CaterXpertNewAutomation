@@ -53,6 +53,7 @@ public class CreateEventPage extends BasePage {
 
 	public void clickCreatebtn() {
 		elementUtil.click(btnCreate);
+		waitutil.waitForOverlay();
 	}
 
 	private final By txtTaxExpiryPopUp = By.xpath("//div[contains(text(),'Tax Exempt Certificate')]");
@@ -75,6 +76,7 @@ public class CreateEventPage extends BasePage {
 	public void clickClosebtn() {
 		wait.until(ExpectedConditions.invisibilityOfElementLocated(By.cssSelector("div.overlay")));
 		wait.until(ExpectedConditions.elementToBeClickable(btnClose)).click();
+		waitutil.waitForOverlay();
 	}
 
 	public boolean eventConstraints() {

@@ -17,11 +17,8 @@ public class HamburgerMenuPage extends BasePage {
 
 	private By hdrAEDashboard = By.xpath("//span[normalize-space(text())='AE Dashboard']");
 	private By lnkOpenInquiries = By.xpath("//span[text()='Open Inquiries']");
-	private By btnCreateEvent = By.xpath("//tr[1]/td/div/i[2]");
-	private By alertYes = By.xpath("//button[text()='Yes']");
 	private By txtCustomerOrPotentialCustomer = By
 			.xpath("//span[normalize-space(text())='Customer/Potential Customer']");
-	private By txtCustomer = By.xpath("//span[normalize-space(text())='Customer']");
 	private By txtContcat = By.xpath("//span[text()='Contact']");
 	private By txtCreateInquiry = By.xpath("//span[text()='Create Inquiry']");
 
@@ -29,7 +26,6 @@ public class HamburgerMenuPage extends BasePage {
 		return elementUtil.getText(hdrAEDashboard);
 	}
 
-	// @FindBy(xpath = "//span[text()='Create Event']") WebElement lnkCreateEvent;
 	private final By lnkCreateEvent = By.xpath("//span[text()='Create Event']");
 
 	public void clickCreateEvent() {
@@ -62,8 +58,6 @@ public class HamburgerMenuPage extends BasePage {
 		elementUtil.click(txtCreateInquiry);
 	}
 
-	// @FindBy(xpath = "//span[text()=' Event Listing ']") WebElement
-	// hdrEventListing; // to validate event listing header
 	private final By hdrEventListing = By.xpath("//span[normalize-space()='Event Listing']");
 	private final By lnkEventListing = By.xpath("//span[text()='Event Listing']");
 

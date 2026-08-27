@@ -11,67 +11,68 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import testBase.BasePage;
 import utilities.MandatoryLabelsUtil;
 
-public class CreateCustomerPage extends BasePage
-{
+public class CreateCustomerPage extends BasePage {
 
-	public CreateCustomerPage(WebDriver driver)
-	{
+	public CreateCustomerPage(WebDriver driver) {
 		super(driver);
 	}
 
-	@FindBy (xpath = "//span[normalize-space(text())='Create Customer'] ") WebElement hdrCreateCustomer;
-	public String getCreateCustomerhdr()
-	{
+	@FindBy(xpath = "//span[normalize-space(text())='Create Customer'] ")
+	WebElement hdrCreateCustomer;
+
+	public String getCreateCustomerhdr() {
 		return hdrCreateCustomer.getText();
 	}
 
 	public void fillCustomerMandatoryfields(Map<String, String> data) {
-		  MandatoryLabelsUtil.fillMandatoryFields(driver, data);
+		MandatoryLabelsUtil.fillMandatoryFields(driver, data);
 	}
 
 	private final By btnCreate = By.xpath("//button[normalize-space(text())='Create']");
-	public void clickCreatebtn()
-	{
+
+	public void clickCreatebtn() {
 		elementUtil.click(btnCreate);
+		waitutil.waitForOverlay();
 		waitutil.waitForSwalPopup();
 	}
-	
+
 	private final By contactClose = By.xpath("//div[@aria-hidden='false']//button[normalize-space(text())='Close']");
-	public void clickContactClose()
-	{
+
+	public void clickContactClose() {
 		waitutil.waitForSwalPopup();
 		elementUtil.click(contactClose);
 	}
 
-	//@FindBy(xpath = "//input[contains(@placeholder,'Search Customer')]") WebElement txtSearchCustomer;
+	// @FindBy(xpath = "//input[contains(@placeholder,'Search Customer')]")
+	// WebElement txtSearchCustomer;
 	private final By txtSearchCustomer = By.xpath("//input[contains(@placeholder,'Search Customer')]");
-	public void enterCustomerNameinSearch(String customerName)
-	{
+
+	public void enterCustomerNameinSearch(String customerName) {
 		elementUtil.typeText(txtSearchCustomer, customerName);
 		wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("div.overlay")));
 		wait.until(ExpectedConditions.invisibilityOfElementLocated(By.cssSelector("div.overlay")));
 		// txtSearchCustomer.sendKeys(customerName,Keys.ENTER);
-		
-	}
-	
-	private final By lstcustomerName = By.xpath("(//tbody[@class='ng-star-inserted']//tr//td//a)[1]");
-	public String getCustomerNamefromlst()
-	{
-		return elementUtil.getText(lstcustomerName);
-	}
-	public void clickCustomerNamefromlst()
-	{
-		wait.until(ExpectedConditions.elementToBeClickable(lstcustomerName)).click();
-	
-	}
-	
-	@FindBy(xpath ="//span[text()='Contacts']") WebElement tabContacts;
-	public void clickContactstab() throws InterruptedException
-	{
-		Thread.sleep(1000);
-		//wait.until(ExpectedConditions.elementToBeClickable(tabContacts)).click();
-		tabContacts.click();
+
 	}
 
+	private final By lstcustomerName = By.xpath("(//tbody[@class='ng-star-inserted']//tr//td//a)[1]");
+
+	public String getCustomerNamefromlst() {
+		return elementUtil.getText(lstcustomerName);
+	}
+
+	public void clickCustomerNamefromlst() {
+		wait.until(ExpectedConditions.elementToBeClickable(lstcustomerName)).click();
+
+	}
+
+	@FindBy(xpath = "//span[text()='Contacts']")
+	WebElement tabContacts;
+
+	public void clickContactstab() throws InterruptedException {
+		Thread.sleep(1000);
+		// wait.until(ExpectedConditions.elementToBeClickable(tabContacts)).click();
+		tabContacts.click();
+	}
 
 }

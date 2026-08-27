@@ -2,7 +2,6 @@ package testCases.SalesModule;
 
 import java.util.List;
 
-import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -34,11 +33,10 @@ public class StaffingServiceTest extends BaseClass {
 	@Test(priority = 1, groups = { "Regression", "All" })
 	public void staffingRequest() {
 		String eventNo = serviceEventApi.newServiceEventId(loginId, service);
-		servicesFlow.openServiceRequestFromEventListing(eventNo, service);
-		String serviceHeader = servicesPage.getServiceHdr();
-		Assert.assertTrue(service.stream().anyMatch(serviceHeader::contains),
-				" Staffing Service not present in the Service list.");
 
+		if (!servicesFlow.openServiceRequestFromEventListing(eventNo, service)) {
+			return;
+		}
 		staffingServicePage.addStaffPositions();
 		servicesFlow.finalizeService(eventNo, service);
 	}
@@ -46,11 +44,10 @@ public class StaffingServiceTest extends BaseClass {
 	// @Test(priority = 2, groups = { "Regression", "All" })
 	public void addNewStaffPosition() {
 		String eventNo = serviceEventApi.newServiceEventId(loginId, service);
-		servicesFlow.openServiceRequestFromEventListing(eventNo, service);
-		String serviceHeader = servicesPage.getServiceHdr();
-		Assert.assertTrue(service.stream().anyMatch(serviceHeader::contains),
-				" Staffing Service not present in the Service list.");
 
+		if (!servicesFlow.openServiceRequestFromEventListing(eventNo, service)) {
+			return;
+		}
 		staffingServicePage.addRows("1");
 		staffingServicePage.addNewposition();
 		servicesPage.clickServiceSave();

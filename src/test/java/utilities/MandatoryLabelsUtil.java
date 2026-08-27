@@ -14,13 +14,13 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import constants.MandatoryFieldsXpaths;
 import testBase.BaseClass;
 
-public class MandatoryLabelsUtil extends BaseClass{
+public class MandatoryLabelsUtil extends BaseClass {
 	public static WebDriver driver;
 	public static WaitUtils waitutil;
-	public static void fillMandatoryFields(WebDriver driver,Map<String, String> fieldData)
-	{
-		By mandatoryLabelsLocator  = By.xpath(MandatoryFieldsXpaths.MANDATORY_LABEL);
-		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(20));
+
+	public static void fillMandatoryFields(WebDriver driver, Map<String, String> fieldData) {
+		By mandatoryLabelsLocator = By.xpath(MandatoryFieldsXpaths.MANDATORY_LABEL);
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 		waitutil = new WaitUtils(driver);
 		waitutil.waitForOverlay();
 		ElementInteractionUtil elementutil = new ElementInteractionUtil(driver);
@@ -38,14 +38,13 @@ public class MandatoryLabelsUtil extends BaseClass{
 		 * return first.equalsIgnoreCase("Business Unit"); } });
 		 */
 
-		//Selecting first option from Business Unit
+		// Selecting first option from Business Unit
 		By businessUnitlocator = By.xpath(MandatoryFieldsXpaths.BUSINESS_UNIT);
 
 		waitutil.waitForOverlay();
 		List<WebElement> buisnessUnit = driver.findElements(businessUnitlocator);
-		if(!buisnessUnit.isEmpty())
-		{
-			WebElement bu = wait.until(ExpectedConditions.elementToBeClickable(businessUnitlocator));	
+		if (!buisnessUnit.isEmpty()) {
+			WebElement bu = wait.until(ExpectedConditions.elementToBeClickable(businessUnitlocator));
 			js.executeScript("arguments[0].click();", bu);
 			waitutil.waitForOverlay();
 
@@ -53,10 +52,10 @@ public class MandatoryLabelsUtil extends BaseClass{
 			By singleSelect = By.xpath(MandatoryFieldsXpaths.DROPDOWN_LIST);
 			By multiselectClose = By.xpath("//button[contains(@class,'p-multiselect-close')]//span");
 
-			if (!driver.findElements(multiSelect).isEmpty()) 
-			{
+			if (!driver.findElements(multiSelect).isEmpty()) {
 				wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(multiSelect));
-				WebElement option = driver.findElement(By.xpath("(//ul[contains(@class,'p-multiselect-items')]//li)[1]"));
+				WebElement option = driver
+						.findElement(By.xpath("(//ul[contains(@class,'p-multiselect-items')]//li)[1]"));
 				js.executeScript("arguments[0].scrollIntoView({block:'center'});", option);
 				js.executeScript("arguments[0].click();", option);
 				wait.until(ExpectedConditions.elementToBeClickable(multiselectClose)).click();
@@ -87,20 +86,15 @@ public class MandatoryLabelsUtil extends BaseClass{
 		 */
 		waitutil.waitForOverlay();
 
-
-
-
 		int labelsize = wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(mandatoryLabelsLocator)).size();
 
 		System.out.println(" Total mandatory fields found: " + labelsize);
 
-		for (int i = 0; i < labelsize; i++) 
-		{
+		for (int i = 0; i < labelsize; i++) {
 			List<WebElement> mandatoryLabels = driver.findElements(mandatoryLabelsLocator);
-			//System.out.println(mandatoryLabels.size());
+			// System.out.println(mandatoryLabels.size());
 			WebElement label = mandatoryLabels.get(i);
-			if(label.isDisplayed() && label.isEnabled())
-			{
+			if (label.isDisplayed() && label.isEnabled()) {
 				wait.until(ExpectedConditions.visibilityOf(mandatoryLabels.get(i)));
 				String labelText = label.getText().replace("*", "").trim();
 
@@ -108,49 +102,42 @@ public class MandatoryLabelsUtil extends BaseClass{
 				String testDataValue = fieldData.get(labelText);
 				System.out.println(testDataValue);
 
-				if(label.getText().toLowerCase().startsWith("business unit"))
-				{
+				if (label.getText().toLowerCase().startsWith("business unit")) {
 					System.out.println("BU Skipped");
 				}
 
-				else if(!label.findElements(By.xpath(MandatoryFieldsXpaths.TEXT_INPUT)).isEmpty() && testDataValue!=null) 
-				{
+				else if (!label.findElements(By.xpath(MandatoryFieldsXpaths.TEXT_INPUT)).isEmpty()
+						&& testDataValue != null) {
 					WebElement input = label.findElement(By.xpath(MandatoryFieldsXpaths.TEXT_INPUT));
 					String tag = input.getTagName().toLowerCase();
-					if ((tag.equals("input") || tag.equals("textarea")) && input.isEnabled())
-					{
+					if ((tag.equals("input") || tag.equals("textarea")) && input.isEnabled()) {
 						String currentValue = input.getAttribute("value");
 
-						if(currentValue.trim().isEmpty() )
-						{
+						if (currentValue.trim().isEmpty()) {
 							wait.until(ExpectedConditions.elementToBeClickable(input)).click();
 							// CTRL+A + BACKSPACE instead of .clear() for better event triggering
-							input.sendKeys(org.openqa.selenium.Keys.chord(org.openqa.selenium.Keys.CONTROL, "a"), org.openqa.selenium.Keys.BACK_SPACE);
+							input.sendKeys(org.openqa.selenium.Keys.chord(org.openqa.selenium.Keys.CONTROL, "a"),
+									org.openqa.selenium.Keys.BACK_SPACE);
 							input.sendKeys(testDataValue);
-						}
-						else 
-						{
-							System.out.println("Skipped " + labelText + " because it already contains: " + currentValue);
+						} else {
+							System.out
+									.println("Skipped " + labelText + " because it already contains: " + currentValue);
 						}
 					}
-				}
-				else if(!label.findElements(By.xpath(MandatoryFieldsXpaths.DROPDOWN)).isEmpty())
-				{
+				} else if (!label.findElements(By.xpath(MandatoryFieldsXpaths.DROPDOWN)).isEmpty()) {
 
 					WebElement dropdown = label.findElement(By.xpath(MandatoryFieldsXpaths.DROPDOWN));
 					String classAttr = dropdown.getAttribute("class");
-					if(classAttr.equalsIgnoreCase("p-multiselect-trigger"))
-					{
+					if (classAttr.equalsIgnoreCase("p-multiselect-trigger")) {
 						js.executeScript("arguments[0].scrollIntoView({block:'center'});", dropdown);
 						js.executeScript("arguments[0].click();", dropdown);
 						List<WebElement> list = driver.findElements(By.xpath(MandatoryFieldsXpaths.MULTISELECT_LIST));
 
-						if(testDataValue!=null && !testDataValue.isEmpty()) {
+						if (testDataValue != null && !testDataValue.isEmpty()) {
 
-							list.stream().filter(element ->testDataValue.equalsIgnoreCase(element.getText().trim()))
-							.findFirst().ifPresent(WebElement::click);
-						}
-						else {
+							list.stream().filter(element -> testDataValue.equalsIgnoreCase(element.getText().trim()))
+									.findFirst().ifPresent(WebElement::click);
+						} else {
 							LoggerManager.info("Multiselect Option not found in Test Data clicking first Option");
 							wait.until(ExpectedConditions.elementToBeClickable(list.get(0)));
 							list.get(0).click();
@@ -158,14 +145,13 @@ public class MandatoryLabelsUtil extends BaseClass{
 							waitutil.waitForOverlay();
 						}
 
-					}
-					else if(classAttr.contains("p-dropdown-trigger-icon") && dropdown.isEnabled())
-					{
-						WebElement drpexcelValue = label.findElement(By.xpath(MandatoryFieldsXpaths.DROPDOWN_PLACEHOLDER));
+					} else if (classAttr.contains("p-dropdown-trigger-icon") && dropdown.isEnabled()) {
+						WebElement drpexcelValue = label
+								.findElement(By.xpath(MandatoryFieldsXpaths.DROPDOWN_PLACEHOLDER));
 
-						if( drpexcelValue.getText().contains("Select") || drpexcelValue.getAttribute("placeholder")!=null 
-								&& drpexcelValue.getAttribute("placeholder").contains("Select"))
-						{
+						if (drpexcelValue.getText().contains("Select")
+								|| drpexcelValue.getAttribute("placeholder") != null
+										&& drpexcelValue.getAttribute("placeholder").contains("Select")) {
 							wait = new WebDriverWait(driver, Duration.ofSeconds(30));
 							waitutil.waitForOverlay();
 							js.executeScript("arguments[0].scrollIntoView({block:'center'});", dropdown);
@@ -173,36 +159,36 @@ public class MandatoryLabelsUtil extends BaseClass{
 
 							((JavascriptExecutor) driver).executeScript("arguments[0].click();", dropdown);
 							wait.until(ExpectedConditions.invisibilityOfElementLocated(By.cssSelector("div.overlay")));
-							List<WebElement> drpoptions = driver.findElements(By.xpath(MandatoryFieldsXpaths.DROPDOWN_LIST));
+							List<WebElement> drpoptions = driver
+									.findElements(By.xpath(MandatoryFieldsXpaths.DROPDOWN_LIST));
 
-							if(testDataValue!=null && !testDataValue.isEmpty()) {
+							if (testDataValue != null && !testDataValue.isEmpty()) {
 
-								drpoptions.stream().filter(element ->testDataValue.equalsIgnoreCase(element.getText().trim()))
-								.findFirst().ifPresent(WebElement::click);
-							}
-							else {
+								drpoptions.stream()
+										.filter(element -> testDataValue.equalsIgnoreCase(element.getText().trim()))
+										.findFirst().ifPresent(WebElement::click);
+							} else {
 								LoggerManager.info("Dropdown Option not found in Test Data clicking first Option");
 								wait.until(ExpectedConditions.elementToBeClickable(drpoptions.get(0)));
 
-								//WebElement option = driver.findElement(By.xpath("(//ul[contains(@class,'p-dropdown-items')]//li)[1]"));
+								// WebElement option =
+								// driver.findElement(By.xpath("(//ul[contains(@class,'p-dropdown-items')]//li)[1]"));
 								By optFirst = By.xpath("(//ul[contains(@class,'p-dropdown-items')]//li)[1]");
 								elementutil.click(optFirst);
 
 								waitutil.waitForOverlay();
-								//wait.until(ExpectedConditions.elementToBeClickable(firstOption)).click();
+								// wait.until(ExpectedConditions.elementToBeClickable(firstOption)).click();
 								// wait.until(ExpectedConditions.refreshed(ExpectedConditions.elementToBeClickable(firstOption))).click();
 							}
 						}
 
 					}
 
-				}
-				else if(!label.findElements(By.xpath(MandatoryFieldsXpaths.DATE_INPUT)).isEmpty() && fieldData.containsKey(labelText))
-				{
+				} else if (!label.findElements(By.xpath(MandatoryFieldsXpaths.DATE_INPUT)).isEmpty()
+						&& fieldData.containsKey(labelText)) {
 					WebElement input = label.findElement(By.xpath(MandatoryFieldsXpaths.DATE_INPUT));
 					String tag = input.getTagName().toLowerCase();
-					if ((tag.equals("input") && input.isEnabled()))
-					{
+					if ((tag.equals("input") && input.isEnabled())) {
 						input.click();
 
 						String[] parts = testDataValue.split(",");
@@ -212,8 +198,8 @@ public class MandatoryLabelsUtil extends BaseClass{
 						DatePicker dp = new DatePicker();
 						dp.selectDate(driver, dateOffset);
 
-						if(!label.findElements(By.xpath(MandatoryFieldsXpaths.TIME_FIELD)).isEmpty() && time != null && !time.isEmpty())
-						{
+						if (!label.findElements(By.xpath(MandatoryFieldsXpaths.TIME_FIELD)).isEmpty() && time != null
+								&& !time.isEmpty()) {
 							WebElement timeIcon = label.findElement(By.xpath(MandatoryFieldsXpaths.TIME_FIELD));
 							waitutil.waitForOverlay();
 							timeIcon.click();
@@ -224,7 +210,7 @@ public class MandatoryLabelsUtil extends BaseClass{
 				}
 			}
 
-		}	
-		//driver.findElement(By.tagName("body")).click();
+		}
+		// driver.findElement(By.tagName("body")).click();
 	}
 }

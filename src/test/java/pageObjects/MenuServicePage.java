@@ -59,7 +59,7 @@ public class MenuServicePage extends BasePage {
 		wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(chkItems));
 		List<WebElement> elements = driver.findElements(chkItems);
 
-		for (int i = 0; i < Math.min(elements.size(), 2); i++) {
+		for (int i = 0; i < Math.min(elements.size(), 1); i++) {
 
 			try {
 				WebElement el = driver.findElements(checkboxLoc).get(i);
@@ -73,29 +73,58 @@ public class MenuServicePage extends BasePage {
 			}
 		}
 
-		while (true) {
+		int menuCount = Math.min(driver.findElements(menuNames).size(), 20);
 
-			List<WebElement> menuName = driver.findElements(menuNames);
-
-			if (menuName.size() == 0) {
-				break;
-			}
+		for (int i = 0; i < menuCount; i++) {
 
 			wait.until(ExpectedConditions.refreshed(ExpectedConditions.elementToBeClickable(menuNames)));
+
 			elementUtil.click(menuNames);
 
 			List<WebElement> options = driver.findElements(list);
 			wait.until(ExpectedConditions.visibilityOfAllElements(options));
+
 			wait.until(ExpectedConditions.elementToBeClickable(options.get(0)));
 			options.get(0).click(); // click the first option
-
 		}
+
 		LoggerManager.info("Added Menu Items");
 
 		clickListSave();
 		waitutil.waitForSwalPopup();
 		clickListClose();
 
+	}
+
+	private final By drpMenuNumber = By.xpath("//p-dropdown[@name='menuNumId']");
+	private final By drpCourseOption = By.xpath("//p-dropdown[@name='courseId']");
+	private final By drpCategory = By.xpath("//p-dropdown[@name='categoryId']");
+	private final By drpSubCategory = By.xpath("//p-dropdown[@name='subCatId']");
+	private final By drpMenuItem = By.xpath("//p-dropdown[@name='menuItemId']");
+
+	public void addMenuItemFromAdd() {
+		elementUtil.click(drpMenuNumber);
+		selectOptionFromList(0);
+		elementUtil.click(drpCourseOption);
+		selectOptionFromList(0);
+		elementUtil.click(drpCategory);
+		selectOptionFromList(1);
+		elementUtil.click(drpSubCategory);
+		selectOptionFromList(1);
+		elementUtil.click(drpMenuItem);
+		selectOptionFromList(0);
+	}
+
+	private final By drplist = By.xpath("//li[@role='option']");
+
+	private void selectOptionFromList(int option) {
+		List<WebElement> options = driver.findElements(drplist);
+		options.get(option).click();
+		waitutil.waitForOverlay();
+	}
+
+	public String getAddScreenMenuItem() {
+		return elementUtil.getText(drpMenuItem);
 	}
 
 	public void addMenuItems() {
@@ -144,7 +173,7 @@ public class MenuServicePage extends BasePage {
 
 	private final By itemNames = By.xpath("//td[count(//th[.='Item Name ']/preceding-sibling::th)+1]//textarea");
 
-	public String getMenuItemName() {
+	public String getMenuItemNameFromServiceRequest() {
 
 		wait.until(ExpectedConditions.visibilityOfElementLocated(itemNames));
 		return driver.findElement(itemNames).getAttribute("title");

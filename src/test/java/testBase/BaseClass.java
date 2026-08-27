@@ -7,6 +7,10 @@ import org.testng.annotations.Optional;
 import org.testng.annotations.Parameters;
 
 import factory.DriverFactory;
+import io.qameta.allure.Allure;
+import io.qameta.allure.Severity;
+import io.qameta.allure.SeverityLevel;
+import io.qameta.allure.Step;
 import pageObjects.BaseToSalesNavigationPage;
 import pageObjects.LoginPage;
 import utilities.ConfigReader;
@@ -34,6 +38,8 @@ public class BaseClass {
 	 */
 	@BeforeSuite(alwaysRun = true)
 	@Parameters("browser")
+	@Step("Base Class Login - Once")
+	@Severity(SeverityLevel.BLOCKER)
 	public void loginOnce(@Optional("chrome") String browser) {
 
 		DriverFactory.initDriver(browser);
@@ -42,16 +48,17 @@ public class BaseClass {
 		driver.get(config.getUrl());
 
 		LoginPage login = new LoginPage(driver);
-		
-		System.out.println(config.getCaterId()+"      "+ config.getUserId()+"         "+ config.getPassword());
 
 		login.login(config.getCaterId(), config.getUserId(), config.getPassword());
+
+		Allure.step("Login Once Successfull");
 
 		// Navigate to Sales New
 		BaseToSalesNavigationPage bp = new BaseToSalesNavigationPage(driver);
 
 		loginId = bp.salesNewNavigation();
 		currentUrl = bp.getSalesUrl();
+		Allure.step("Sales New Navigation Successfull");
 
 		// System.out.println("Current URL: " + currentUrl);
 
@@ -72,6 +79,7 @@ public class BaseClass {
 		// System.out.println(currentUrl);
 
 		driver.get(currentUrl);
+		Allure.step("Navigated to Sales New SucessFully");
 
 		// System.out.println("URL after launching captured URL = " +
 		// driver.getCurrentUrl());

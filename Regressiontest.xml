@@ -15,9 +15,9 @@
 			<class name="testCases.SalesModule.MenuServiceTest" />
 			<class name="testCases.SalesModule.StaffingServiceTest" />
 			<class name="testCases.SalesModule.BeverageServiceTest" />
-			<class name="testCases.SalesModule.ChangeRequest" />
-			<class name="testCases.SalesModule.EstimateFull" />
-			<class name ="testCases.SalesModule.EstimateLite"/>
+			<class name="testCases.SalesModule.ChangeRequestTest" />
+			<class name="testCases.SalesModule.EstimateFullTest" />
+			<class name ="testCases.SalesModule.EstimateLiteTest"/>
 			<class name="testCases.SalesModule.SmokeTest" />
 			
 		</classes>

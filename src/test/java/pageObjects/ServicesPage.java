@@ -49,6 +49,26 @@ public class ServicesPage extends BasePage {
 		}
 	}
 
+	private final By btnAdd = By.xpath("//button[normalize-space()='Add']");
+
+	public void clickAddbtn() {
+		elementUtil.click(btnAdd);
+	}
+
+	private final By btnAddSave = By.xpath("//div[contains(@class,'p-sidebar')]//button[normalize-space()='Save']");
+
+	public void clickAddSave() {
+		elementUtil.click(btnAddSave);
+		waitutil.waitForOverlay();
+		waitutil.waitForSwalPopup();
+	}
+
+	private final By btnAddClose = By.xpath("//div[contains(@class,'p-sidebar')]//button[normalize-space()='Close']");
+
+	public void clickAddClose() {
+		elementUtil.click(btnAddClose);
+	}
+
 	public void clickFilterIcon() {
 		elementUtil.click(iconFilter);
 	}

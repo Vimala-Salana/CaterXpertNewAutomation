@@ -26,11 +26,7 @@ public class BaseToSalesNavigationPage extends BasePage {
 	// @FindBy(xpath = "//a[normalize-space(text())='Sales New']") WebElement
 	// lnkSalesNew;
 
-	private final By frmHeader = By.xpath("//frame[@name='header']");
-
 	private final By iconHome = By.xpath("//img[@title='Home']");
-
-	private final By frmRight = By.xpath("//frame[@name='right']");
 
 	private final By lnkSalesNew = By.xpath("//a[normalize-space(text())='Sales New']");
 

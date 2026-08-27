@@ -2,6 +2,8 @@ package apis;
 
 import static io.restassured.RestAssured.given;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -19,9 +21,18 @@ public class ServicesLevelNewEventApi {
 		String url = config.getUrl();
 		String caterId = config.getCaterId();
 
+		LocalDate startDate = LocalDate.now();
+		LocalDate endDate = startDate.plusDays(30);
+
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
+
+		String startDateParam = startDate.format(formatter);
+		String endDateParam = endDate.format(formatter);
+
 		Response response = given().pathParam("patch", "CaterXpertSales2026_0802").pathParam("module", "sales")
 				.pathParam("screen", "getSalesEventsList")
-				.queryParams("loginId", loginId, "catererId", caterId, "lowerBound", 1, "upperBound", 200, "deptId", 2)
+				.queryParams("loginId", loginId, "catererId", caterId, "startDate", startDateParam, "endDate",
+						endDateParam, "lowerBound", 1, "upperBound", 50, "deptId", 2)
 				.when().get(url + "/{patch}/{module}/{screen}");
 
 		response.then().statusCode(200);
@@ -44,8 +55,9 @@ public class ServicesLevelNewEventApi {
 
 			if (serviceStatuses == null || serviceNames == null || cisNumber == null)
 				continue;
+			int size = Math.min(serviceNames.size(), serviceStatuses.size());
 
-			for (int i = 0; i < serviceNames.size(); i++) {
+			for (int i = 0; i < size; i++) {
 
 				String serviceName = serviceNames.get(i).toString().trim();
 				String status = serviceStatuses.get(i).toString().trim();

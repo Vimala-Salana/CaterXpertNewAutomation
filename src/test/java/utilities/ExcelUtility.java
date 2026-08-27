@@ -16,25 +16,26 @@ import org.apache.poi.ss.usermodel.WorkbookFactory;
 
 public class ExcelUtility {
 
-	private String path;
+	String path;
 	public FileInputStream fis = null;
 	public FileOutputStream fileOut = null;
 	public Workbook workbook = null;
 	private Sheet sheet = null;
 	private Row row = null;
 	private Cell cell = null;
-	private String value;
+	String value;
 
 	public ExcelUtility(String path) {
-	    this.path = path;
+		this.path = path;
 
-	    try {
-	        fis = new FileInputStream(path);
-	        workbook = WorkbookFactory.create(fis);
-	    } catch (IOException | EncryptedDocumentException e) {
-	        throw new RuntimeException("Failed to load Excel file: " + path, e);
-	    }
+		try {
+			fis = new FileInputStream(path);
+			workbook = WorkbookFactory.create(fis);
+		} catch (IOException | EncryptedDocumentException e) {
+			throw new RuntimeException("Failed to load Excel file: " + path, e);
+		}
 	}
+
 	public Map<String, String> getMandatoryFieldData(String sheetName) {
 		Map<String, String> data = new HashMap<>();
 
@@ -44,7 +45,7 @@ public class ExcelUtility {
 		 */
 		Sheet sheet = workbook.getSheet(sheetName);
 		Row headerRow = sheet.getRow(0); // First row with field names
-		Row valueRow = sheet.getRow(1);  // Second row with values
+		Row valueRow = sheet.getRow(1); // Second row with values
 
 		int totalColumns = headerRow.getLastCellNum();
 
@@ -65,30 +66,22 @@ public class ExcelUtility {
 		return data;
 	}
 
-	public String getCellValue(String sheetName, int rowNum, int cellNum)
-	{
+	public String getCellValue(String sheetName, int rowNum, int cellNum) {
 
-		
 		sheet = workbook.getSheet(sheetName);
 		row = sheet.getRow(rowNum);
 		cell = row.getCell(cellNum);
-		return value = cell.getStringCellValue(); 
+		return value = cell.getStringCellValue();
 		/*
-		try {
-			sheet = workbook.getSheet(sheetName);
-			if (sheet == null) return null;
-
-			row = sheet.getRow(rowNum);
-			if (row == null) return null;
-
-			cell = row.getCell(cellNum);
-			if (cell == null) return null;
-
-			return cell.getStringCellValue().trim();
-		} catch (Exception e) {
-			e.printStackTrace();
-			return null;
-		} */
+		 * try { sheet = workbook.getSheet(sheetName); if (sheet == null) return null;
+		 * 
+		 * row = sheet.getRow(rowNum); if (row == null) return null;
+		 * 
+		 * cell = row.getCell(cellNum); if (cell == null) return null;
+		 * 
+		 * return cell.getStringCellValue().trim(); } catch (Exception e) {
+		 * e.printStackTrace(); return null; }
+		 */
 	}
 
 }

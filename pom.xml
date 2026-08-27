@@ -22,13 +22,8 @@
 		<!-- Allure Reporting  -->
 		<dependency>
 			<groupId>io.qameta.allure</groupId>
-			<artifactId>allure-java-commons</artifactId>
-			<version>2.29.0</version>
-		</dependency>
-		<dependency>
-			<groupId>io.qameta.allure</groupId>
 			<artifactId>allure-testng</artifactId>
-			<version>2.29.0</version>
+			<version>2.35.3</version>
 		</dependency>
 
 		<!-- https://mvnrepository.com/artifact/org.testng/testng -->
@@ -100,6 +95,18 @@
 
 	<build>
 		<plugins>
+			<!-- generates the report and manages Reports history -->
+			<plugin>
+				<groupId>io.qameta.allure</groupId>
+				<artifactId>allure-maven</artifactId>
+				<version>3.0.2</version>
+				<!-- -->
+				<configuration>
+					<reportVersion>2.39.0</reportVersion>
+					<resultsDirectory>${project.basedir}/allure-results</resultsDirectory>
+				</configuration>
+			</plugin>
+
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>

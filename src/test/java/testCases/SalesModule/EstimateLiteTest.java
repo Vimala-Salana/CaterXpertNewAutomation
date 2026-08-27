@@ -14,7 +14,7 @@ import pageObjects.EventDashboardPage;
 import testBase.BaseClass;
 import workFlows.ServicesWorkFlows;
 
-public class EstimateLite extends BaseClass {
+public class EstimateLiteTest extends BaseClass {
 
 	EventDashboardPage dashboardPage;
 	EstimatesPage estimatesPage;

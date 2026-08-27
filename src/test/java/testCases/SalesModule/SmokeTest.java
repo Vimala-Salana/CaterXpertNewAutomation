@@ -2,6 +2,7 @@ package testCases.SalesModule;
 
 import java.util.List;
 import java.util.Map;
+
 import org.openqa.selenium.WebDriver;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
@@ -34,7 +35,7 @@ public class SmokeTest extends BaseClass {
 	Map<String, String> eventData;
 	Map<String, String> customerData;
 	Map<String, String> contactData;
-	
+
 	MenuServicePage menuServicePage;
 	StaffingServicePage staffingServicePage;
 	BeverageServicePage beverageServicePage;
@@ -90,17 +91,22 @@ public class SmokeTest extends BaseClass {
 		eventNo = eventFlow.createEvent(eventData);
 
 		/* Menu Service */
-		servicesFlow.openServiceRequestFromEventDashboard(menuService);
+		if (!servicesFlow.openServiceRequestFromEventDashboard(menuService))
+			return;
+
 		menuServicePage.addMenuItems();
 		servicesFlow.finalizeService(eventNo, menuService);
 
 		/* Staffing Service */
-		servicesFlow.openServiceRequestFromEventDashboard(staffingService);
+		if (!servicesFlow.openServiceRequestFromEventDashboard(staffingService))
+			return;
+
 		staffingServicePage.addStaffPositions();
 		servicesFlow.finalizeService(eventNo, staffingService);
 
 		/* Beverage Service */
-		servicesFlow.openServiceRequestFromEventDashboard(beverageService);
+		if (!servicesFlow.openServiceRequestFromEventDashboard(beverageService))
+			return;
 
 		beverageServicePage.addBeverageItems();
 

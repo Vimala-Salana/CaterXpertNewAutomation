@@ -19,7 +19,7 @@ import testBase.BaseClass;
 import utilities.LoggerManager;
 import workFlows.ServicesWorkFlows;
 
-public class ChangeRequest extends BaseClass{
+public class ChangeRequestTest extends BaseClass{
 	
 	WebDriver driver;
 	EventDashboardPage eventDashboardPage;
