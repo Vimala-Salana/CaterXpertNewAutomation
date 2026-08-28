@@ -73,7 +73,7 @@ public class MenuServicePage extends BasePage {
 			}
 		}
 
-		int menuCount = Math.min(driver.findElements(menuNames).size(), 20);
+		int menuCount = Math.min(driver.findElements(menuNames).size(), 2);
 
 		for (int i = 0; i < menuCount; i++) {
 

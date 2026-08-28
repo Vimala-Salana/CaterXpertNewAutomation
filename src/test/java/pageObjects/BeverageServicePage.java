@@ -206,7 +206,8 @@ public class BeverageServicePage extends BasePage {
 		}
 	}
 
-	private final By lnkFirstSubCategory = By.xpath("//div[@class='block-spans']//div[contains(@class,'editid')]");
+	private final By lnkFirstSubCategory = By
+			.xpath("//div[@class='block-spans']//div[contains(@class,'editid')]//span[2]");
 	private final By txtQty = By.xpath("//input[@name='item.qtysent']");
 
 	public void addItemsFromAdd(String itemQty) {

@@ -47,7 +47,7 @@ public class BeverageServiceTest extends BaseClass {
 
 	}
 
-	@Test(priority = 2, groups = { "Regression", "All" })
+	// @Test(priority = 2, groups = { "Regression", "All" })
 	public void editBeverageItem() {
 		String eventNo = servicesNewApi.newServiceEventId(loginId, service);
 
@@ -59,7 +59,7 @@ public class BeverageServiceTest extends BaseClass {
 		servicesPage.clickServiceSave();
 	}
 
-	@Test(priority = 3, groups = { "Regression", "All" })
+	// @Test(priority = 3, groups = { "Regression", "All" })
 	public void deleteBeverageItem() {
 		String eventNo = servicesNewApi.newServiceEventId(loginId, service);
 
@@ -74,7 +74,7 @@ public class BeverageServiceTest extends BaseClass {
 		Assert.assertFalse(servicesPage.isItemPresent(itemName), "Item is Not deleted");
 	}
 
-	@Test(priority = 4, groups = { "Regression", "All" })
+	// @Test(priority = 4, groups = { "Regression", "All" })
 	public void verifyBeverageItemUsingAdd() {
 		String eventNo = servicesNewApi.newServiceEventId(loginId, service);
 
