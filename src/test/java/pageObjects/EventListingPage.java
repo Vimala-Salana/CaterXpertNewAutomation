@@ -1,6 +1,5 @@
 package pageObjects;
 
-import java.time.Duration;
 import java.util.List;
 
 import org.openqa.selenium.By;
@@ -10,18 +9,14 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 import testBase.BasePage;
 import utilities.LoggerManager;
 
 public class EventListingPage extends BasePage {
 
-	WebDriverWait shortWait;
-
 	public EventListingPage(WebDriver driver) {
 		super(driver);
-		shortWait = new WebDriverWait(driver, Duration.ofSeconds(2));
 	}
 
 	// @FindBy(xpath = "//input[@placeholder='Event #']") WebElement searchEvent;
@@ -73,7 +68,7 @@ public class EventListingPage extends BasePage {
 
 		try {
 			wait.until(ExpectedConditions.invisibilityOfElementLocated(By.cssSelector("div.overlay")));
-			// waitutil.waitForOverlay();
+			waitutil.waitForOverlay();
 			shortWait.until(ExpectedConditions.visibilityOfAllElements(hdrInventoryAlert));
 			elementUtil.click(inventoryAlertClose);
 		} catch (TimeoutException | StaleElementReferenceException e) {

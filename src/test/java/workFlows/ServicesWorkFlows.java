@@ -55,6 +55,7 @@ public class ServicesWorkFlows {
 	}
 
 	public boolean openServiceRequestFromEventListing(String eventNo, List<String> serviceName) {
+		eventlistPage.closeInventoryPopupIfPresent();
 		hamburgerMenuPage.navigatetoEventListing();
 		navigateToEventDashboard(eventNo);
 		return openServiceRequestFromEventDashboard(serviceName);
@@ -62,6 +63,10 @@ public class ServicesWorkFlows {
 
 	public void finalizeService(String eventNo, List<String> serviceName) {
 		servicesPage.clickFinalize();
+
+		if (servicesPage.isFinalizeServicesSideBarExists()) {
+			servicesPage.clickSideBarSave();
+		}
 		boolean constraintExists = servicesPage.hasServiceConstraints();
 		servicesPage.fillInfo();
 		servicesPage.clickServiceClose();

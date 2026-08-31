@@ -43,7 +43,7 @@ public class MenuServiceTest extends BaseClass {
 		eventData = dataGenerator.generate(eventJsonPath, "MenuServiceEvent");
 	}
 
-	// @Test(priority = 1, groups = { "Regression", "All" })
+	@Test(priority = 1, groups = { "Regression", "All" })
 	public void menuServiceRequest() {
 		String eventNo = serviceEventApi.newServiceEventId(loginId, service);
 		LoggerManager.info(eventNo);
@@ -61,7 +61,7 @@ public class MenuServiceTest extends BaseClass {
 		servicesFlow.finalizeService(eventNo, service);
 	}
 
-	// @Test(priority = 2, groups = { "Regression", "All" })
+	@Test(priority = 2, groups = { "Regression", "All" })
 
 	public void deleteMenuItem() {
 		String eventNo = serviceEventApi.newServiceEventId(loginId, service);
@@ -84,7 +84,7 @@ public class MenuServiceTest extends BaseClass {
 		Assert.assertFalse(servicesPage.isItemPresent(itemName), "Item is Not deleted");
 	}
 
-	// @Test(priority = 3, groups = { "Regression", "All" })
+	@Test(priority = 3, groups = { "Regression", "All" })
 
 	public void editMenuItemQty() {
 		String eventNo = serviceEventApi.newServiceEventId(loginId, service);
@@ -104,7 +104,7 @@ public class MenuServiceTest extends BaseClass {
 		servicesPage.clickServiceSave();
 	}
 
-	// @Test(priority = 4, groups = { "Regression", "All" })
+	@Test(priority = 4, groups = { "Regression", "All" })
 	public void validateMenuView() {
 		String eventNo = serviceEventApi.newServiceEventId(loginId, service);
 		LoggerManager.info(eventNo);
@@ -153,8 +153,8 @@ public class MenuServiceTest extends BaseClass {
 		servicesPage.clickAddbtn();
 		menuServicePage.addMenuItemFromAdd();
 		String menuItem = menuServicePage.getAddScreenMenuItem();
-		servicesPage.clickAddSave();
-		servicesPage.clickAddClose();
+		servicesPage.clickSideBarSave();
+		servicesPage.clicSideBarClose();
 		Assert.assertEquals(menuItem, menuServicePage.getMenuItemNameFromServiceRequest(), "Add Menu Item Failed");
 	}
 

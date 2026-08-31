@@ -8,6 +8,7 @@ import org.testng.Assert;
 import components.HamburgerMenuPage;
 import components.HeaderPage;
 import pageObjects.CreateEventPage;
+import pageObjects.EventListingPage;
 import utilities.LoggerManager;
 
 public class EventFlow {
@@ -15,11 +16,13 @@ public class EventFlow {
 	private HamburgerMenuPage hambergerMenuPage;
 	private HeaderPage headerPage;
 	CreateEventPage eventPage;
+	EventListingPage eventListPage;
 
 	public EventFlow(WebDriver driver) {
 		hambergerMenuPage = new HamburgerMenuPage(driver);
 		headerPage = new HeaderPage(driver);
 		eventPage = new CreateEventPage(driver);
+		eventListPage = new EventListingPage(driver);
 	}
 
 	public void navigateToCreateEvent() {
@@ -47,7 +50,9 @@ public class EventFlow {
 	}
 
 	public String createEventfromEventPage(Map<String, String> data) {
+		eventListPage.closeInventoryPopupIfPresent();
 		navigateToCreateEvent();
+		eventListPage.closeInventoryPopupIfPresent();
 		return createEvent(data);
 	}
 }

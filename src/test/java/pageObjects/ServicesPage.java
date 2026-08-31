@@ -3,12 +3,14 @@ package pageObjects;
 import java.util.List;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import testBase.BasePage;
+import utilities.LoggerManager;
 
 public class ServicesPage extends BasePage {
 
@@ -55,18 +57,18 @@ public class ServicesPage extends BasePage {
 		elementUtil.click(btnAdd);
 	}
 
-	private final By btnAddSave = By.xpath("//div[contains(@class,'p-sidebar')]//button[normalize-space()='Save']");
+	private final By btnSideBarSave = By.xpath("//div[contains(@class,'sidebar')]//button[normalize-space()='Save']");
 
-	public void clickAddSave() {
-		elementUtil.click(btnAddSave);
+	public void clickSideBarSave() {
+		elementUtil.click(btnSideBarSave);
 		waitutil.waitForOverlay();
 		waitutil.waitForSwalPopup();
 	}
 
-	private final By btnAddClose = By.xpath("//div[contains(@class,'p-sidebar')]//button[normalize-space()='Close']");
+	private final By btnSideBarClose = By.xpath("//div[contains(@class,'sidebar')]//button[normalize-space()='Close']");
 
-	public void clickAddClose() {
-		elementUtil.click(btnAddClose);
+	public void clicSideBarClose() {
+		elementUtil.click(btnSideBarClose);
 	}
 
 	public void clickFilterIcon() {
@@ -96,6 +98,19 @@ public class ServicesPage extends BasePage {
 		waitutil.waitForSwalPopup();
 		elementUtil.click(btnFinalize);
 		waitutil.waitForSwalPopup();
+	}
+
+	private final By hdrFinalizeServicesSideBar = By.xpath("//p[normalize-space()='Finalize Services']");
+
+	public boolean isFinalizeServicesSideBarExists() {
+
+		try {
+			shortWait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(hdrFinalizeServicesSideBar));
+			return !driver.findElements(hdrFinalizeServicesSideBar).isEmpty();
+		} catch (TimeoutException e) {
+			LoggerManager.info("Finalize Services Sidebar is not displayed");
+			return false;
+		}
 	}
 
 	public boolean hasServiceConstraints() {
