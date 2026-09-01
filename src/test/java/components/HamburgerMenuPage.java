@@ -3,16 +3,19 @@ package components;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
+import pageObjects.EventListingPage;
 import testBase.BasePage;
 import utilities.LoggerManager;
 
 public class HamburgerMenuPage extends BasePage {
 
 	private HeaderPage headerPage;
+	private EventListingPage eventListPage;
 
 	public HamburgerMenuPage(WebDriver driver) {
 		super(driver);
 		headerPage = new HeaderPage(driver);
+		eventListPage = new EventListingPage(driver);
 	}
 
 	private By hdrAEDashboard = By.xpath("//span[normalize-space(text())='AE Dashboard']");
@@ -67,6 +70,7 @@ public class HamburgerMenuPage extends BasePage {
 	}
 
 	public void navigatetoEventListing() {
+		eventListPage.closeInventoryPopupIfPresent();
 		if (!isEventListingPresent()) {
 			headerPage.clickhambergerMenu();
 			elementUtil.click(lnkEventListing);

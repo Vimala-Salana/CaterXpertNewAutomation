@@ -19,6 +19,7 @@ public class BasePage {
 	protected ServiceUtil serviceUtil;
 	protected ElementInteractionUtil elementUtil;
 	protected WebDriverWait shortWait;
+	protected WebDriverWait tinyWait;
 
 	public BasePage(WebDriver driver) {
 
@@ -27,6 +28,7 @@ public class BasePage {
 		waitutil = new WaitUtils(driver);
 		wait = new WebDriverWait(driver, config.getDuration("explicitWait"));
 		shortWait = new WebDriverWait(driver, config.getDuration("shortWait"));
+		tinyWait = new WebDriverWait(driver, config.getDuration("tinyWait"));
 		elementUtil = new ElementInteractionUtil(driver);
 		js = (JavascriptExecutor) driver;
 		serviceUtil = new ServiceUtil(driver);

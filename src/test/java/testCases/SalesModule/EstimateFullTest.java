@@ -9,6 +9,7 @@ import org.testng.annotations.Test;
 
 import apis.FullEventApI;
 import apis.LiteEventApi;
+import components.HamburgerMenuPage;
 import factory.DriverFactory;
 import pageObjects.EstimatesPage;
 import pageObjects.EventDashboardPage;
@@ -18,6 +19,7 @@ import workFlows.ServicesWorkFlows;
 public class EstimateFullTest extends BaseClass {
 
 	EventDashboardPage dashboardPage;
+	HamburgerMenuPage hamburgerMenuPage;
 	EstimatesPage estimatesPage;
 	ServicesWorkFlows servicesFlow;
 	FullEventApI fullEventApI;
@@ -29,6 +31,7 @@ public class EstimateFullTest extends BaseClass {
 	public void setup() {
 		estimatesPage = new EstimatesPage(DriverFactory.getDriver());
 		dashboardPage = new EventDashboardPage(DriverFactory.getDriver());
+		hamburgerMenuPage = new HamburgerMenuPage(DriverFactory.getDriver());
 		servicesFlow = new ServicesWorkFlows(DriverFactory.getDriver());
 		fullEventApI = new FullEventApI();
 		service = List.of("Estimates");
@@ -38,7 +41,7 @@ public class EstimateFullTest extends BaseClass {
 
 	@Test(priority = 1, groups = { "Regression", "EventCreationDirect" })
 	public void estimateFull() {
-
+		hamburgerMenuPage.navigatetoEventListing();
 		String fullServiceEeventNo = fullEventApI.getFullEstimateEventId(loginId);
 		servicesFlow.navigateToEventDashboard(fullServiceEeventNo);
 		dashboardPage.clickServiceLabelIcon(service, null, iconLabel);

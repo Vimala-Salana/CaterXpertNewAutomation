@@ -8,6 +8,7 @@ import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+import components.HamburgerMenuPage;
 import factory.DriverFactory;
 import pageObjects.BeverageServicePage;
 import pageObjects.EstimatesPage;
@@ -42,6 +43,7 @@ public class SmokeTest extends BaseClass {
 	ServicesPage servicesPage;
 	EstimatesPage estimatesPage;
 	EventDashboardPage dashboardPage;
+	HamburgerMenuPage hamburgerMenuPage;
 
 	List<String> menuService;
 	List<String> staffingService;
@@ -72,6 +74,7 @@ public class SmokeTest extends BaseClass {
 		estimatesPage = new EstimatesPage(driver);
 
 		dashboardPage = new EventDashboardPage(driver);
+		hamburgerMenuPage = new HamburgerMenuPage(DriverFactory.getDriver());
 	}
 
 	@Test
@@ -86,6 +89,7 @@ public class SmokeTest extends BaseClass {
 		 * contactData = dataGenerator.generate(contactJsonPath, "SmokeContactTest");
 		 * contactFlow.createContact(contactData);
 		 */
+		hamburgerMenuPage.navigatetoEventListing();
 		eventFlow.navigateToCreateEvent();
 		eventData = dataGenerator.generate(eventJsonPath, "SmokeEventTest");
 		eventNo = eventFlow.createEvent(eventData);

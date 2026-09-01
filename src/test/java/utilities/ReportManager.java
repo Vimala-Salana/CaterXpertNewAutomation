@@ -58,7 +58,7 @@ public final class ReportManager {
 		}
 	}
 
-	private static void attachScreenshot(String name) {
+	public static void attachScreenshot(String name) {
 
 		try {
 

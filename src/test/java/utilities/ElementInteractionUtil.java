@@ -55,6 +55,7 @@ public class ElementInteractionUtil {
 				}
 
 				try {
+					waitUtils.waitForOverlay();
 					actionsClick(locator);
 
 					LoggerManager.logActionSuccess(locator, startTime, "Actions Click", attempt);
@@ -193,20 +194,18 @@ public class ElementInteractionUtil {
 
 		return getAttribute(locator, "value");
 	}
-	
-	//Highlight Element using WebElement
-	
-	 public static void highlightElement(WebDriver driver, WebElement element) {
-	        ((JavascriptExecutor) driver).executeScript(
-	            "arguments[0].style.outline='3px solid red';" +
-	            "arguments[0].style.backgroundColor='yellow';",
-	            element
-	        );
-	    }
 
-	//Highlight Element using By locator and calling WebElement method inside
-	 
-	    public static void highlightElement(WebDriver driver, By locator) {
-	        highlightElement(driver, driver.findElement(locator));
-	    }
+	// Highlight Element using WebElement
+
+	public static void highlightElement(WebDriver driver, WebElement element) {
+		((JavascriptExecutor) driver).executeScript(
+				"arguments[0].style.outline='3px solid red';" + "arguments[0].style.backgroundColor='yellow';",
+				element);
 	}
+
+	// Highlight Element using By locator and calling WebElement method inside
+
+	public static void highlightElement(WebDriver driver, By locator) {
+		highlightElement(driver, driver.findElement(locator));
+	}
+}

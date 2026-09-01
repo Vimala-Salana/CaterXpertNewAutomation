@@ -74,14 +74,13 @@ public class ServiceUtil {
 				wait.until(ExpectedConditions.elementToBeClickable(multidrpdown));
 				js.executeScript("arguments[0].scrollIntoView({block:'center'});", multidrpdown);
 				multidrpdown.click();
-				List<WebElement> drpoptions = wait.until(ExpectedConditions
-						.visibilityOfAllElementsLocatedBy(By.xpath(MandatoryFieldsXpaths.MULTISELECT_LIST)));
+				List<WebElement> drpoptions = wait.until(ExpectedConditions.refreshed(ExpectedConditions
+						.visibilityOfAllElementsLocatedBy(By.xpath(MandatoryFieldsXpaths.MULTISELECT_LIST))));
 				if (!drpoptions.isEmpty()) {
 
-					WebElement option = driver
-							.findElement(By.xpath("(//ul[contains(@class,'p-multiselect-items')]//li)[1]"));
-					js.executeScript("arguments[0].scrollIntoView({block:'center'});", option);
-					option.click();
+					wait.until(ExpectedConditions.elementToBeClickable(drpoptions.get(0)));
+					drpoptions.get(0).click();
+					waitutil.waitForOverlay();
 					// wait.until(ExpectedConditions.elementToBeClickable(firstOption)).click();
 					// wait.until(ExpectedConditions.refreshed(ExpectedConditions.elementToBeClickable(firstOption))).click();
 				}
@@ -103,9 +102,12 @@ public class ServiceUtil {
 			else if (!label.findElements(By.xpath(inputOrTextarea)).isEmpty()) {
 				waitutil.waitForOverlay();
 				WebElement textbox = label.findElement(By.xpath(inputOrTextarea));
-				textbox.sendKeys(Keys.CONTROL + "a");
-				textbox.sendKeys(Keys.DELETE);
-				textbox.sendKeys("123");
+				String inputValue = textbox.getAttribute("value");
+				if (inputValue != null) {
+					textbox.sendKeys(Keys.CONTROL + "a");
+					textbox.sendKeys(Keys.DELETE);
+					textbox.sendKeys("123");
+				}
 			}
 
 			else if (!label.findElements(By.xpath(date)).isEmpty()) {
@@ -116,19 +118,24 @@ public class ServiceUtil {
 
 				datepicker.sendKeys(date.format(formatter));
 
-				WebElement timeicon = label.findElement(By.xpath(time));
-				timeicon.click();
+				List<WebElement> timefield = label.findElements(By.xpath(time));
 
-				List<WebElement> drpoptions = driver.findElements(By.xpath(timeOptions));
+				if (!timefield.isEmpty()) {
 
-				for (WebElement option : drpoptions) {
-					if (option.getText().equals("01:00")) {
-						wait.until(ExpectedConditions.elementToBeClickable(option));
-						option.click();
-						break;
+					WebElement timeicon = label.findElement(By.xpath(time));
+					timeicon.click();
+
+					List<WebElement> drpoptions = driver.findElements(By.xpath(timeOptions));
+
+					for (WebElement option : drpoptions) {
+						if (option.getText().equals("01:00")) {
+							wait.until(ExpectedConditions.elementToBeClickable(option));
+							option.click();
+							break;
+						}
 					}
-				}
 
+				}
 			}
 
 		}
@@ -160,8 +167,8 @@ public class ServiceUtil {
 		waitutil.waitForOverlay();
 
 		try {
-			WebDriverWait shortWait = new WebDriverWait(driver, Duration.ofSeconds(1));
-			shortWait.until(ExpectedConditions.visibilityOfElementLocated(constraintslocator));
+			WebDriverWait tinyWait = new WebDriverWait(driver, Duration.ofSeconds(1));
+			tinyWait.until(ExpectedConditions.visibilityOfElementLocated(constraintslocator));
 			// wait.until(ExpectedConditions.visibilityOfElementLocated(constraintslocator));
 
 			List<WebElement> constraintNames = driver

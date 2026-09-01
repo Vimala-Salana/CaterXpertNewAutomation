@@ -105,7 +105,7 @@ public class ServicesPage extends BasePage {
 	public boolean isFinalizeServicesSideBarExists() {
 
 		try {
-			shortWait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(hdrFinalizeServicesSideBar));
+			tinyWait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(hdrFinalizeServicesSideBar));
 			return !driver.findElements(hdrFinalizeServicesSideBar).isEmpty();
 		} catch (TimeoutException e) {
 			LoggerManager.info("Finalize Services Sidebar is not displayed");

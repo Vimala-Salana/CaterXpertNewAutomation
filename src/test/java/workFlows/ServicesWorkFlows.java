@@ -49,13 +49,13 @@ public class ServicesWorkFlows {
 	}
 
 	public void navigateToEventDashboard(String eventNo) {
+		// eventlistPage.closeInventoryPopupIfPresent();
 		eventlistPage.enterEventNo(eventNo);
 		eventlistPage.closeInventoryPopupIfPresent();
 		eventlistPage.clickEventDashboardIcon(eventNo);
 	}
 
 	public boolean openServiceRequestFromEventListing(String eventNo, List<String> serviceName) {
-		eventlistPage.closeInventoryPopupIfPresent();
 		hamburgerMenuPage.navigatetoEventListing();
 		navigateToEventDashboard(eventNo);
 		return openServiceRequestFromEventDashboard(serviceName);

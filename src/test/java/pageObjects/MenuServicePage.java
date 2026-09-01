@@ -96,8 +96,8 @@ public class MenuServicePage extends BasePage {
 
 	}
 
-	private final By drpMenuNumber = By.xpath("//p-dropdown[@name='menuNumId']");
-	private final By drpCourseOption = By.xpath("//p-dropdown[@name='courseId']");
+	private final By drpMenuNumber = By.xpath("//p-dropdown[@name='menuNumId']//span[contains(text(),'Select')]");
+	private final By drpCourseOption = By.xpath("//p-dropdown[@name='courseId']//span[contains(text(),'Select')]");
 	private final By drpCategory = By.xpath("//p-dropdown[@name='categoryId']");
 	private final By drpSubCategory = By.xpath("//p-dropdown[@name='subCatId']");
 	private final By drpMenuItem = By.xpath("//p-dropdown[@name='menuItemId']");
