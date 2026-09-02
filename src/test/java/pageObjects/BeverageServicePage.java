@@ -162,7 +162,7 @@ public class BeverageServicePage extends BasePage {
 			String itemName = rowData.get("Item");
 			int expectedReservedQty = 0;
 			if (hasAvailable && rowData.get("Available Qty") != null) {
-				int availableQty = Integer.parseInt(rowData.get("Available Qty"));
+				int availableQty = (int) Double.parseDouble(rowData.get("Available Qty"));
 				int qty = Integer.parseInt(rowData.get("Qty"));
 				expectedReservedQty = Math.min(qty, availableQty);
 				int expectedAvailbleQty = availableQty - expectedReservedQty;

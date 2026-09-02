@@ -71,7 +71,7 @@ public class ChangeRequestTest extends BaseClass {
 
 	}
 
-	// @Test(priority = 2, groups = {"Regression","All"})
+	@Test(priority = 2, groups = { "Regression", "All" })
 	public void beverageChangeRequest() {
 		hamburgerMenuPage.navigatetoEventListing();
 		service = List.of("Beverage", "Non Alc Bev", "Soft Beverages", "Beverages");
@@ -95,7 +95,7 @@ public class ChangeRequestTest extends BaseClass {
 
 	}
 
-	// @Test(priority = 3, groups = {"Regression","All"})
+	@Test(priority = 3, groups = { "Regression", "All" })
 	public void staffingChangeRequest() {
 		hamburgerMenuPage.navigatetoEventListing();
 		service = List.of("Personnel", "Staffing", "Scheduling");

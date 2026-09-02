@@ -31,10 +31,10 @@ public class ServicesLevelNewEventApi {
 
 		System.out.println("StartDate : " + startDateParam + ", EndDate : " + endDateParam);
 
-		Response response = given().log().all().pathParam("patch", "CaterXpertSales2026_0802")
-				.pathParam("module", "sales").pathParam("screen", "getSalesEventsList")
+		Response response = given().pathParam("patch", "CaterXpertSales2026_0802").pathParam("module", "sales")
+				.pathParam("screen", "getSalesEventsList")
 				.queryParams("loginId", loginId, "catererId", caterId, "startDate", startDateParam, "endDate",
-						endDateParam, "lowerBound", 1, "upperBound", 200, "deptId", 2, "businessunitsid", -1)
+						endDateParam, "lowerBound", 1, "upperBound", 200, "deptId", 2)
 				.when().get(url + "/{patch}/{module}/{screen}");
 
 		response.then().statusCode(200);

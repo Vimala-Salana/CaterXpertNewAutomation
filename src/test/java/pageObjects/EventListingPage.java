@@ -58,7 +58,7 @@ public class EventListingPage extends BasePage {
 	public void closeInventoryPopupIfPresent() {
 
 		waitutil.waitForOverlay();
-
+		wait.until(ExpectedConditions.invisibilityOfElementLocated(By.cssSelector("div.overlay")));
 		try {
 			shortWait.until(ExpectedConditions.visibilityOfAllElements(hdrInventoryAlert));
 
@@ -68,6 +68,7 @@ public class EventListingPage extends BasePage {
 
 			System.out.println("Inventory popup not displayed");
 		}
+
 	}
 
 }

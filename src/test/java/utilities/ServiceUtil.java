@@ -103,7 +103,7 @@ public class ServiceUtil {
 				waitutil.waitForOverlay();
 				WebElement textbox = label.findElement(By.xpath(inputOrTextarea));
 				String inputValue = textbox.getAttribute("value");
-				if (inputValue != null) {
+				if (inputValue.isEmpty()) {
 					textbox.sendKeys(Keys.CONTROL + "a");
 					textbox.sendKeys(Keys.DELETE);
 					textbox.sendKeys("123");

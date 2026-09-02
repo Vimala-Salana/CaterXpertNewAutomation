@@ -18,16 +18,19 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 public class ElementInteractionUtil {
 
 	private final WebDriver driver;
-	private final WebDriverWait wait;
+	private final ConfigReader config;
+	protected WebDriverWait wait;
+	protected WebDriverWait shortWait;
 	private final WaitUtils waitUtils;
 	private final JavascriptExecutor js;
-	private static final Duration TIMEOUT = Duration.ofSeconds(10);
 	private static final int MAX_CLICK_ATTEMPTS = 3;
 
 	public ElementInteractionUtil(WebDriver driver) {
 
 		this.driver = driver;
-		this.wait = new WebDriverWait(driver, TIMEOUT);
+		config = new ConfigReader();
+		wait = new WebDriverWait(driver, config.getDuration("explicitWait"));
+		shortWait = new WebDriverWait(driver, config.getDuration("shortWait"));
 		waitUtils = new WaitUtils(driver);
 		js = (JavascriptExecutor) driver;
 	}
@@ -127,16 +130,20 @@ public class ElementInteractionUtil {
 
 	// Click Element only if present - Use it for dynamic Elements/Icons
 	public boolean clickIfPresent(By locator) {
+		try {
 
-		if (driver.findElements(locator).isEmpty()) {
+			WebElement element = shortWait.until(ExpectedConditions.elementToBeClickable(locator));
 
-			LoggerManager.info("Optional element not present: " + locator);
+			element.click();
 
+			LoggerManager.info("Optional element clicked: " + locator);
+			return true;
+
+		} catch (TimeoutException | NoSuchElementException | ElementNotInteractableException e) {
+
+			LoggerManager.info("Optional element could not be clicked: " + locator);
 			return false;
 		}
-
-		click(locator);
-		return true;
 	}
 
 	// Reusable method for SendKeys

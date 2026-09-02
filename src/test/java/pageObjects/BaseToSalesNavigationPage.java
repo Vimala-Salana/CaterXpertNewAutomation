@@ -46,7 +46,7 @@ public class BaseToSalesNavigationPage extends BasePage {
 		elementUtil.clickIfPresent(iconHome);
 
 		driver.switchTo().defaultContent();
-		driver.switchTo().frame(frameright);
+		wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt(frameright));
 
 		String loginId = getLoggedInUserId();
 		wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(lnkSalesNew));
