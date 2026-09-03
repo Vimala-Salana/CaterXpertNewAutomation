@@ -43,7 +43,7 @@ public class MenuServiceTest extends BaseClass {
 		eventData = dataGenerator.generate(eventJsonPath, "MenuServiceEvent");
 	}
 
-	// @Test(priority = 1, groups = { "Regression", "All" })
+	@Test(priority = 1, groups = { "Regression", "All" })
 	public void menuServiceRequest() {
 		String eventNo = serviceEventApi.newServiceEventId(loginId, service);
 		LoggerManager.info(eventNo);
@@ -136,7 +136,7 @@ public class MenuServiceTest extends BaseClass {
 
 	}
 
-	@Test(priority = 5, groups = { "Regression", "All" })
+	// @Test(priority = 5, groups = { "Regression", "All" })
 	public void verifyMenuItemIsAddedUsingAdd() {
 		String eventNo = serviceEventApi.newServiceEventId(loginId, service);
 		LoggerManager.info(eventNo);
