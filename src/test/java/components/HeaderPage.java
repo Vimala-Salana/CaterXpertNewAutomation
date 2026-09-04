@@ -7,21 +7,22 @@ import org.openqa.selenium.support.FindBy;
 
 import testBase.BasePage;
 
-public class HeaderPage extends BasePage{
+public class HeaderPage extends BasePage {
 
-	public HeaderPage(WebDriver driver)
-	{  
+	public HeaderPage(WebDriver driver) {
 		super(driver);
 	}
 
 	private final By iconBaseNavigation = By.xpath("//span[text()=' dining ']");
-	public void baseNavigation()
-	{
+
+	public void baseNavigation() {
 		elementUtil.click(iconBaseNavigation);
 	}
 
-	@FindBy(xpath = "//nav//div[contains(@class,'d-flex')]//span[contains(.,'menu')]") WebElement hambergerMenu;
+	@FindBy(xpath = "//nav//div[contains(@class,'d-flex')]//span[contains(.,'menu')]")
+	WebElement hambergerMenu;
 	private final By iconHamburgerMenu = By.xpath("//nav//div[contains(@class,'d-flex')]//span[contains(.,'menu')]");
+
 	public void clickhambergerMenu() {
 
 		/*
@@ -31,9 +32,8 @@ public class HeaderPage extends BasePage{
 		 * driver).executeScript("arguments[0].click();", menu); hambergerMenu.click();
 		 * waitutil.waitForOverlay();
 		 */
+		waitutil.waitForOverlay();
 		elementUtil.click(iconHamburgerMenu);
 	}
-
-
 
 }

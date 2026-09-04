@@ -28,8 +28,6 @@ public final class EmailReportManager {
 
 	private static final String PASSWORD = System.getenv("SMTP_PASSWORD");
 
-	private static final String TO_EMAIL = "Vimala.Salana@hospiquesoftware.com";
-
 	private static int passed;
 	private static int failed;
 	private static int skipped;
@@ -89,7 +87,7 @@ public final class EmailReportManager {
 				.replace("{{APPLICATION}}", "CaterXpertSales").replace("{{ENVIRONMENT}}", "QA")
 				.replace("{{BROWSER}}", "Chrome").replace("{{BRANCH}}", "0802 Patch")
 				.replace("{{EXECUTION}}", "Selenium + TestNG")
-				.replace("{{ALLURE_REPORT_URL}}", "http://your-server/allure-report")
+				.replace("{{ALLURE_REPORT_URL}}", "http://192.168.10.179:8081/job/CaterXpertSalesNew/allure/")
 				.replace("{{CI_BUILD_URL}}", "http://your-jenkins-server/job/automation");
 	}
 
@@ -129,7 +127,9 @@ public final class EmailReportManager {
 
 		message.setFrom(new InternetAddress(FROM_EMAIL));
 
-		message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(TO_EMAIL));
+		ConfigReader config = new ConfigReader();
+
+		message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(config.getProperty("toEmails")));
 
 		message.setSubject("Automation Execution Report");
 

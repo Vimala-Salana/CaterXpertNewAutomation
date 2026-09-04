@@ -32,11 +32,12 @@ public class ChangeRequestPage extends BasePage {
 		elementUtil.click(btnAddOrEditItems);
 	}
 
-	private final By inputQty = By.xpath(
-			"(//div[@aria-hidden='false'])[1]//td[count(//p-tabpanel[contains(@header,'Current') "
-			+ "or contains(@header,'Request')]//th[contains(.,' Qty ')]/preceding-sibling::th)+1]//input");
+	private final By inputQty = By
+			.xpath("(//div[@aria-hidden='false'])[1]//td[count(//p-tabpanel[contains(@header,'Current') "
+					+ "or contains(@header,'Request')]//th[contains(.,' Qty ')]/preceding-sibling::th)+1]//input");
 
-		//(//td[count(//p-tabpanel[@header='Current Menu']//th[.=' Qty ']/preceding-sibling::th)+1])[1]//input
+	// (//td[count(//p-tabpanel[@header='Current Menu']//th[.=' Qty
+	// ']/preceding-sibling::th)+1])[1]//input
 	public void enterQty(String qty) {
 		elementUtil.typeText(inputQty, qty);
 	}
@@ -48,13 +49,13 @@ public class ChangeRequestPage extends BasePage {
 		waitutil.waitForSwalPopup();
 	}
 
-	private final By btnCurrentTaByClose = By.xpath("//p-tabpanel[contains(@header,'Current') "
-			+ "or contains(@header,'Request')]//button[text()=' Close ']");
+	private final By btnCurrentTaClose = By.xpath(
+			"//p-tabpanel[contains(@header,'Current') " + "or contains(@header,'Request')]//button[text()=' Close ']");
 
 	public void closeCurrentTab() {
 		waitutil.waitForOverlay();
 		waitutil.waitForSwalPopup();
-		elementUtil.click(btnCurrentTaByClose);
+		elementUtil.click(btnCurrentTaClose);
 	}
 
 	private final By btnChangeRequestSend = By.xpath("//button[normalize-space()='Send']");

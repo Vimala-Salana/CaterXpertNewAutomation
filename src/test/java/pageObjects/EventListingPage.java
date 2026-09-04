@@ -51,18 +51,17 @@ public class EventListingPage extends BasePage {
 		lnkServiceStatus.click();
 	}
 
-	@FindBy(xpath = "//p[contains(normalize-space(),'Inventory Status Alert')]")
-	List<WebElement> hdrInventoryAlert;
+	By hdrInventoryPopup = By.xpath("//p[contains(normalize-space(),'Inventory Status Alert')]");
 	private final By inventoryAlertClose = By.xpath("//button[.=' Close ']");
 
 	public void closeInventoryPopupIfPresent() {
 
 		waitutil.waitForOverlay();
-		wait.until(ExpectedConditions.invisibilityOfElementLocated(By.cssSelector("div.overlay")));
 		try {
-			shortWait.until(ExpectedConditions.visibilityOfAllElements(hdrInventoryAlert));
+			shortWait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(hdrInventoryPopup));
 
 			elementUtil.click(inventoryAlertClose);
+			shortWait.until(ExpectedConditions.invisibilityOfElementLocated(hdrInventoryPopup));
 
 		} catch (TimeoutException e) {
 

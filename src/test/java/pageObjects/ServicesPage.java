@@ -132,6 +132,7 @@ public class ServicesPage extends BasePage {
 	private final By btnServiceSave = By.xpath("//div[@aria-hidden='false']//button[normalize-space()='Save']");
 
 	public void clickServiceSave() {
+		waitutil.waitForOverlay();
 		elementUtil.click(btnServiceSave);
 		waitutil.waitForSwalPopup();
 		fillInfo();
